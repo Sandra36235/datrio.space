@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía de Visualizaciones Power BI — Sandra Maria Abasto</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0E3A6E;
+    --navy-light: #1A5299;
+    --yellow: #F2C811;
+    --yellow-soft: #FEF7DA;
+    --bg: #F5F6FA;
+    --surface: #FFFFFF;
+    --border: rgba(14,58,110,0.10);
+    --text: #1A1A2E;
+    --text-muted: #6B7A99;
+    --text-faint: #A0ABBF;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --shadow-sm: 0 1px 4px rgba(14,58,110,0.07);
+    --shadow-md: 0 4px 20px rgba(14,58,110,0.10);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--navy);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 2rem;
+    position: relative;
+    z-index: 1;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: rgba(242,200,17,0.07);
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: 30%;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 0.75rem;
+  }
+  .pbi-logo {
+    background: var(--yellow);
+    color: var(--navy);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    color: #fff;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.4rem;
+  }
+  .header-sub {
+    font-size: 15px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 1.5rem;
+  }
+  .header-tags {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .header-tag {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    border: 0.5px solid rgba(255,255,255,0.18);
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+
+  /* AUTHOR BAR */
+  .author-bar {
+    background: var(--yellow);
+    padding: 0.6rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .author-bar-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .author-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy);
+    letter-spacing: 0.3px;
+  }
+  .author-label {
+    font-size: 12px;
+    color: var(--navy);
+    background: rgba(14,58,110,0.12);
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  /* MAIN */
+  .main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  /* LEGEND */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 1.5rem;
+    padding: 12px 16px;
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    align-items: center;
+    box-shadow: var(--shadow-sm);
+  }
+  .legend-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-right: 4px;
+  }
+  .var-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.2px;
+  }
+  .var-num  { background: #E6F1FB; color: #0C447C; }
+  .var-cat  { background: #E1F5EE; color: #085041; }
+  .var-date { background: #FAEEDA; color: #633806; }
+  .var-text { background: #FBEAF0; color: #72243E; }
+  .var-geo  { background: #EAF3DE; color: #27500A; }
+  .var-opt  { background: #F1EFE8; color: #444441; font-style: italic; }
+
+  /* CONTROLS */
+  .controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .search-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+  }
+  .search-wrap input {
+    width: 100%;
+    padding: 10px 16px 10px 40px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: var(--shadow-sm);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .search-wrap input:focus { border-color: var(--navy-light); }
+  .search-icon {
+    position: absolute;
+    left: 14px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-faint);
+    font-size: 15px;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+  .tab-btn {
+    padding: 7px 16px;
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-weight: 400;
+    box-shadow: var(--shadow-sm);
+  }
+  .tab-btn:hover { background: #EEF2F8; color: var(--navy); }
+  .tab-btn.active { background: var(--navy); color: #fff; border-color: var(--navy); font-weight: 500; }
+
+  /* GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 14px;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    cursor: pointer;
+    transition: box-shadow 0.15s, border-color 0.15s;
+    box-shadow: var(--shadow-sm);
+  }
+  .card:hover { box-shadow: var(--shadow-md); border-color: rgba(14,58,110,0.2); }
+  .card.expanded { border-color: var(--navy); box-shadow: var(--shadow-md); }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 16px;
+  }
+  .card-icon {
+    width: 44px; height: 44px;
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 3px;
+    line-height: 1.3;
+  }
+  .card-cat {
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.4px;
+    font-weight: 400;
+  }
+  .expand-arrow {
+    margin-left: auto;
+    color: var(--text-faint);
+    font-size: 11px;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .card.expanded .expand-arrow { transform: rotate(180deg); }
+
+  .card-body {
+    display: none;
+    padding: 0 16px 16px;
+    border-top: 1px solid var(--border);
+  }
+  .card.expanded .card-body { display: block; }
+
+  .card-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin: 12px 0 14px;
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 8px;
+  }
+
+  .fields-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-bottom: 12px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .fields-table th {
+    background: #F0F4FA;
+    color: var(--text-muted);
+    font-weight: 600;
+    padding: 7px 10px;
+    text-align: left;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .fields-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .fields-table tr:last-child td { border-bottom: none; }
+
+  .field-name {
+    font-weight: 600;
+    color: var(--navy);
+    white-space: nowrap;
+    font-size: 12px;
+  }
+
+  .example-box {
+    background: #F5F7FB;
+    border-radius: var(--radius-sm);
+    padding: 10px 13px;
+    font-size: 12.5px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 10px;
+    border-left: 3px solid var(--navy-light);
+  }
+  .example-box strong { color: var(--text); font-weight: 600; }
+
+  .tip-box {
+    padding: 9px 13px;
+    border-left: 3px solid var(--yellow);
+    background: var(--yellow-soft);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    font-size: 12px;
+    color: #5A4700;
+    line-height: 1.55;
+  }
+
+  .no-results {
+    grid-column: 1/-1;
+    text-align: center;
+    color: var(--text-faint);
+    padding: 3rem;
+    font-size: 15px;
+  }
+
+  /* STATS */
+  .stats-bar {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .stat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 10px 18px;
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--navy);
+    display: block;
+  }
+  .stat-label { font-size: 11px; color: var(--text-faint); font-weight: 400; }
+
+  /* FOOTER */
+  footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 1.25rem 2rem;
+    font-size: 12px;
+    margin-top: 3rem;
+  }
+  footer strong { color: rgba(255,255,255,0.85); font-weight: 500; }
+
+  @media (max-width: 600px) {
+    .header h1 { font-size: 1.5rem; }
+    .main { padding: 1.25rem 1rem; }
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  @media print {
+    .controls, .tabs { display: none; }
+    .card-body { display: block !important; }
+    .expand-arrow { display: none; }
+    .card { break-inside: avoid; margin-bottom: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-top">
+      <span class="pbi-logo">Power BI</span>
+    </div>
+    <h1>Guía de Visualizaciones</h1>
+    <p class="header-sub">Referencia completa: tipos de variables, campos y ejemplos prácticos</p>
+    <div class="header-tags">
+      <span class="header-tag">24 visualizaciones</span>
+      <span class="header-tag">Variables por campo</span>
+      <span class="header-tag">Ejemplos prácticos</span>
+      <span class="header-tag">Consejos de uso</span>
+    </div>
+  </div>
+</div>
+
+<div class="author-bar">
+  <div class="author-bar-inner">
+    <span class="author-name">Elaborado por Sandra Maria Abasto</span>
+    <span class="author-label">Programas de Posgrado</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="stats-bar" id="statsBar"></div>
+
+  <div class="legend">
+    <span class="legend-label">Tipos de variable:</span>
+    <span class="var-badge var-num">Numérica</span>
+    <span class="var-badge var-cat">Categórica</span>
+    <span class="var-badge var-date">Fecha / Tiempo</span>
+    <span class="var-badge var-text">Texto</span>
+    <span class="var-badge var-geo">Geográfica</span>
+    <span class="var-badge var-opt">Opcional</span>
+  </div>
+
+  <div class="controls">
+    <div class="search-wrap">
+      <span class="search-icon">&#128269;</span>
+      <input type="text" id="searchInput" placeholder="Buscar visualización..." oninput="filterCards()">
+    </div>
+  </div>
+
+  <div class="tabs" id="tabsContainer"></div>
+
+  <div class="grid" id="cardsGrid"></div>
+
+</div>
+
+<footer>
+  <strong>Sandra Maria Abasto</strong> &nbsp;·&nbsp; Guía de Visualizaciones Power BI &nbsp;·&nbsp; Programas de Posgrado
+</footer>
+
+<script>
+const vizData = [
+  {
+    id:1, cat:"Barras y Columnas", icon:"📊", bg:"#E6F1FB",
+    name:"Gráfico de columnas agrupadas",
+    desc:"Compara valores entre categorías usando columnas verticales. Ideal para comparar pocos grupos en un periodo.",
+    fields:[
+      {campo:"Eje X",tipo:"cat",desc:"Categorías a comparar (ej. producto, región, mes)"},
+      {campo:"Eje Y (Valores)",tipo:"num",desc:"Magnitud a medir (ej. ventas, unidades, ingresos)"},
+      {campo:"Leyenda",tipo:"cat,opt",desc:"Sub-grupo para dividir columnas (ej. línea de producto)"},
+      {campo:"Info. herramientas",tipo:"num,opt",desc:"Dato adicional al hacer hover"}
+    ],
+    example:"<strong>Ejemplo:</strong> Ventas (Bs.) por sucursal — Eje X: Nombre sucursal · Eje Y: Total ventas · Leyenda: Trimestre",
+    tip:"Ideal cuando tienes menos de 8 categorías. Para más, considera barras horizontales."
+  },
+  {
+    id:2, cat:"Barras y Columnas", icon:"📊", bg:"#E6F1FB",
+    name:"Gráfico de barras agrupadas",
+    desc:"Igual que columnas pero con orientación horizontal. Mejor cuando los nombres de categoría son largos.",
+    fields:[
+      {campo:"Eje Y",tipo:"cat",desc:"Categorías (ej. nombre de vendedor, país, departamento)"},
+      {campo:"Eje X (Valores)",tipo:"num",desc:"Valor a medir (ej. cantidad vendida, porcentaje)"},
+      {campo:"Leyenda",tipo:"cat,opt",desc:"Subgrupo para dividir barras"},
+      {campo:"Info. herramientas",tipo:"num,opt",desc:"Dato extra en hover"}
+    ],
+    example:"<strong>Ejemplo:</strong> Cantidad de pacientes atendidos por médico — Eje Y: Nombre médico · Eje X: N° pacientes",
+    tip:"Preferible cuando hay más de 6 categorías con nombres largos."
+  },
+  {
+    id:3, cat:"Barras y Columnas", icon:"📊", bg:"#E6F1FB",
+    name:"Columnas/Barras apiladas",
+    desc:"Muestra el total y la composición interna de cada categoría en un solo gráfico.",
+    fields:[
+      {campo:"Eje X",tipo:"cat",desc:"Grupo principal (ej. año, región)"},
+      {campo:"Eje Y (Valores)",tipo:"num",desc:"Valor de cada sub-categoría"},
+      {campo:"Leyenda",tipo:"cat",desc:"Sub-categoría que forma las capas apiladas (ej. tipo de gasto)"}
+    ],
+    example:"<strong>Ejemplo:</strong> Ventas totales por región con desglose por canal — Eje X: Región · Leyenda: Canal · Valores: Ventas",
+    tip:"Útil para ver totales Y composición. Para proporciones puras, usa la variante 100% apilada."
+  },
+  {
+    id:4, cat:"Barras y Columnas", icon:"📊", bg:"#E6F1FB",
+    name:"Columnas/Barras 100% apiladas",
+    desc:"Muestra la proporción relativa de cada sub-categoría respecto al total (siempre llega al 100%).",
+    fields:[
+      {campo:"Eje X",tipo:"cat",desc:"Grupo principal (ej. año, región)"},
+      {campo:"Eje Y (Valores)",tipo:"num",desc:"Valor base para calcular proporciones"},
+      {campo:"Leyenda",tipo:"cat",desc:"Sub-categoría cuya proporción se visualiza (ej. tipo de gasto)"}
+    ],
+    example:"<strong>Ejemplo:</strong> Composición del gasto por año — Eje X: Año · Leyenda: Tipo de gasto · Valores: Monto (Bs.)",
+    tip:"No sirve para comparar totales absolutos. Solo compara composición relativa."
+  },
+  {
+    id:5, cat:"Líneas y Área", icon:"📈", bg:"#E1F5EE",
+    name:"Gráfico de líneas",
+    desc:"Muestra la evolución de uno o más valores a lo largo del tiempo. El más adecuado para series temporales.",
+    fields:[
+      {campo:"Eje X",tipo:"date",desc:"Dimensión temporal (día, mes, año, semana)"},
+      {campo:"Eje Y (Valores)",tipo:"num",desc:"Indicador a seguir en el tiempo (ej. temperatura, ventas)"},
+      {campo:"Leyenda",tipo:"cat,opt",desc:"Múltiples líneas por categoría (ej. por región)"},
+      {campo:"Info. herramientas",tipo:"num,opt",desc:"Dato adicional al pasar el cursor"}
+    ],
+    example:"<strong>Ejemplo:</strong> Evolución de precio de materia prima — Eje X: Mes/Año · Eje Y: Precio (Bs.) · Leyenda: Tipo de materia prima",
+    tip:"Usa jerarquía de fechas (año > trimestre > mes) para permitir drill-down."
+  },
+  {
+    id:6, cat:"Líneas y Área", icon:"📈", bg:"#E1F5EE",
+    name:"Gráfico de área",
+    desc:"Como el de líneas, pero el área bajo la curva está sombreada. Enfatiza el volumen acumulado.",
+    fields:[
+      {campo:"Eje X",tipo:"date",desc:"Escala temporal"},
+      {campo:"Eje Y (Valores)",tipo:"num",desc:"Valor acumulado a mostrar"},
+      {campo:"Leyenda",tipo:"cat,opt",desc:"Varias series de área"}
+    ],
+    example:"<strong>Ejemplo:</strong> Ingresos acumulados mensuales — Eje X: Mes · Eje Y: Ingresos totales (Bs.)",
+    tip:"Para múltiples categorías usa área apilada en lugar de superponer, que dificulta la lectura."
+  },
+  {
+    id:7, cat:"Líneas y Área", icon:"📈", bg:"#E1F5EE",
+    name:"Líneas y columnas combinadas",
+    desc:"Combina dos tipos de gráficos con doble eje Y. Permite comparar indicadores de distinta escala.",
+    fields:[
+      {campo:"Eje X compartido",tipo:"date",desc:"Dimensión común (tiempo o categoría)"},
+      {campo:"Valores columna",tipo:"num",desc:"Métrica principal en barras (ej. ventas totales)"},
+      {campo:"Valores línea",tipo:"num",desc:"Segunda métrica en línea (ej. % margen)"},
+      {campo:"Leyenda",tipo:"cat,opt",desc:"Subdivisión para barras"}
+    ],
+    example:"<strong>Ejemplo:</strong> Ventas vs. % satisfacción — Eje X: Mes · Columna: Ventas (Bs.) · Línea: % satisfacción cliente",
+    tip:"Muy útil para relacionar volumen y tasa/porcentaje en el mismo gráfico."
+  },
+  {
+    id:8, cat:"Circulares", icon:"🥧", bg:"#FBEAF0",
+    name:"Gráfico circular (Pie)",
+    desc:"Muestra la proporción de partes respecto a un todo. Para pocas categorías bien diferenciadas.",
+    fields:[
+      {campo:"Leyenda",tipo:"cat",desc:"Categorías a comparar (ej. tipo de cliente, línea de producto)"},
+      {campo:"Valores",tipo:"num",desc:"Valor de cada parte (ej. cantidad vendida, monto)"}
+    ],
+    example:"<strong>Ejemplo:</strong> Participación de mercado por empresa — Leyenda: Nombre empresa · Valores: % participación o ventas",
+    tip:"No usar con más de 5-6 segmentos. Para más categorías, usar barras agrupadas."
+  },
+  {
+    id:9, cat:"Circulares", icon:"🍩", bg:"#FBEAF0",
+    name:"Gráfico de anillos (Donut)",
+    desc:"Similar al pie, pero con un espacio central que puede usarse para mostrar un KPI o título.",
+    fields:[
+      {campo:"Leyenda",tipo:"cat",desc:"Categorías del total"},
+      {campo:"Valores",tipo:"num",desc:"Cantidad o porcentaje de cada segmento"}
+    ],
+    example:"<strong>Ejemplo:</strong> Distribución del gasto por categoría — Leyenda: Categoría gasto · Valores: Monto (Bs.)",
+    tip:"El espacio central es ideal para mostrar el total o un indicador clave con tarjeta integrada."
+  },
+  {
+    id:10, cat:"Tablas y Matrices", icon:"📋", bg:"#FAECE7",
+    name:"Tabla",
+    desc:"Muestra datos tabulares con filas y columnas. Permite ver valores exactos y ordenar/filtrar.",
+    fields:[
+      {campo:"Columnas",tipo:"cat",desc:"Campos a mostrar (ej. fecha, nombre, monto, estado — cualquier tipo de variable)"}
+    ],
+    example:"<strong>Ejemplo:</strong> Listado de transacciones — Columnas: Fecha · Cliente · Producto · Monto · Estado",
+    tip:"Habilita formato condicional para resaltar valores fuera de rango o por encima del objetivo."
+  },
+  {
+    id:11, cat:"Tablas y Matrices", icon:"📋", bg:"#FAECE7",
+    name:"Matriz",
+    desc:"Tabla pivotada con filas, columnas y valores. Como una tabla dinámica de Excel con jerarquías.",
+    fields:[
+      {campo:"Filas",tipo:"cat",desc:"Dimensión de fila con posible jerarquía (ej. Región > Ciudad)"},
+      {campo:"Columnas",tipo:"date",desc:"Dimensión de columna (ej. Año > Trimestre)"},
+      {campo:"Valores",tipo:"num",desc:"Métrica a cruzar (ej. ventas, unidades, % crecimiento)"}
+    ],
+    example:"<strong>Ejemplo:</strong> Ventas por región y trimestre — Filas: Región · Columnas: Año/Trimestre · Valores: Ventas (Bs.)",
+    tip:"Activa la opción de subtotales y totales generales para análisis rápido de fila y columna."
+  },
+  {
+    id:12, cat:"Indicadores y KPIs", icon:"🔢", bg:"#EAF3DE",
+    name:"Tarjeta (Card)",
+    desc:"Muestra un único valor agregado de forma prominente. Perfecta para KPIs en el encabezado del reporte.",
+    fields:[
+      {campo:"Campos",tipo:"num",desc:"Una sola medida agregada (ej. Total ventas, N° clientes activos)"}
+    ],
+    example:"<strong>Ejemplo:</strong> Total de ingresos del mes — Campo: SUM(Ingresos) → muestra 'Bs. 1,250,430'",
+    tip:"Combina con segmentadores para que el KPI cambie dinámicamente según los filtros."
+  },
+  {
+    id:13, cat:"Indicadores y KPIs", icon:"🔢", bg:"#EAF3DE",
+    name:"Tarjeta de varias filas",
+    desc:"Muestra varios KPIs en un bloque compacto. Útil para paneles de resumen con múltiples métricas.",
+    fields:[
+      {campo:"Campos",tipo:"num",desc:"Varias medidas (ej. Ventas, Clientes, Margen, Devoluciones)"}
+    ],
+    example:"<strong>Ejemplo:</strong> Resumen de operaciones — Campos: Total pedidos · Clientes activos · Ticket promedio",
+    tip:"Limita a 4-5 métricas para no sobrecargar visualmente al lector."
+  },
+  {
+    id:14, cat:"Indicadores y KPIs", icon:"⏱️", bg:"#EAF3DE",
+    name:"Medidor (Gauge)",
+    desc:"Muestra el avance de una métrica hacia una meta. Como el velocímetro de un automóvil.",
+    fields:[
+      {campo:"Valor",tipo:"num",desc:"Valor actual a medir (ej. ventas del mes)"},
+      {campo:"Valor mínimo",tipo:"num,opt",desc:"Punto de inicio (generalmente 0)"},
+      {campo:"Valor máximo",tipo:"num,opt",desc:"Escala máxima del medidor"},
+      {campo:"Valor objetivo",tipo:"num,opt",desc:"Meta o target marcado en el arco"}
+    ],
+    example:"<strong>Ejemplo:</strong> Avance de meta de ventas — Valor: Ventas actuales · Objetivo: Meta mensual (Bs. 500,000)",
+    tip:"Define el valor máximo como 120% de la meta para que el medidor no se vea siempre lleno."
+  },
+  {
+    id:15, cat:"Indicadores y KPIs", icon:"📌", bg:"#EAF3DE",
+    name:"KPI",
+    desc:"Indica si una métrica está por encima o por debajo del objetivo con una flecha de tendencia.",
+    fields:[
+      {campo:"Indicador",tipo:"num",desc:"Valor actual del indicador (ej. ventas del mes)"},
+      {campo:"Objetivo de tendencia",tipo:"num",desc:"Valor meta o período anterior para comparar"},
+      {campo:"Eje de tendencia",tipo:"date",desc:"Dimensión temporal para mostrar la tendencia (ej. mes)"}
+    ],
+    example:"<strong>Ejemplo:</strong> Ventas vs meta — Indicador: Ventas actuales · Objetivo: Meta presupuestada · Eje: Mes",
+    tip:"La flecha verde/roja da contexto inmediato de si el negocio está bien encaminado."
+  },
+  {
+    id:16, cat:"Gráficos especiales", icon:"💧", bg:"#FAEEDA",
+    name:"Cascada (Waterfall)",
+    desc:"Muestra cómo un valor inicial llega a un valor final a través de incrementos y decrementos.",
+    fields:[
+      {campo:"Categoría",tipo:"cat",desc:"Cada paso de la cascada (ej. tipo de ingreso/gasto)"},
+      {campo:"Eje Y (Valores)",tipo:"num",desc:"Incremento o decremento de cada paso"},
+      {campo:"Desglose",tipo:"cat,opt",desc:"Sub-nivel de detalle"}
+    ],
+    example:"<strong>Ejemplo:</strong> Conciliación de utilidad neta — Pasos: Ingresos brutos → Descuentos → COGS → Gastos → Utilidad neta",
+    tip:"Marca explícitamente los valores de inicio y fin como 'totales' en la configuración del campo."
+  },
+  {
+    id:17, cat:"Gráficos especiales", icon:"🌊", bg:"#FAEEDA",
+    name:"Cinta (Ribbon)",
+    desc:"Muestra cómo cambia el ranking de categorías en el tiempo con cintas que conectan posiciones.",
+    fields:[
+      {campo:"Eje X",tipo:"date",desc:"Dimensión temporal o secuencia (ej. año, semana)"},
+      {campo:"Eje Y (Valores)",tipo:"num",desc:"Magnitud que determina el orden/tamaño (ej. ventas)"},
+      {campo:"Leyenda",tipo:"cat",desc:"Categorías cuyo ranking cambia (ej. producto, ciudad)"}
+    ],
+    example:"<strong>Ejemplo:</strong> Evolución del ranking de productos — Eje X: Trimestre · Eje Y: Ventas · Leyenda: Producto",
+    tip:"Excelente para mostrar cómo los líderes de mercado cambian con el tiempo."
+  },
+  {
+    id:18, cat:"Gráficos especiales", icon:"🌳", bg:"#FAEEDA",
+    name:"Treemap",
+    desc:"Muestra jerarquías y proporciones usando rectángulos anidados. El tamaño representa el valor.",
+    fields:[
+      {campo:"Grupo",tipo:"cat",desc:"Nivel superior de jerarquía (ej. categoría de producto)"},
+      {campo:"Detalles",tipo:"cat,opt",desc:"Sub-nivel (ej. sub-categoría de producto)"},
+      {campo:"Valores",tipo:"num",desc:"Tamaño del rectángulo (ej. ventas, cantidad)"},
+      {campo:"Info. herramientas",tipo:"num,opt",desc:"Dato adicional al pasar el cursor"}
+    ],
+    example:"<strong>Ejemplo:</strong> Participación de ventas por categoría y sub-categoría — Grupo: Categoría · Detalles: Sub-categoría · Valores: Ventas",
+    tip:"Agrega saturación de color por otra métrica (ej. rentabilidad) para doble dimensión de análisis."
+  },
+  {
+    id:19, cat:"Gráficos especiales", icon:"🎯", bg:"#FAEEDA",
+    name:"Embudo (Funnel)",
+    desc:"Muestra la reducción progresiva de valores a través de etapas de un proceso.",
+    fields:[
+      {campo:"Grupo",tipo:"cat",desc:"Etapas del proceso en orden (ej. etapas de venta)"},
+      {campo:"Valores",tipo:"num",desc:"Volumen en cada etapa (ej. número de prospectos)"}
+    ],
+    example:"<strong>Ejemplo:</strong> Funnel de ventas — Etapas: Prospecto · Contactado · Demo · Propuesta · Cierre · Valores: N° clientes en cada etapa",
+    tip:"La diferencia entre etapas indica el punto de mayor abandono o pérdida en el proceso."
+  },
+  {
+    id:20, cat:"Gráficos especiales", icon:"🫧", bg:"#FAEEDA",
+    name:"Dispersión / Burbujas",
+    desc:"Permite ver la relación entre dos (o tres) variables numéricas. Ideal para detectar correlaciones.",
+    fields:[
+      {campo:"Eje X",tipo:"num",desc:"Primera variable (ej. inversión en publicidad)"},
+      {campo:"Eje Y",tipo:"num",desc:"Segunda variable (ej. ingresos obtenidos)"},
+      {campo:"Tamaño",tipo:"num,opt",desc:"Tamaño de la burbuja — tercera variable (ej. # empleados)"},
+      {campo:"Leyenda",tipo:"cat,opt",desc:"Color de cada punto (ej. región, sector)"},
+      {campo:"Detalles",tipo:"cat",desc:"Identificador de cada punto (ej. nombre de empresa)"}
+    ],
+    example:"<strong>Ejemplo:</strong> Publicidad vs Ventas por tienda — Eje X: Gasto en publicidad · Eje Y: Ventas · Burbuja: N° empleados",
+    tip:"Activa la línea de tendencia para confirmar visualmente si hay correlación positiva o negativa."
+  },
+  {
+    id:21, cat:"Mapas", icon:"🗺️", bg:"#EAF3DE",
+    name:"Mapa de burbujas",
+    desc:"Coloca círculos sobre un mapa geográfico. El tamaño indica el valor de la métrica.",
+    fields:[
+      {campo:"Ubicación",tipo:"geo",desc:"País, ciudad, dirección o coordenadas lat/long"},
+      {campo:"Tamaño de burbuja",tipo:"num,opt",desc:"Valor que determina el tamaño del círculo"},
+      {campo:"Color de burbuja",tipo:"num,opt",desc:"Saturación o color según otra métrica"}
+    ],
+    example:"<strong>Ejemplo:</strong> Ventas por ciudad de Bolivia — Ubicación: Ciudad · Tamaño: Ventas totales (Bs.)",
+    tip:"Asegúrate de que la columna geográfica tenga la categoría de datos correcta (ciudad, país, etc.)."
+  },
+  {
+    id:22, cat:"Mapas", icon:"🗺️", bg:"#EAF3DE",
+    name:"Mapa coroplético (Filled Map)",
+    desc:"Colorea regiones geográficas según la intensidad de un valor. Ideal para comparar países o regiones.",
+    fields:[
+      {campo:"Ubicación",tipo:"geo",desc:"País, estado, provincia o región reconocida por Power BI"},
+      {campo:"Saturación del color",tipo:"num",desc:"Valor que determina la intensidad del color (ej. PIB, población)"},
+      {campo:"Info. herramientas",tipo:"num,opt",desc:"Detalle adicional al pasar el cursor"}
+    ],
+    example:"<strong>Ejemplo:</strong> Penetración de mercado por departamento (Bolivia) — Ubicación: Departamento · Color: % penetración",
+    tip:"Para datos de Bolivia, verifica que el campo esté categorizado como 'Estado o provincia'."
+  },
+  {
+    id:23, cat:"Elementos interactivos", icon:"🎛️", bg:"#EEEDFE",
+    name:"Segmentación de datos (Slicer)",
+    desc:"Filtro visual interactivo que permite al usuario seleccionar valores para filtrar todo el informe.",
+    fields:[
+      {campo:"Campo",tipo:"cat",desc:"Dimensión por la que se filtrará (ej. año, región, categoría)"}
+    ],
+    example:"<strong>Ejemplo:</strong> Filtro de año — Campo: Año · Estilo: Lista desplegable o botones de radio",
+    tip:"Usa slicers de tipo 'Entre' para fechas: permite al usuario definir rango de inicio y fin."
+  },
+  {
+    id:24, cat:"IA y analítica avanzada", icon:"🧠", bg:"#F1EFE8",
+    name:"Árbol de descomposición",
+    desc:"Permite explorar interactivamente qué factores contribuyen más a un valor mediante drill-down manual o automático.",
+    fields:[
+      {campo:"Analizar",tipo:"num",desc:"Métrica a descomponer (ej. ventas totales, costo)"},
+      {campo:"Explicar por",tipo:"cat",desc:"Dimensiones posibles de desglose (ej. región, producto, vendedor)"}
+    ],
+    example:"<strong>Ejemplo:</strong> ¿Por qué bajaron las ventas? — Analizar: Ventas · Explicar por: Región · Producto · Canal · Mes",
+    tip:"Activa la IA para que el árbol encuentre automáticamente el factor de mayor impacto."
+  },
+  {
+    id:25, cat:"IA y analítica avanzada", icon:"🔍", bg:"#F1EFE8",
+    name:"Influenciadores clave",
+    desc:"Identifica automáticamente qué factores influyen en una métrica o resultado usando IA.",
+    fields:[
+      {campo:"Analizar",tipo:"cat",desc:"Variable resultado a explicar (ej. churn, calificación, ventas altas)"},
+      {campo:"Explicar por",tipo:"cat",desc:"Variables explicativas (ej. edad, región, canal, descuento aplicado)"},
+      {campo:"Expandir por",tipo:"cat,opt",desc:"Campo para ver segmentos donde el influenciador es más fuerte"}
+    ],
+    example:"<strong>Ejemplo:</strong> ¿Qué factores aumentan la probabilidad de churn? — Analizar: Churn (Sí/No) · Explicar por: Antigüedad, Canal, Tipo contrato",
+    tip:"Muy útil en análisis de clientes, RRHH o calidad. Requiere suficientes registros para ser estadísticamente confiable."
+  },
+  {
+    id:26, cat:"IA y analítica avanzada", icon:"📝", bg:"#F1EFE8",
+    name:"Narración inteligente",
+    desc:"Genera automáticamente un párrafo de texto que describe los hallazgos más relevantes del reporte.",
+    fields:[
+      {campo:"Basado en",tipo:"cat",desc:"Toma automáticamente los datos del reporte visible en la página"}
+    ],
+    example:"<strong>Ejemplo:</strong> Genera texto como: 'Las ventas de Q3 fueron Bs. 1.2M, un 15% más que Q2, lideradas por la Región Andina'",
+    tip:"Personaliza el texto generado haciendo clic en él para editar las frases automáticas."
+  }
+];
+
+const TYPE_MAP = {
+  num:  ['var-num','Numérica'],
+  cat:  ['var-cat','Categórica'],
+  date: ['var-date','Fecha/Tiempo'],
+  text: ['var-text','Texto'],
+  geo:  ['var-geo','Geográfica'],
+  opt:  ['var-opt','Opcional']
+};
+
+const categories = ["Todas", ...new Set(vizData.map(v => v.cat))];
+let activeCategory = "Todas";
+let expandedId = null;
+
+function badge(tipo) {
+  return tipo.split(',').map(t => {
+    const m = TYPE_MAP[t.trim()];
+    return m ? `<span class="var-badge ${m[0]}">${m[1]}</span> ` : '';
+  }).join('');
+}
+
+function renderStats() {
+  const filtered = getFiltered();
+  document.getElementById('statsBar').innerHTML = `
+    <div class="stat"><span class="stat-num">${vizData.length}</span><span class="stat-label">visualizaciones totales</span></div>
+    <div class="stat"><span class="stat-num">${categories.length - 1}</span><span class="stat-label">categorías</span></div>
+    <div class="stat"><span class="stat-num">${filtered.length}</span><span class="stat-label">mostrando ahora</span></div>
+  `;
+}
+
+function renderTabs() {
+  document.getElementById('tabsContainer').innerHTML = categories.map(c =>
+    `<button class="tab-btn ${c === activeCategory ? 'active' : ''}" onclick="setCategory('${c}')">${c}</button>`
+  ).join('');
+}
+
+function setCategory(cat) {
+  activeCategory = cat;
+  expandedId = null;
+  renderTabs();
+  renderCards();
+  renderStats();
+}
+
+function getFiltered() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  return vizData.filter(v => {
+    const matchCat = activeCategory === 'Todas' || v.cat === activeCategory;
+    const matchQ = !q || v.name.toLowerCase().includes(q) || v.desc.toLowerCase().includes(q) || v.cat.toLowerCase().includes(q);
+    return matchCat && matchQ;
+  });
+}
+
+function filterCards() {
+  expandedId = null;
+  renderCards();
+  renderStats();
+}
+
+function renderCards() {
+  const data = getFiltered();
+  const grid = document.getElementById('cardsGrid');
+  if (!data.length) {
+    grid.innerHTML = '<div class="no-results">No se encontraron visualizaciones con esos criterios.</div>';
+    return;
+  }
+  grid.innerHTML = data.map(v => {
+    const isExp = expandedId === v.id;
+    return `
+    <div class="card ${isExp ? 'expanded' : ''}" onclick="toggleCard(${v.id})">
+      <div class="card-header">
+        <div class="card-icon" style="background:${v.bg}">${v.icon}</div>
+        <div style="flex:1;min-width:0">
+          <div class="card-title">${v.name}</div>
+          <div class="card-cat">${v.cat}</div>
+        </div>
+        <span class="expand-arrow">&#9660;</span>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">${v.desc}</p>
+        <div class="section-label">Campos y tipos de variable</div>
+        <table class="fields-table">
+          <thead><tr><th>Campo</th><th>Tipo de variable</th><th>Descripción</th></tr></thead>
+          <tbody>
+            ${v.fields.map(f => `
+              <tr>
+                <td class="field-name">${f.campo}</td>
+                <td>${badge(f.tipo)}</td>
+                <td>${f.desc}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+        <div class="example-box">${v.example}</div>
+        <div class="tip-box">&#128161; <strong>Consejo:</strong> ${v.tip}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleCard(id) {
+  expandedId = expandedId === id ? null : id;
+  renderCards();
+}
+
+renderStats();
+renderTabs();
+renderCards();
+</script>
+</body>
+</html>
