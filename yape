@@ -1,0 +1,4962 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yape Bolivia — Business Case</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap');
+.slide#s12{background:#742384;font-family:'Poppins',sans-serif;color:#fff;}
+.tag{display:inline-block;background:rgba(21,201,180,.18);border:1px solid rgba(21,201,180,.45);color:#15c9b4;font-size:10px;font-weight:700;padding:4px 14px;border-radius:999px;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;}
+.title-lg{font-size:clamp(20px,3vw,32px);font-weight:800;color:#fff;line-height:1.1;}
+.divider{width:48px;height:4px;background:#15c9b4;border-radius:2px;margin:10px 0 20px;}
+.vcenter{display:flex;flex-direction:column;justify-content:center;height:100%;}
+.pad{padding:clamp(18px,4vw,48px);}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);}
+.db{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+/* phase cards */
+.pc{background:#15c9b4;border-radius:14px;padding:16px 14px;}
+.pc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.pc-num{font-size:22px;font-weight:800;color:#fff;}
+.pc-badge{background:rgba(116,35,132,.25);color:#fff;padding:4px 10px;border-radius:999px;font-size:9px;font-weight:700;letter-spacing:1px;}
+.pc-title{font-size:12px;font-weight:700;color:#fff;margin-bottom:10px;}
+.pc-item{display:flex;gap:7px;align-items:flex-start;margin-bottom:6px;}
+.pc-text{font-size:10px;color:#fff;line-height:1.4;}
+/* gantt */
+.gantt-wrap{background:rgba(116,35,132,.4);border-radius:14px;padding:16px 18px;border:1px solid rgba(255,255,255,.12);}
+.gantt-lbl{font-size:10px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:1.5px;margin-bottom:12px;}
+.gantt-table{width:100%;border-collapse:collapse;}
+.gh{font-size:9px;font-weight:700;color:rgba(255,255,255,.45);text-align:center;padding-bottom:5px;letter-spacing:.3px;}
+.gl-col{width:155px;padding-bottom:5px;font-size:9px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase;}
+.gr{height:30px;border-bottom:1px solid rgba(255,255,255,.05);}
+.gr:last-child{border-bottom:none;}
+.gl{padding:0 8px 0 0;vertical-align:middle;}
+.gn{font-size:10px;font-weight:600;color:rgba(255,255,255,.9);}
+.gs{font-size:8px;color:rgba(255,255,255,.45);margin-top:1px;}
+.gc{padding:2px 1px;vertical-align:middle;}
+.bar{height:16px;border-radius:3px;background:rgba(255,255,255,.07);}
+.b1{background:#15c9b4;} .b2{background:#aabbff;} .b3{background:#ffd46e;} .b4{background:#ff8fa3;} .bd{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.2);}
+.gdiv td{padding:3px 0;} .gdiv-line{height:1px;background:rgba(255,255,255,.1);}
+.legend{display:flex;gap:14px;margin-top:12px;flex-wrap:wrap;}
+.li{display:flex;align-items:center;gap:5px;font-size:9px;color:rgba(255,255,255,.65);}
+.ld{width:9px;height:9px;border-radius:2px;flex-shrink:0;}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Poppins',sans-serif;background:#881399;overflow:hidden;height:100vh;width:100vw;color:#fff;}
+
+/* SLIDE SYSTEM */
+.slide{position:fixed;inset:0;display:none;background:#881399;}
+.slide.on{display:flex;flex-direction:column;animation:fi .3s ease;}
+@keyframes fi{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+/* NAV */
+.pb{position:fixed;top:0;left:0;height:4px;background:#15c9b4;z-index:200;transition:width .35s;}
+.ctr{position:fixed;top:14px;right:20px;font-size:11px;font-weight:600;color:rgba(255,255,255,.5);z-index:100;letter-spacing:1px;font-family:'Poppins',sans-serif;}
+.ndots{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:100;background:rgba(0,0,0,.2);padding:7px 14px;border-radius:30px;}
+.nd{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer;transition:all .3s;}
+.nd.on{background:#15c9b4;width:20px;border-radius:4px;}
+.arw{position:fixed;top:50%;transform:translateY(-50%);z-index:100;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.2);color:#fff;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;transition:all .3s;font-family:sans-serif;}
+.arw:hover{background:rgba(21,201,180,.3);}
+.al{left:10px;} .ar{right:10px;}
+
+/* LAYOUT */
+.pad{padding:clamp(30px,5vh,60px) clamp(40px,6vw,90px);}
+.center{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;}
+.vcenter{display:flex;flex-direction:column;justify-content:center;height:100%;}
+			
+
+/* YAPE LOGO — matching the PDF exactly */
+.yape-logo{display:flex;align-items:flex-end;gap:0;}
+.yape-logo .bs-badge{width:52px;height:52px;background:#15c9b4;border-radius:50% 50% 50% 8px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff;margin-right:-8px;margin-bottom:6px;z-index:1;font-family:'Poppins',sans-serif;}
+.yape-logo .yape-text{font-family:'Poppins',sans-serif;font-size:clamp(36px,5vw,64px);font-weight:800;color:#fff;font-style:italic;line-height:1;letter-spacing:-2px;}
+.yape-logo .underline{width:100%;height:4px;background:#fff;border-radius:2px;margin-top:-4px;}
+
+/* YAPE SMALL */
+.yape-sm{display:flex;align-items:center;gap:6px;}
+.yape-sm .bs-sm{width:28px;height:28px;background:#15c9b4;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;font-family:'Poppins',sans-serif;}
+.yape-sm .yt-sm{font-family:'Poppins',sans-serif;font-size:16px;font-weight:800;color:#fff;font-style:italic;}
+
+/* TYPOGRAPHY */
+.title-xl{font-family:'Poppins',sans-serif;font-size:clamp(42px,7vw,96px);font-weight:800;color:#fff;line-height:.95;letter-spacing:-2px;}
+.title-lg{font-family:'Poppins',sans-serif;font-size:clamp(28px,4vw,52px);font-weight:800;color:#fff;line-height:1.05;letter-spacing:-1px;}
+.title-md{font-family:'Poppins',sans-serif;font-size:clamp(20px,2.8vw,36px);font-weight:700;color:#fff;line-height:1.1;}
+.subtitle{font-family:'Poppins',sans-serif;font-size:clamp(13px,1.5vw,18px);color:rgba(255,255,255,.85);line-height:1.65;font-weight:400;}
+.teal{color:#15c9b4;}
+.by-line{font-family:'Poppins',sans-serif;font-size:clamp(14px,1.8vw,22px);font-weight:700;color:#fff;}
+
+/* METRIC CARD — matches PDF: blue-grey rounded, number bold white, label small */
+.mcard{background:rgba(60,80,140,.55);border:1.5px solid rgba(255,255,255,.2);border-radius:16px;padding:clamp(14px,2vw,24px) clamp(18px,2.5vw,32px);text-align:center;backdrop-filter:blur(4px);}
+.mcard .num{font-family:'Poppins',sans-serif;font-size:clamp(28px,4vw,56px);font-weight:800;color:#fff;line-height:1;}
+.mcard .lbl{font-family:'Poppins',sans-serif;font-size:clamp(10px,1.2vw,14px);font-weight:600;color:rgba(255,255,255,.8);letter-spacing:1.5px;margin-top:6px;}
+
+/* CONTENT CARD */
+.ccard{background:rgba(60,80,140,.45);border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:20px;backdrop-filter:blur(4px);}
+.ccard-teal{border-left:4px solid #15c9b4;border-radius:0 16px 16px 0;}
+.ccard-white{border-left:4px solid rgba(255,255,255,.6);border-radius:0 16px 16px 0;}
+
+/* PILL TAG */
+.tag{display:inline-block;background:rgba(21,201,180,.25);border:1px solid rgba(21,201,180,.5);color:#15c9b4;font-size:10px;font-weight:700;padding:4px 14px;border-radius:20px;letter-spacing:2px;text-transform:uppercase;font-family:'Poppins',sans-serif;}
+.tag-red{background:rgba(255,80,80,.2);border-color:rgba(255,80,80,.4);color:#ff8080;}
+.tag-yellow{background:rgba(255,200,50,.15);border-color:rgba(255,200,50,.4);color:#ffd46e;}
+
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;}
+
+/* STEP CIRCLE */
+.step{width:32px;height:32px;border-radius:50%;background:#15c9b4;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;font-family:'Poppins',sans-serif;}
+
+/* DOT BULLET */
+.db{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+
+/* DIVIDER */
+.divider{width:60px;height:4px;background:#15c9b4;border-radius:2px;margin:10px 0 16px;}
+
+/* SECTION LABEL */
+.sec-num{font-family:'Poppins',sans-serif;font-size:clamp(48px,6vw,80px);font-weight:800;color:rgba(255,255,255,.08);line-height:1;position:absolute;top:20px;right:40px;}
+</style>
+</head>
+<body>
+
+<div class="pb" id="pb"></div>
+<div class="ctr" id="ctr">1 / 18</div>
+<button class="arw al" onclick="prev()">&#8249;</button>
+<button class="arw ar" onclick="next()">&#8250;</button>
+<div class="ndots" id="ndots"></div>
+
+<!-- ═══ SLIDE 1 — PORTADA (matching PDF exactly) ═══ -->
+<div class="slide on" id="s1" 
+     style="background:#742384;">
+
+  <div style="
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      height:100%;
+      text-align:center;
+      gap:clamp(16px,3vh,32px);
+      padding:40px;
+  ">
+
+    <!-- Logo -->
+    <div style="display:flex;justify-content:center;align-items:center;margin-bottom:8px;">
+      <img 
+        src="https://i.postimg.cc/vZpLB5Ng/yape-bolivia-37328.png"
+        alt="Yape Logo"
+        style="
+          width:220px;
+          height:auto;
+          object-fit:contain;
+          display:block;
+        "
+      >
+    </div> 
+   <!-- Title -->
+    <div class="title-xl" style="font-size:clamp(52px,9vw,110px);line-height:.9;">Business Case</div>
+    <div class="by-line">by <span style="color:#15c9b4;">Sandra Maria Abasto</span></div>
+    <!-- Subtitle -->
+    <div class="subtitle" style="max-width:700px;font-size:clamp(13px,1.6vw,18px);">Plan de acción para incrementar la adopción de la funcionalidad de pagos en un <span class="teal" style="font-weight:700;">+25%</span> en <span class="teal" style="font-weight:700;">3</span> meses, mejorando la experiencia de usuarios nuevos y frecuentes.</div>
+    <!-- Metric cards — 4 in a row like PDF -->
+    <div class="g4" style="max-width:760px;width:100%;margin-top:8px;">
+      <div class="mcard"><div class="num teal">+25%</div><div class="lbl">ADOPCIÓN</div></div>
+      <div class="mcard"><div class="num">12</div><div class="lbl">SEMANAS</div></div>
+      <div class="mcard"><div class="num">4</div><div class="lbl">FASES</div></div>
+      <div class="mcard"><div class="num">5</div><div class="lbl">EQUIPOS</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 2 — AGENDA ═══ -->
+<div class="slide" id="s2" style="background:#742384;">
+  <div class="vcenter pad">
+    
+    <div class="tag" style="margin-bottom:12px;align-self:flex-start;">
+      INDICE
+    </div>
+
+    <div class="title-lg" style="margin-bottom:6px;">
+      Estructura de la <span class="teal">Propuesta</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="g2" style="max-width:920px;gap:12px;">
+
+      <!-- CARD 01 -->
+      <div class="ccard" style="display:flex;gap:14px;align-items:flex-start;background:#15c9b4;">
+        <div style="font-size:30px;font-weight:800;color:#742384;line-height:1;min-width:36px;font-family:'Poppins',sans-serif;">
+          01
+        </div>
+        <div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:3px;font-family:'Poppins',sans-serif;color:#fff;">
+            Diagnóstico de Feedback
+          </div>
+          <div class="subtitle" style="font-size:12px;color:rgba(255,255,255,.9);">
+            Análisis de quejas, fricción y fortalezas del producto
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 02 -->
+      <div class="ccard" style="display:flex;gap:14px;align-items:flex-start;background:#15c9b4;">
+        <div style="font-size:30px;font-weight:800;color:#742384;line-height:1;min-width:36px;font-family:'Poppins',sans-serif;">
+          02
+        </div>
+        <div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:3px;font-family:'Poppins',sans-serif;color:#fff;">
+            Priorización de Mejoras
+          </div>
+          <div class="subtitle" style="font-size:12px;color:rgba(255,255,255,.9);">
+            Matriz Impacto/Esfuerzo — qué se hace primero
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 03 -->
+      <div class="ccard" style="display:flex;gap:14px;align-items:flex-start;background:#15c9b4;">
+        <div style="font-size:30px;font-weight:800;color:#742384;line-height:1;min-width:36px;font-family:'Poppins',sans-serif;">
+          03
+        </div>
+        <div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:3px;font-family:'Poppins',sans-serif;color:#fff;">
+            Dilema Negocio vs. Producto
+          </div>
+          <div class="subtitle" style="font-size:12px;color:rgba(255,255,255,.9);">
+            Cómo alinear sin bloquear la innovación
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 04 -->
+      <div class="ccard" style="display:flex;gap:14px;align-items:flex-start;background:#15c9b4;">
+        <div style="font-size:30px;font-weight:800;color:#742384;line-height:1;min-width:36px;font-family:'Poppins',sans-serif;">
+          04
+        </div>
+        <div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:3px;font-family:'Poppins',sans-serif;color:#fff;">
+            KPIs y Medición del Éxito
+          </div>
+          <div class="subtitle" style="font-size:12px;color:rgba(255,255,255,.9);">
+            Métricas cuantitativas y cualitativas
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 05 -->
+      <div class="ccard" style="display:flex;gap:14px;align-items:flex-start;background:#15c9b4;">
+        <div style="font-size:30px;font-weight:800;color:#742384;line-height:1;min-width:36px;font-family:'Poppins',sans-serif;">
+          05
+        </div>
+        <div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:3px;font-family:'Poppins',sans-serif;color:#fff;">
+            Plan de Acción por Fases
+          </div>
+          <div class="subtitle" style="font-size:12px;color:rgba(255,255,255,.9);">
+            Research → Diseño → Dev → Lanzamiento
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 06 -->
+      <div class="ccard" style="display:flex;gap:14px;align-items:flex-start;background:#15c9b4;">
+        <div style="font-size:30px;font-weight:800;color:#742384;line-height:1;min-width:36px;font-family:'Poppins',sans-serif;">
+          06
+        </div>
+        <div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:3px;font-family:'Poppins',sans-serif;color:#fff;">
+            Coordinación de Equipos
+          </div>
+          <div class="subtitle" style="font-size:12px;color:rgba(255,255,255,.9);">
+            Roles, rituales y modelo de colaboración
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 3 — DIAGNÓSTICO ═══ -->
+<div class="slide" id="s3" style="background:#742384;">
+  <div class="vcenter pad">
+
+    <div class="tag" style="margin-bottom:12px;align-self:flex-start;">
+      FASE 01
+    </div>
+
+    <div class="title-lg" style="margin-bottom:6px;">
+      Diagnóstico: <span class="teal">Feedback</span> de Usuarios
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="subtitle" style="margin-bottom:20px;max-width:640px;color:rgba(255,255,255,.85);">
+      Framework JTBD + análisis de sentimiento por categoría.
+    </div>
+
+    <div class="g3" style="max-width:960px;">
+
+      <!-- CARD 1 -->
+      <div style="background:#15c9b4;border:1.5px solid rgba(255,255,255,.15);border-radius:16px;padding:20px;">
+        
+        <div class="tag" style="margin-bottom:10px;background:#742384;color:#fff;">
+          CRÍTICO
+        </div>
+
+        <div style="font-size:15px;font-weight:700;margin-bottom:8px;font-family:'Poppins',sans-serif;color:#fff;">
+          Fricción en el Inicio
+        </div>
+
+        <div class="subtitle" style="font-size:12px;color:rgba(255,255,255,.9);">
+          Usuarios no identifican cómo iniciar el pago. Flujo de 5+ pasos sin indicadores de progreso.
+        </div>
+
+        <div style="margin-top:12px;padding:8px 12px;background:rgba(116,35,132,.18);border-radius:8px;font-size:11px;color:#fff;font-weight:600;font-family:'Poppins',sans-serif;">
+          Impacto directo en tasa de activación
+        </div>
+      </div>
+
+      <!-- CARD 2 -->
+      <div style="background:#15c9b4;border:1.5px solid rgba(255,255,255,.15);border-radius:16px;padding:20px;">
+
+        <div class="tag" style="margin-bottom:10px;background:#742384;color:#fff;">
+          ALTO
+        </div>
+
+        <div style="font-size:15px;font-weight:700;margin-bottom:8px;font-family:'Poppins',sans-serif;color:#fff;">
+          Rendimiento Lento
+        </div>
+
+        <div class="subtitle" style="font-size:12px;color:rgba(255,255,255,.9);">
+          Tiempos &gt;4 seg en pantallas clave. Sin feedback visual durante la espera.
+        </div>
+
+        <div style="margin-top:12px;padding:8px 12px;background:rgba(116,35,132,.18);border-radius:8px;font-size:11px;color:#fff;font-weight:600;font-family:'Poppins',sans-serif;">
+          Cada seg extra = 7–12% más abandono
+        </div>
+      </div>
+
+      <!-- CARD 3 -->
+      <div style="background:#15c9b4;border:1.5px solid rgba(255,255,255,.15);border-radius:16px;padding:20px;">
+
+        <div class="tag" style="margin-bottom:10px;background:#742384;color:#fff;">
+          OPORTUNIDAD
+        </div>
+
+        <div style="font-size:15px;font-weight:700;margin-bottom:8px;font-family:'Poppins',sans-serif;color:#fff;">
+          Fortaleza Detectada
+        </div>
+
+        <div class="subtitle" style="font-size:12px;color:rgba(255,255,255,.9);">
+          Integración con otras funciones valorada. La propuesta de valor es correcta, el problema es la ejecución.
+        </div>
+
+        <div style="margin-top:12px;padding:8px 12px;background:rgba(116,35,132,.18);border-radius:8px;font-size:11px;color:#fff;font-weight:600;font-family:'Poppins',sans-serif;">
+          Base de confianza para escalar
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CONCLUSION -->
+    <div style="margin-top:16px;padding:12px 18px;background:#15c9b4;border-radius:12px;border-left:4px solid #742384;max-width:860px;">
+
+      <div class="subtitle" style="font-size:12px;color:#742384;">
+        <span style="font-weight:700;">Conclusión:</span>
+        La fricción y la lentitud actúan como filtros negativos que impiden experimentar el valor real del producto.
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ SLIDE 4 — CAUSA RAÍZ ═══ -->
+<div class="slide" id="s4" style="background:#742384;">
+  <div class="vcenter pad">
+
+    <div class="tag" style="margin-bottom:12px;align-self:flex-start;">
+      DIAGNOSTICO PROFUNDO
+    </div>
+
+    <div class="title-md" style="margin-bottom:6px;">
+      Causa raíz de la <span class="teal">fricción</span> y la 
+      <span style="color:#15c9b4;">lentitud</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="g2" style="max-width:960px;gap:20px;">
+
+      <!-- LEFT COLUMN -->
+      <div>
+
+        <div style="font-size:11px;color:#FFF;font-weight:700;letter-spacing:2px;margin-bottom:12px;font-family:'Poppins',sans-serif;">
+          FRICCIÓN EN EL INICIO — 3 CAUSAS
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;">
+
+          <!-- ITEM 1 -->
+          <div class="ccard" style="display:flex;gap:12px;background:#15c9b4;">
+
+            <div style="
+              width:28px;
+              height:28px;
+              background:rgba(116,35,132,.18);
+              border-radius:8px;
+              display:flex;
+              align-items:center;
+              justify-content:center;
+              font-size:13px;
+              font-weight:700;
+              color:#fff;
+              flex-shrink:0;
+              font-family:'Poppins',sans-serif;
+            ">
+              1
+            </div>
+
+            <div>
+              <div style="font-size:13px;font-weight:600;margin-bottom:2px;font-family:'Poppins',sans-serif;color:#fff;">
+                Visibilidad del punto de entrada
+              </div>
+
+              <div class="subtitle" style="font-size:11px;color:rgba(255,255,255,.9);">
+                El CTA de pago no tiene jerarquía visual ni ubicación dentro del flujo natural.
+              </div>
+            </div>
+          </div>
+
+          <!-- ITEM 2 -->
+          <div class="ccard" style="display:flex;gap:12px;background:#15c9b4;">
+
+            <div style="
+              width:28px;
+              height:28px;
+              background:rgba(116,35,132,.18);
+              border-radius:8px;
+              display:flex;
+              align-items:center;
+              justify-content:center;
+              font-size:13px;
+              font-weight:700;
+              color:#fff;
+              flex-shrink:0;
+              font-family:'Poppins',sans-serif;
+            ">
+              2
+            </div>
+
+            <div>
+              <div style="font-size:13px;font-weight:600;margin-bottom:2px;font-family:'Poppins',sans-serif;color:#fff;">
+                Ausencia de señales de contexto
+              </div>
+
+              <div class="subtitle" style="font-size:11px;color:rgba(255,255,255,.9);">
+                Sin indicadores de pasos ni información anticipada.
+              </div>
+            </div>
+          </div>
+
+          <!-- ITEM 3 -->
+          <div class="ccard" style="display:flex;gap:12px;background:#15c9b4;">
+
+            <div style="
+              width:28px;
+              height:28px;
+              background:rgba(116,35,132,.18);
+              border-radius:8px;
+              display:flex;
+              align-items:center;
+              justify-content:center;
+              font-size:13px;
+              font-weight:700;
+              color:#fff;
+              flex-shrink:0;
+              font-family:'Poppins',sans-serif;
+            ">
+              3
+            </div>
+
+            <div>
+              <div style="font-size:13px;font-weight:600;margin-bottom:2px;font-family:'Poppins',sans-serif;color:#fff;">
+                Inconsistencia con el modelo mental
+              </div>
+
+              <div class="subtitle" style="font-size:11px;color:rgba(255,255,255,.9);">
+                El usuario viene de Yape, Plin y banca móvil con patrones establecidos.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div>
+
+        <div style="font-size:11px;color:#FFF;font-weight:700;letter-spacing:2px;margin-bottom:12px;font-family:'Poppins',sans-serif;">
+          LENTITUD — 2 DIMENSIONES DISTINTAS
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px;">
+
+          <!-- REAL -->
+          <div class="ccard" style="
+            padding:14px;
+            border-left:4px solid #fff;
+            border-radius:0 12px 12px 0;
+            background:#15c9b4;
+          ">
+
+            <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:5px;font-family:'Poppins',sans-serif;">
+              Lentitud Real
+            </div>
+
+            <div class="subtitle" style="font-size:11px;color:rgba(255,255,255,.9);">
+              Tiempos del servidor &gt;3-4 seg. Sin feedback visual → ansiedad → abandono.
+            </div>
+          </div>
+
+          <!-- PERCIBIDA -->
+          <div class="ccard" style="
+            padding:14px;
+            border-left:4px solid #fff;
+            border-radius:0 12px 12px 0;
+            background:#15c9b4;
+          ">
+
+            <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:5px;font-family:'Poppins',sans-serif;">
+              Lentitud Percibida
+            </div>
+
+            <div class="subtitle" style="font-size:11px;color:rgba(255,255,255,.9);">
+              La app tarda 1.5 seg pero se siente lenta por falta de loaders y mensajes de estado.
+            </div>
+          </div>
+
+        </div>
+
+        <!-- FINAL CARD -->
+        <div style="
+          padding:14px;
+          background:#15c9b4;
+          border-radius:12px;
+          border:1px solid rgba(255,255,255,.18);
+        ">
+
+          <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;font-family:'Poppins',sans-serif;">
+            La fortaleza existente es el activo clave
+          </div>
+
+          <div class="subtitle" style="font-size:11px;color:rgba(255,255,255,.9);">
+            Usuarios frecuentes ya tienen hábito integrado. La propuesta de valor es correcta.
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 5 — PRIORIZACIÓN ═══ -->
+<div class="slide" id="s5" style="background:#742384;">
+  <div class="vcenter pad">
+
+     <div class="tag" style="margin-bottom:12px;align-self:flex-start;">
+      FASE 02
+    </div>
+
+
+    <div class="title-lg" style="margin-bottom:6px;">
+      Priorización: Matriz <span class="teal">Impacto / Esfuerzo</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="g2" style="max-width:960px;height:calc(100vh - 240px);max-height:340px;gap:14px;">
+
+      <!-- HACER AHORA -->
+      <div style="
+        background:#15c9b4;
+        border:1.5px solid rgba(255,255,255,.18);
+        border-radius:14px;
+        padding:16px;
+      ">
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+
+          <span style="
+            font-size:11px;
+            font-weight:800;
+            color:#fff;
+            letter-spacing:1.5px;
+            font-family:'Poppins',sans-serif;
+          ">
+            HACER AHORA ✓
+          </span>
+
+          <span class="subtitle" style="font-size:10px;color:rgba(255,255,255,.9);">
+            Bajo esfuerzo · Alto impacto
+          </span>
+
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:7px;">
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#742384;"></div>
+            <div>
+              <div style="font-size:12px;font-weight:600;font-family:'Poppins',sans-serif;color:#fff;">
+                1. Rediseño del flujo de inicio
+              </div>
+              <div class="subtitle" style="font-size:10px;color:rgba(255,255,255,.9);">
+                Impacto directo en activación — PRIORIDAD #1
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#742384;"></div>
+            <div>
+              <div style="font-size:12px;font-weight:600;font-family:'Poppins',sans-serif;color:#fff;">
+                2. Indicadores de progreso y estado
+              </div>
+              <div class="subtitle" style="font-size:10px;color:rgba(255,255,255,.9);">
+                Reduce abandono mid-flow — PRIORIDAD #2
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#742384;"></div>
+            <div>
+              <div style="font-size:12px;font-weight:600;font-family:'Poppins',sans-serif;color:#fff;">
+                3. Optimización de performance
+              </div>
+              <div class="subtitle" style="font-size:10px;color:rgba(255,255,255,.9);">
+                Target: P95 &lt;2 seg — PRIORIDAD #3
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- PLANIFICAR -->
+      <div style="
+        background:#15c9b4;
+        border:1.5px solid rgba(255,255,255,.18);
+        border-radius:14px;
+        padding:16px;
+      ">
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+
+          <span style="
+            font-size:11px;
+            font-weight:800;
+            color:#fff;
+            letter-spacing:1.5px;
+            font-family:'Poppins',sans-serif;
+          ">
+            PLANIFICAR →
+          </span>
+
+          <span class="subtitle" style="font-size:10px;color:rgba(255,255,255,.9);">
+            Alto esfuerzo · Alto impacto
+          </span>
+
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:7px;">
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#742384;"></div>
+            <div>
+              <div style="font-size:12px;font-weight:600;font-family:'Poppins',sans-serif;color:#fff;">
+                4. Nuevas opciones de pago
+              </div>
+              <div class="subtitle" style="font-size:10px;color:rgba(255,255,255,.9);">
+                Tarjetas, QR, billeteras — Sprint 4-5
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#742384;"></div>
+            <div>
+              <div style="font-size:12px;font-weight:600;font-family:'Poppins',sans-serif;color:#fff;">
+                5. Experiencia diferenciada
+              </div>
+              <div class="subtitle" style="font-size:10px;color:rgba(255,255,255,.9);">
+                Flujo nuevo vs. frecuente — Sprint 6
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- QUICK WIN -->
+      <div style="
+        background:#15c9b4;
+        border:1.5px solid rgba(255,255,255,.18);
+        border-radius:14px;
+        padding:16px;
+      ">
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+
+          <span style="
+            font-size:11px;
+            font-weight:800;
+            color:#fff;
+            letter-spacing:1.5px;
+            font-family:'Poppins',sans-serif;
+          ">
+            QUICK WIN
+          </span>
+
+          <span class="subtitle" style="font-size:10px;color:rgba(255,255,255,.9);">
+            Bajo esfuerzo · Bajo impacto
+          </span>
+
+        </div>
+
+        <div style="display:flex;gap:8px;">
+          <div class="db" style="background:#742384;"></div>
+
+          <div>
+            <div style="font-size:12px;font-weight:600;font-family:'Poppins',sans-serif;color:#fff;">
+              6. Tooltips y tutoriales in-app
+            </div>
+
+            <div class="subtitle" style="font-size:10px;color:rgba(255,255,255,.9);">
+              Complemento si el rediseño no es suficiente
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- DISCOVERY -->
+      <div style="
+        background:#15c9b4;
+        border:1.5px solid rgba(255,255,255,.18);
+        border-radius:14px;
+        padding:16px;
+      ">
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+
+          <span style="
+            font-size:11px;
+            font-weight:800;
+            color:#fff;
+            letter-spacing:1.5px;
+            font-family:'Poppins',sans-serif;
+          ">
+            DISCOVERY PRIMERO
+          </span>
+
+          <span class="subtitle" style="font-size:10px;color:rgba(255,255,255,.9);">
+            Alto esfuerzo · Incierto
+          </span>
+
+        </div>
+
+        <div style="display:flex;gap:8px;">
+          <div class="db" style="background:#742384;"></div>
+
+          <div>
+            <div style="font-size:12px;font-weight:600;font-family:'Poppins',sans-serif;color:#fff;">
+              7. Pagos por voz / biometría
+            </div>
+
+            <div class="subtitle" style="font-size:10px;color:rgba(255,255,255,.9);">
+              Validar demanda real antes del build
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div style="
+      margin-top:10px;
+      font-size:11px;
+      color:rgba(255,255,255,.7);
+      font-style:italic;
+      font-family:'Poppins',sans-serif;
+    ">
+      Principio rector: primero hacer funcionar bien lo que existe, luego crecer.
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ SLIDE 6 — RICE ═══ -->
+<div class="slide" id="s6" style="background:#742384;">
+  <div class="vcenter pad">
+
+   <div class="tag" style="margin-bottom:12px;align-self:flex-start;">
+      MARCO DE PRIORIZACION
+    </div>
+
+    <div class="title-md" style="margin-bottom:6px;">
+      Framework <span class="teal">RICE Score</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- FORMULA -->
+    <div style="
+      padding:14px 20px;
+      background:#15c9b4;
+      border-radius:12px;
+      border:1.5px solid rgba(255,255,255,.18);
+      margin-bottom:20px;
+      max-width:700px;
+    ">
+
+      <div style="
+        font-size:18px;
+        font-weight:800;
+        color:#fff;
+        font-family:'Poppins',sans-serif;
+        letter-spacing:.5px;
+      ">
+        RICE = (Reach × Impact × Confidence) / Effort
+      </div>
+
+    </div>
+
+    <!-- RICE CARDS -->
+    <div class="g4" style="max-width:960px;margin-bottom:20px;">
+
+      <div class="mcard" style="background:#15c9b4;">
+        <div style="font-size:28px;font-weight:800;color:#fff;font-family:'Poppins',sans-serif;">R</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;font-family:'Poppins',sans-serif;color:#fff;">
+          Reach
+        </div>
+        <div class="subtitle" style="font-size:11px;color:rgba(255,255,255,.9);">
+          ¿Cuántos usuarios?
+        </div>
+      </div>
+
+      <div class="mcard" style="background:#15c9b4;">
+        <div style="font-size:28px;font-weight:800;color:#fff;font-family:'Poppins',sans-serif;">I</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;font-family:'Poppins',sans-serif;color:#fff;">
+          Impact
+        </div>
+        <div class="subtitle" style="font-size:11px;color:rgba(255,255,255,.9);">
+          Magnitud en KPI norte
+        </div>
+      </div>
+
+      <div class="mcard" style="background:#15c9b4;">
+        <div style="font-size:28px;font-weight:800;color:#fff;font-family:'Poppins',sans-serif;">C</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;font-family:'Poppins',sans-serif;color:#fff;">
+          Confidence
+        </div>
+        <div class="subtitle" style="font-size:11px;color:rgba(255,255,255,.9);">
+          Certeza del efecto
+        </div>
+      </div>
+
+      <div class="mcard" style="background:#15c9b4;">
+        <div style="font-size:28px;font-weight:800;color:#fff;font-family:'Poppins',sans-serif;">E</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:3px;font-family:'Poppins',sans-serif;color:#fff;">
+          Effort
+        </div>
+        <div class="subtitle" style="font-size:11px;color:rgba(255,255,255,.9);">
+          Semanas-persona
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TABLE -->
+    <div style="max-width:860px;">
+
+      <!-- HEADER -->
+      <div style="
+        display:grid;
+        grid-template-columns:2fr 1fr 1fr 1fr 1fr 1.2fr;
+        gap:8px;
+        padding:7px 12px;
+        background:#15c9b4;
+        border-radius:8px;
+        margin-bottom:5px;
+      ">
+
+        <div style="font-size:10px;font-weight:700;color:#fff;letter-spacing:1px;font-family:'Poppins',sans-serif;">
+          MEJORA
+        </div>
+
+        <div style="font-size:10px;font-weight:700;color:#fff;text-align:center;font-family:'Poppins',sans-serif;">
+          R
+        </div>
+
+        <div style="font-size:10px;font-weight:700;color:#fff;text-align:center;font-family:'Poppins',sans-serif;">
+          I
+        </div>
+
+        <div style="font-size:10px;font-weight:700;color:#fff;text-align:center;font-family:'Poppins',sans-serif;">
+          C
+        </div>
+
+        <div style="font-size:10px;font-weight:700;color:#fff;text-align:center;font-family:'Poppins',sans-serif;">
+          E
+        </div>
+
+        <div style="font-size:10px;font-weight:700;color:#742384;text-align:center;font-family:'Poppins',sans-serif;">
+          RICE
+        </div>
+
+      </div>
+
+      <!-- ROWS -->
+      <div style="display:flex;flex-direction:column;gap:4px;">
+
+        <!-- ROW 1 -->
+        <div style="
+          display:grid;
+          grid-template-columns:2fr 1fr 1fr 1fr 1fr 1.2fr;
+          gap:8px;
+          padding:9px 12px;
+          background:#15c9b4;
+          border-radius:8px;
+          align-items:center;
+        ">
+
+          <div style="font-size:12px;font-family:'Poppins',sans-serif;color:#fff;">
+            1. Rediseño flujo de inicio
+          </div>
+
+          <div style="font-size:11px;text-align:center;color:#fff;font-family:'Poppins',sans-serif;">Alto</div>
+          <div style="font-size:11px;text-align:center;color:#fff;font-family:'Poppins',sans-serif;">Alto</div>
+          <div style="font-size:11px;text-align:center;color:#fff;font-family:'Poppins',sans-serif;">90%</div>
+          <div style="font-size:11px;text-align:center;color:#fff;font-family:'Poppins',sans-serif;">2 sem</div>
+
+          <div style="font-size:13px;font-weight:800;color:#742384;text-align:center;font-family:'Poppins',sans-serif;">
+            MUY ALTO
+          </div>
+
+        </div>
+
+        <!-- ROW 2 -->
+        <div style="
+          display:grid;
+          grid-template-columns:2fr 1fr 1fr 1fr 1fr 1.2fr;
+          gap:8px;
+          padding:9px 12px;
+          background:#15c9b4;
+          border-radius:8px;
+          align-items:center;
+        ">
+
+          <div style="font-size:12px;font-family:'Poppins',sans-serif;color:#fff;">
+            2. Indicadores de progreso
+          </div>
+
+          <div style="font-size:11px;text-align:center;color:#fff;font-family:'Poppins',sans-serif;">Alto</div>
+          <div style="font-size:11px;text-align:center;color:#fff;font-family:'Poppins',sans-serif;">Medio</div>
+          <div style="font-size:11px;text-align:center;color:#fff;font-family:'Poppins',sans-serif;">90%</div>
+          <div style="font-size:11px;text-align:center;color:#fff;font-family:'Poppins',sans-serif;">1 sem</div>
+
+          <div style="font-size:13px;font-weight:800;color:#742384;text-align:center;font-family:'Poppins',sans-serif;">
+            ALTO
+          </div>
+
+        </div>
+
+        <!-- ROW 3 -->
+        <div style="
+          display:grid;
+          grid-template-columns:2fr 1fr 1fr 1fr 1fr 1.2fr;
+          gap:8px;
+          padding:9px 12px;
+          background:#15c9b4;
+          border-radius:8px;
+          align-items:center;
+        ">
+
+          <div style="font-size:12px;font-family:'Poppins',sans-serif;color:#fff;">
+            3. Optimización performance
+          </div>
+
+          <div style="font-size:11px;text-align:center;color:#fff;font-family:'Poppins',sans-serif;">Alto</div>
+          <div style="font-size:11px;text-align:center;color:#fff;font-family:'Poppins',sans-serif;">Alto</div>
+          <div style="font-size:11px;text-align:center;color:#fff;font-family:'Poppins',sans-serif;">70%</div>
+          <div style="font-size:11px;text-align:center;color:#fff;font-family:'Poppins',sans-serif;">3 sem</div>
+
+          <div style="font-size:13px;font-weight:800;color:#742384;text-align:center;font-family:'Poppins',sans-serif;">
+            MEDIO
+          </div>
+
+        </div>
+
+        <!-- ROW 4 -->
+        <div style="
+          display:grid;
+          grid-template-columns:2fr 1fr 1fr 1fr 1fr 1.2fr;
+          gap:8px;
+          padding:9px 12px;
+          background:#15c9b4;
+          border-radius:8px;
+          align-items:center;
+        ">
+
+          <div style="font-size:12px;font-family:'Poppins',sans-serif;color:#fff;">
+            7. Pagos voz / biometría
+          </div>
+
+          <div style="font-size:11px;text-align:center;color:#fff;font-family:'Poppins',sans-serif;">Medio</div>
+          <div style="font-size:11px;text-align:center;color:#fff;font-family:'Poppins',sans-serif;">Incierto</div>
+          <div style="font-size:11px;text-align:center;color:#fff;font-family:'Poppins',sans-serif;">40%</div>
+          <div style="font-size:11px;text-align:center;color:#fff;font-family:'Poppins',sans-serif;">8+ sem</div>
+
+          <div style="font-size:13px;font-weight:800;color:#742384;text-align:center;font-family:'Poppins',sans-serif;">
+            BAJO
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ SLIDE 7 — DILEMA ═══ -->
+<div class="slide" id="s7" style="background:#742384;">
+  <div class="vcenter pad">
+
+    <!-- TAG -->
+    <div class="tag" style="margin-bottom:12px;align-self:flex-start;">
+      FASE 03
+    </div>
+
+    <!-- TITLE -->
+    <div class="title-lg" style="margin-bottom:6px;">
+      El Dilema: 
+      <span style="color:#15c9b4;">Negocio</span> 
+      vs. 
+      <span class="teal">Producto</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- TOP CARDS -->
+    <div class="g2" style="max-width:960px;margin-bottom:16px;">
+
+      <!-- NEGOCIO -->
+      <div style="
+        background:#15c9b4;
+        border:1.5px solid rgba(255,255,255,.18);
+        border-radius:14px;
+        padding:18px;
+      ">
+
+        <div style="
+          font-size:11px;
+          font-weight:700;
+          color:#fff;
+          letter-spacing:1.5px;
+          margin-bottom:10px;
+          font-family:'Poppins',sans-serif;
+        ">
+          NEGOCIO QUIERE
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:7px;">
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#742384;margin-top:5px;"></div>
+            <div style="font-size:12px;font-family:'Poppins',sans-serif;color:#fff;">
+              Pagos por voz
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#742384;margin-top:5px;"></div>
+            <div style="font-size:12px;font-family:'Poppins',sans-serif;color:#fff;">
+              Reconocimiento biométrico avanzado
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#742384;margin-top:5px;"></div>
+            <div style="font-size:12px;font-family:'Poppins',sans-serif;color:#fff;">
+              Funcionalidades diferenciadoras de mercado
+            </div>
+          </div>
+
+        </div>
+
+        <div style="
+          margin-top:10px;
+          padding:8px 12px;
+          background:rgba(116,35,132,.18);
+          border-radius:8px;
+          font-size:11px;
+          color:#fff;
+          font-family:'Poppins',sans-serif;
+        ">
+          Motivación legítima: competidores pueden moverse primero
+        </div>
+
+      </div>
+
+      <!-- PRODUCTO -->
+      <div style="
+        background:#15c9b4;
+        border:1.5px solid rgba(255,255,255,.18);
+        border-radius:14px;
+        padding:18px;
+      ">
+
+        <div style="
+          font-size:11px;
+          font-weight:700;
+          color:#fff;
+          letter-spacing:1.5px;
+          margin-bottom:10px;
+          font-family:'Poppins',sans-serif;
+        ">
+          PRODUCTO PRIORIZA
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:7px;">
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#742384;margin-top:5px;"></div>
+            <div style="font-size:12px;font-family:'Poppins',sans-serif;color:#fff;">
+              Simplificar el flujo actual
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#742384;margin-top:5px;"></div>
+            <div style="font-size:12px;font-family:'Poppins',sans-serif;color:#fff;">
+              Reducir abandono en pasos críticos
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#742384;margin-top:5px;"></div>
+            <div style="font-size:12px;font-family:'Poppins',sans-serif;color:#fff;">
+              Usabilidad sólida como base de confianza
+            </div>
+          </div>
+
+        </div>
+
+        <div style="
+          margin-top:10px;
+          padding:8px 12px;
+          background:rgba(116,35,132,.18);
+          border-radius:8px;
+          font-size:11px;
+          color:#fff;
+          font-family:'Poppins',sans-serif;
+        ">
+          Razón técnica: construir sobre arena amplifica el problema
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ROADMAP -->
+    <div style="
+      max-width:960px;
+      background:#15c9b4;
+      border:1.5px solid rgba(255,255,255,.18);
+      border-radius:14px;
+      padding:18px;
+    ">
+
+      <div style="
+        font-size:11px;
+        font-weight:700;
+        color:#fff;
+        margin-bottom:14px;
+        letter-spacing:1.5px;
+        font-family:'Poppins',sans-serif;
+      ">
+        MI PROPUESTA: ROADMAP EN DOS HORIZONTES
+      </div>
+
+      <div class="g3">
+
+        <!-- STEP 1 -->
+        <div style="
+          text-align:center;
+          padding:12px;
+          background:rgba(116,35,132,.18);
+          border-radius:10px;
+        ">
+
+          <div class="step" style="
+            margin:0 auto 7px;
+            background:#742384;
+            color:#fff;
+          ">
+            1
+          </div>
+
+          <div style="
+            font-size:12px;
+            font-weight:700;
+            margin-bottom:3px;
+            font-family:'Poppins',sans-serif;
+            color:#fff;
+          ">
+            Fijar el baseline
+          </div>
+
+          <div class="subtitle" style="font-size:10px;color:rgba(255,255,255,.9);">
+            UX y performance son pre-requisitos
+          </div>
+
+        </div>
+
+        <!-- STEP 2 -->
+        <div style="
+          text-align:center;
+          padding:12px;
+          background:rgba(116,35,132,.18);
+          border-radius:10px;
+        ">
+
+          <div class="step" style="
+            margin:0 auto 7px;
+            background:#742384;
+            color:#fff;
+          ">
+            2
+          </div>
+
+          <div style="
+            font-size:12px;
+            font-weight:700;
+            margin-bottom:3px;
+            font-family:'Poppins',sans-serif;
+            color:#fff;
+          ">
+            H1 (0–3m) vs. H2 (3–6m)
+          </div>
+
+          <div class="subtitle" style="font-size:10px;color:rgba(255,255,255,.9);">
+            Conversión ahora, innovación después
+          </div>
+
+        </div>
+
+        <!-- STEP 3 -->
+        <div style="
+          text-align:center;
+          padding:12px;
+          background:rgba(116,35,132,.18);
+          border-radius:10px;
+        ">
+
+          <div class="step" style="
+            margin:0 auto 7px;
+            background:#742384;
+            color:#fff;
+          ">
+            3
+          </div>
+
+          <div style="
+            font-size:12px;
+            font-weight:700;
+            margin-bottom:3px;
+            font-family:'Poppins',sans-serif;
+            color:#fff;
+          ">
+            Discovery en paralelo
+          </div>
+
+          <div class="subtitle" style="font-size:10px;color:rgba(255,255,255,.9);">
+            Validar demanda real antes del build
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ SLIDE 8 — DISCOVERY BRIDGE ═══ -->
+<div class="slide" id="s8" style="background:#742384;">
+  <div class="vcenter pad">
+
+  <!-- TAG -->
+    <div class="tag" style="margin-bottom:12px;align-self:flex-start;">
+      COMO COMUNICARLO
+    </div>
+
+    <!-- TITLE -->
+    <div class="title-md" style="margin-bottom:6px;color:#fff;">
+      El proceso de 
+      <span style="color:#15c9b4;">Discovery</span> 
+      como puente
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- MAIN GRID -->
+    <div class="g2" style="
+      max-width:960px;
+      gap:20px;
+      margin-bottom:18px;
+    ">
+
+      <!-- LEFT -->
+      <div style="
+        background:#15c9b4;
+        border:1.5px solid rgba(255,255,255,.18);
+        border-radius:14px;
+        padding:18px;
+      ">
+
+        <div style="
+          font-size:11px;
+          color:#fff;
+          font-weight:700;
+          letter-spacing:1.5px;
+          margin-bottom:14px;
+          font-family:'Poppins',sans-serif;
+        ">
+          CRITERIOS DE ENTRADA AL H2
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;">
+
+          <!-- STEP -->
+          <div style="
+            display:flex;
+            gap:12px;
+            padding:12px;
+            background:rgba(116,35,132,.18);
+            border-radius:10px;
+            align-items:flex-start;
+          ">
+
+            <div style="
+              font-size:18px;
+              font-weight:800;
+              color:#742384;
+              min-width:44px;
+              font-family:'Poppins',sans-serif;
+            ">
+              S1–4
+            </div>
+
+            <div style="
+              font-size:11px;
+              color:#fff;
+              line-height:1.6;
+              font-family:'Poppins',sans-serif;
+            ">
+              Entrevistas con 10-15 usuarios: 
+              ¿usarías pago por voz?
+            </div>
+
+          </div>
+
+          <!-- STEP -->
+          <div style="
+            display:flex;
+            gap:12px;
+            padding:12px;
+            background:rgba(116,35,132,.18);
+            border-radius:10px;
+            align-items:flex-start;
+          ">
+
+            <div style="
+              font-size:18px;
+              font-weight:800;
+              color:#742384;
+              min-width:44px;
+              font-family:'Poppins',sans-serif;
+            ">
+              S4–8
+            </div>
+
+            <div style="
+              font-size:11px;
+              color:#fff;
+              line-height:1.6;
+              font-family:'Poppins',sans-serif;
+            ">
+              Prototipo no funcional. 
+              Test de concepto con 5 usuarios.
+            </div>
+
+          </div>
+
+          <!-- STEP -->
+          <div style="
+            display:flex;
+            gap:12px;
+            padding:12px;
+            background:rgba(116,35,132,.18);
+            border-radius:10px;
+            align-items:flex-start;
+          ">
+
+            <div style="
+              font-size:18px;
+              font-weight:800;
+              color:#742384;
+              min-width:44px;
+              font-family:'Poppins',sans-serif;
+            ">
+              S8
+            </div>
+
+            <div style="
+              font-size:11px;
+              color:#fff;
+              line-height:1.6;
+              font-family:'Poppins',sans-serif;
+            ">
+              <span style="
+                color:#fff;
+                font-weight:700;
+              ">
+                &gt;60% intención de uso
+              </span>
+              → entra al roadmap H2.
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- RIGHT -->
+      <div style="
+        background:#15c9b4;
+        border:1.5px solid rgba(255,255,255,.18);
+        border-radius:14px;
+        padding:18px;
+      ">
+
+        <div style="
+          font-size:11px;
+          color:#fff;
+          font-weight:700;
+          letter-spacing:1.5px;
+          margin-bottom:14px;
+          font-family:'Poppins',sans-serif;
+        ">
+          MENSAJE AL ÁREA DE NEGOCIO
+        </div>
+
+        <!-- QUOTE -->
+        <div style="
+          background:rgba(116,35,132,.18);
+          border-radius:12px;
+          padding:18px;
+          margin-bottom:14px;
+        
+        ">
+
+          <div style="
+            font-size:12px;
+            font-style:italic;
+            line-height:1.75;
+            color:#fff;
+            font-family:'Poppins',sans-serif;
+          ">
+            "Coincidimos en que los pagos por voz son el futuro. 
+            Para que tengan el impacto que buscamos, necesitamos 
+            una base sólida y evidencia de adopción. 
+            En 8 semanas tendremos datos reales para decidir 
+            con confianza."
+          </div>
+
+        </div>
+
+        <!-- CARDS -->
+        <div style="
+          display:grid;
+          grid-template-columns:1fr 1fr;
+          gap:10px;
+        ">
+
+          <!-- EVITAR -->
+          <div style="
+            padding:14px;
+            background:rgba(243, 241, 241, 0.18);
+            border-radius:10px;
+            text-align:center;
+          ">
+
+            <div style="
+              font-size:10px;
+              font-weight:700;
+              color:#fff;
+              margin-bottom:4px;
+              letter-spacing:1px;
+              font-family:'Poppins',sans-serif;
+            ">
+              EVITAR
+            </div>
+
+            <div style="
+              font-size:11px;
+              color:#fff;
+              line-height:1.5;
+              font-family:'Poppins',sans-serif;
+            ">
+              Decir “no” sin alternativa
+            </div>
+
+          </div>
+
+          <!-- USAR -->
+          <div style="
+            padding:14px;
+            background:rgba(255, 255, 255, 0.14);
+            border-radius:10px;
+            text-align:center;
+          ">
+
+            <div style="
+              font-size:10px;
+              font-weight:700;
+              color:#fff;
+              margin-bottom:4px;
+              letter-spacing:1px;
+              font-family:'Poppins',sans-serif;
+            ">
+              USAR
+            </div>
+
+            <div style="
+              font-size:11px;
+              color:#fff;
+              line-height:1.5;
+              font-family:'Poppins',sans-serif;
+            ">
+              “Todavía no, aquí está el camino”
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ SLIDE 9 — KPIs NORTE ═══ -->
+<div class="slide" id="s9" style="background:#742384;">
+  <div class="vcenter pad">
+
+   <div class="tag" style="margin-bottom:12px;align-self:flex-start;">
+      FASE 04
+    </div>
+
+    <!-- TITLE -->
+    <div class="title-lg" style="
+      margin-bottom:6px;
+      color:#fff;
+    ">
+      KPIs y Medición del 
+      <span style="color:#15c9b4;">Éxito</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- KPI NORTE -->
+    <div style="
+      padding:16px 20px;
+      background:#15c9b4;
+      border-radius:14px;
+      border:1.5px solid rgba(255,255,255,.18);
+      margin-bottom:22px;
+      max-width:860px;
+    ">
+
+      <div style="
+        font-size:11px;
+        font-weight:700;
+        color:#fff;
+        margin-bottom:8px;
+        letter-spacing:1.5px;
+        font-family:'Poppins',sans-serif;
+      ">
+        KPI NORTE
+      </div>
+
+      <div style="
+        font-family:'Poppins',sans-serif;
+        font-size:12px;
+        color:#fff;
+        padding:10px 14px;
+        background:rgba(116,35,132,.2);
+        border-radius:10px;
+        line-height:1.7;
+      ">
+        Tasa Adopción = Usuarios únicos con ≥1 pago exitoso / 
+        Total usuarios activos × 100
+      </div>
+
+    </div>
+
+    <!-- KPI CARDS -->
+    <div class="g4" style="
+      max-width:960px;
+      gap:14px;
+      margin-bottom:24px;
+    ">
+
+      <!-- CARD -->
+      <div style="
+        background:#15c9b4;
+        border-radius:14px;
+        padding:18px;
+        text-align:center;
+        border:1.5px solid rgba(255,255,255,.18);
+      ">
+
+        <div style="
+          font-size:28px;
+          font-weight:800;
+          color:#fff;
+          margin-bottom:6px;
+          font-family:'Poppins',sans-serif;
+        ">
+          +25%
+        </div>
+
+        <div style="
+          font-size:10px;
+          letter-spacing:1.5px;
+          color:#fff;
+          font-weight:700;
+          font-family:'Poppins',sans-serif;
+        ">
+          ADOPCIÓN M3
+        </div>
+
+      </div>
+
+      <!-- CARD -->
+      <div style="
+        background:#15c9b4;
+        border-radius:14px;
+        padding:18px;
+        text-align:center;
+        border:1.5px solid rgba(255,255,255,.18);
+      ">
+
+        <div style="
+          font-size:28px;
+          font-weight:800;
+          color:#ffffff;
+          margin-bottom:6px;
+          font-family:'Poppins',sans-serif;
+        ">
+          &gt;40%
+        </div>
+
+        <div style="
+          font-size:10px;
+          letter-spacing:1.5px;
+          color:#fff;
+          font-weight:700;
+          font-family:'Poppins',sans-serif;
+        ">
+          ACTIVACIÓN
+        </div>
+
+      </div>
+
+      <!-- CARD -->
+      <div style="
+        background:#15c9b4;
+        border-radius:14px;
+        padding:18px;
+        text-align:center;
+        border:1.5px solid rgba(255,255,255,.18);
+      ">
+
+        <div style="
+          font-size:28px;
+          font-weight:800;
+          color:#ffffff;
+          margin-bottom:6px;
+          font-family:'Poppins',sans-serif;
+        ">
+          &lt;15%
+        </div>
+
+        <div style="
+          font-size:10px;
+          letter-spacing:1.5px;
+          color:#fff;
+          font-weight:700;
+          font-family:'Poppins',sans-serif;
+        ">
+          ABANDONO
+        </div>
+
+      </div>
+
+      <!-- CARD -->
+      <div style="
+        background:#15c9b4;
+        border-radius:14px;
+        padding:18px;
+        text-align:center;
+        border:1.5px solid rgba(255,255,255,.18);
+      ">
+
+        <div style="
+          font-size:28px;
+          font-weight:800;
+          color:#ffffff;
+          margin-bottom:6px;
+          font-family:'Poppins',sans-serif;
+        ">
+          &gt;4.2
+        </div>
+
+        <div style="
+          font-size:10px;
+          letter-spacing:1.5px;
+          color:#fff;
+          font-weight:700;
+          font-family:'Poppins',sans-serif;
+        ">
+          CSAT
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- CHART SECTION -->
+    <div style="max-width:960px;width:100%;">
+
+      <div style="
+        font-size:10px;
+        color:rgba(255,255,255,.6);
+        font-weight:700;
+        letter-spacing:1.5px;
+        margin-bottom:12px;
+        font-family:'Poppins',sans-serif;
+      ">
+        EVOLUCIÓN MENSUAL DEL KPI NORTE
+      </div>
+
+      <div style="
+        background:#15c9b4;
+        border-radius:14px;
+        padding:18px;
+        border:1.5px solid rgba(255,255,255,.18);
+      ">
+
+        <div style="
+          display:flex;
+          align-items:flex-end;
+          gap:12px;
+          height:110px;
+        ">
+
+          <!-- MES 1 -->
+          <div style="
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            gap:6px;
+            flex:1;
+          ">
+
+            <div style="
+              font-size:11px;
+              font-weight:700;
+              color:#fff;
+              font-family:'Poppins',sans-serif;
+            ">
+              +8%
+            </div>
+
+            <div style="
+              width:100%;
+              background:#742384;
+              border-radius:8px 8px 0 0;
+              height:34px;
+            "></div>
+
+            <div style="
+              font-size:10px;
+              color:#fff;
+              font-family:'Poppins',sans-serif;
+            ">
+              Mes 1
+            </div>
+
+          </div>
+
+          <!-- MES 2 -->
+          <div style="
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            gap:6px;
+            flex:1;
+          ">
+
+            <div style="
+              font-size:11px;
+              font-weight:700;
+              color:#fff;
+              font-family:'Poppins',sans-serif;
+            ">
+              +17%
+            </div>
+
+            <div style="
+              width:100%;
+              background:#742384;
+              border-radius:8px 8px 0 0;
+              height:58px;
+            "></div>
+
+            <div style="
+              font-size:10px;
+              color:#fff;
+              font-family:'Poppins',sans-serif;
+            ">
+              Mes 2
+            </div>
+
+          </div>
+
+          <!-- MES 3 -->
+          <div style="
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            gap:6px;
+            flex:1;
+          ">
+
+            <div style="
+              font-size:11px;
+              font-weight:700;
+              color:#ffd46e;
+              font-family:'Poppins',sans-serif;
+            ">
+              +25%
+            </div>
+
+            <div style="
+              width:100%;
+              background:#ffd46e;
+              border-radius:8px 8px 0 0;
+              height:82px;
+            "></div>
+
+            <div style="
+              font-size:10px;
+              color:#fff;
+              font-family:'Poppins',sans-serif;
+            ">
+              Mes 3
+            </div>
+
+          </div>
+
+          <!-- INSIGHT -->
+          <div style="
+            flex:4;
+            display:flex;
+            align-items:flex-end;
+          ">
+
+            <div style="
+              padding:12px 14px;
+              background:rgba(116,35,132,.2);
+              border-radius:12px;
+              border:1px solid rgba(255,255,255,.15);
+              width:100%;
+            ">
+
+              <div style="
+                font-size:11px;
+                color:#fff;
+                font-weight:700;
+                margin-bottom:4px;
+                font-family:'Poppins',sans-serif;
+              ">
+                Target alcanzado en M3
+              </div>
+
+              <div style="
+                font-size:10px;
+                color:rgba(255,255,255,.85);
+                line-height:1.6;
+                font-family:'Poppins',sans-serif;
+              ">
+                Crecimiento escalonado → optimización progresiva 
+                basada en aprendizaje real del usuario.
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+<!-- ═══ SLIDE 10 — KPIs 4 DIMENSIONES ═══ -->
+<div class="slide" id="s10" style="background:#742384;">
+  <div class="vcenter pad">
+
+    <!-- TAG -->
+    <div class="tag" style="margin-bottom:12px;align-self:flex-start;">
+      FRAMEWORK DE KPIS
+    </div>
+
+    <!-- TITLE -->
+    <div class="title-md" style="
+      margin-bottom:6px;
+      color:#fff;
+    ">
+      4 Dimensiones de 
+      <span style="color:#15c9b4;">Medición</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- GRID -->
+    <div class="g2" style="
+      max-width:960px;
+      gap:14px;
+    ">
+
+      <!-- ADOPCIÓN -->
+      <div style="
+        background:#15c9b4;
+        border:1.5px solid rgba(255,255,255,.18);
+        border-radius:16px;
+        padding:18px;
+      ">
+
+        <div style="
+          font-size:14px;
+          font-weight:800;
+          color:#742384;
+          letter-spacing:2px;
+          margin-bottom:12px;
+          font-family:'Poppins',sans-serif;
+        ">
+          ADOPCIÓN
+        </div>
+
+        <!-- ITEM -->
+        <div style="
+          display:grid;
+          grid-template-columns:2fr 2fr 1fr;
+          gap:8px;
+          padding:10px 0;
+          border-bottom:1px solid rgba(255,255,255,.12);
+          align-items:center;
+        ">
+
+          <div style="
+            font-size:12px;
+            font-weight:600;
+            color:#fff;
+            font-family:'Poppins',sans-serif;
+          ">
+            Tasa de activación
+          </div>
+
+          <div style="
+            font-size:10px;
+            color:rgba(255,255,255,.9);
+            font-family:'Poppins',sans-serif;
+          ">
+            1er pago / usuarios que vieron
+          </div>
+
+          <div style="
+            color:#fff;
+            font-weight:700;
+            text-align:right;
+            font-size:11px;
+            font-family:'Poppins',sans-serif;
+          ">
+            &gt;40%
+          </div>
+
+        </div>
+
+        <!-- ITEM -->
+        <div style="
+          display:grid;
+          grid-template-columns:2fr 2fr 1fr;
+          gap:8px;
+          padding:10px 0;
+          align-items:center;
+        ">
+
+          <div style="
+            font-size:12px;
+            font-weight:600;
+            color:#fff;
+            font-family:'Poppins',sans-serif;
+          ">
+            Retención pagadores
+          </div>
+
+          <div style="
+            font-size:10px;
+            color:rgba(255,255,255,.9);
+            font-family:'Poppins',sans-serif;
+          ">
+            ≥2 pagos en 30 días
+          </div>
+
+          <div style="
+            color:#fff;
+            font-weight:700;
+            text-align:right;
+            font-size:11px;
+            font-family:'Poppins',sans-serif;
+          ">
+            &gt;55%
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- FUNNEL -->
+      <div style="
+        background:#15c9b4;
+        border:1.5px solid rgba(255,255,255,.18);
+        border-radius:16px;
+        padding:18px;
+      ">
+
+        <div style="
+          font-size:14px;
+          font-weight:800;
+          color:#742384;
+          letter-spacing:2px;
+          margin-bottom:12px;
+          font-family:'Poppins',sans-serif;
+        ">
+          CONVERSIÓN EN FUNNEL
+        </div>
+
+        <!-- ITEM -->
+        <div style="
+          display:grid;
+          grid-template-columns:2fr 2fr 1fr;
+          gap:8px;
+          padding:10px 0;
+          border-bottom:1px solid rgba(255,255,255,.12);
+          align-items:center;
+        ">
+
+          <div style="
+            font-size:12px;
+            font-weight:600;
+            color:#fff;
+            font-family:'Poppins',sans-serif;
+          ">
+            Completion rate
+          </div>
+
+          <div style="
+            font-size:10px;
+            color:rgba(255,255,255,.9);
+            font-family:'Poppins',sans-serif;
+          ">
+            % avance en cada paso
+          </div>
+
+          <div style="
+            color:#ffffff;
+            font-weight:700;
+            text-align:right;
+            font-size:11px;
+            font-family:'Poppins',sans-serif;
+          ">
+            &gt;85%
+          </div>
+
+        </div>
+
+        <!-- ITEM -->
+        <div style="
+          display:grid;
+          grid-template-columns:2fr 2fr 1fr;
+          gap:8px;
+          padding:10px 0;
+          align-items:center;
+        ">
+
+          <div style="
+            font-size:12px;
+            font-weight:600;
+            color:#fff;
+            font-family:'Poppins',sans-serif;
+          ">
+            Tasa de abandono
+          </div>
+
+          <div style="
+            font-size:10px;
+            color:rgba(255,255,255,.9);
+            font-family:'Poppins',sans-serif;
+          ">
+            Iniciaron sin completar
+          </div>
+
+          <div style="
+            color:#ffffff;
+            font-weight:700;
+            text-align:right;
+            font-size:11px;
+            font-family:'Poppins',sans-serif;
+          ">
+            &lt;15%
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- SATISFACCIÓN -->
+      <div style="
+        background:#15c9b4;
+        border:1.5px solid rgba(255,255,255,.18);
+        border-radius:16px;
+        padding:18px;
+      ">
+
+        <div style="
+          font-size:14px;
+          font-weight:800;
+          color:#742384;
+          letter-spacing:2px;
+          margin-bottom:12px;
+          font-family:'Poppins',sans-serif;
+        ">
+          SATISFACCIÓN
+        </div>
+
+        <!-- ITEM -->
+        <div style="
+          display:grid;
+          grid-template-columns:2fr 2fr 1fr;
+          gap:8px;
+          padding:10px 0;
+          border-bottom:1px solid rgba(255,255,255,.12);
+          align-items:center;
+        ">
+
+          <div style="
+            font-size:12px;
+            font-weight:600;
+            color:#fff;
+            font-family:'Poppins',sans-serif;
+          ">
+            CSAT post-pago
+          </div>
+
+          <div style="
+            font-size:10px;
+            color:rgba(255,255,255,.9);
+            font-family:'Poppins',sans-serif;
+          ">
+            Encuesta in-app inmediata
+          </div>
+
+          <div style="
+            color:#ffffff;
+            font-weight:700;
+            text-align:right;
+            font-size:11px;
+            font-family:'Poppins',sans-serif;
+          ">
+            &gt;4.2/5
+          </div>
+
+        </div>
+
+        <!-- ITEM -->
+        <div style="
+          display:grid;
+          grid-template-columns:2fr 2fr 1fr;
+          gap:8px;
+          padding:10px 0;
+          align-items:center;
+        ">
+
+          <div style="
+            font-size:12px;
+            font-weight:600;
+            color:#fff;
+            font-family:'Poppins',sans-serif;
+          ">
+            Tiempo completado
+          </div>
+
+          <div style="
+            font-size:10px;
+            color:rgba(255,255,255,.9);
+            font-family:'Poppins',sans-serif;
+          ">
+            Inicio hasta confirmación
+          </div>
+
+          <div style="
+            color:#ffffff;
+            font-weight:700;
+            text-align:right;
+            font-size:11px;
+            font-family:'Poppins',sans-serif;
+          ">
+            &lt;60 seg
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- SALUD TÉCNICA -->
+      <div style="
+        background:#15c9b4;
+        border:1.5px solid rgba(255,255,255,.18);
+        border-radius:16px;
+        padding:18px;
+      ">
+
+        <div style="
+          font-size:14px;
+          font-weight:800;
+          color:#742384;
+          letter-spacing:2px;
+          margin-bottom:12px;
+          font-family:'Poppins',sans-serif;
+        ">
+          SALUD TÉCNICA
+        </div>
+
+        <!-- ITEM -->
+        <div style="
+          display:grid;
+          grid-template-columns:2fr 2fr 1fr;
+          gap:8px;
+          padding:10px 0;
+          border-bottom:1px solid rgba(255,255,255,.12);
+          align-items:center;
+        ">
+
+          <div style="
+            font-size:12px;
+            font-weight:600;
+            color:#fff;
+            font-family:'Poppins',sans-serif;
+          ">
+            Error técnico
+          </div>
+
+          <div style="
+            font-size:10px;
+            color:rgba(255,255,255,.9);
+            font-family:'Poppins',sans-serif;
+          ">
+            Errores sistema / total intentos
+          </div>
+
+          <div style="
+            color:#fff;
+            font-weight:700;
+            text-align:right;
+            font-size:11px;
+            font-family:'Poppins',sans-serif;
+          ">
+            &lt;2%
+          </div>
+
+        </div>
+
+        <!-- ITEM -->
+        <div style="
+          display:grid;
+          grid-template-columns:2fr 2fr 1fr;
+          gap:8px;
+          padding:10px 0;
+          align-items:center;
+        ">
+
+          <div style="
+            font-size:12px;
+            font-weight:600;
+            color:#fff;
+            font-family:'Poppins',sans-serif;
+          ">
+            Latencia P95
+          </div>
+
+          <div style="
+            font-size:10px;
+            color:rgba(255,255,255,.9);
+            font-family:'Poppins',sans-serif;
+          ">
+            Percentil 95 de carga
+          </div>
+
+          <div style="
+            color:#fff;
+            font-weight:700;
+            text-align:right;
+            font-size:11px;
+            font-family:'Poppins',sans-serif;
+          ">
+            &lt;2 seg
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ SLIDE 11 — 3 LENTES ═══ -->
+<div class="slide" id="s11" style="background:#742384;">
+  <div class="vcenter pad">
+
+   <div class="tag" style="margin-bottom:12px;align-self:flex-start;">
+      MEDICIÓN DE SATISFACCIÓN
+    </div>
+
+    <!-- TITLE -->
+    <div class="title-md" style="
+      margin-bottom:6px;
+      color:#fff;
+      max-width:900px;
+    ">
+      3 Lentes para medir 
+      <span style="color:#15c9b4;">experiencia</span> 
+      a lo largo del tiempo
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- TOP CARDS -->
+    <div class="g3" style="
+      max-width:960px;
+      margin-bottom:18px;
+      gap:14px;
+    ">
+
+      <!-- CARD 1 -->
+      <div style="
+        background:#15c9b4;
+        border-radius:16px;
+        padding:22px;
+        border:1.5px solid rgba(255,255,255,.18);
+      ">
+
+        <div style="
+          font-size:30px;
+          font-weight:800;
+          color:#fff;
+          margin-bottom:10px;
+          font-family:'Poppins',sans-serif;
+        ">
+          01
+        </div>
+
+        <div style="
+          font-size:14px;
+          font-weight:700;
+          color:#fff;
+          margin-bottom:8px;
+          font-family:'Poppins',sans-serif;
+        ">
+          Cuantitativa Continua
+        </div>
+
+        <div style="
+          font-size:12px;
+          line-height:1.7;
+          color:rgba(255,255,255,.92);
+          margin-bottom:14px;
+          font-family:'Poppins',sans-serif;
+        ">
+          CSAT + métricas de funnel. 
+          Revisión semanal para detectar 
+          degradaciones rápidas.
+        </div>
+
+        <div style="
+          display:inline-flex;
+          padding:6px 12px;
+          border-radius:999px;
+          background:rgba(116,35,132,.2);
+          color:#fff;
+          font-size:9px;
+          font-weight:700;
+          letter-spacing:1px;
+          font-family:'Poppins',sans-serif;
+        ">
+          ¿QUÉ? → Números
+        </div>
+
+      </div>
+
+      <!-- CARD 2 -->
+      <div style="
+        background:#15c9b4;
+        border-radius:16px;
+        padding:22px;
+        border:1.5px solid rgba(255,255,255,.18);
+      ">
+
+        <div style="
+          font-size:30px;
+          font-weight:800;
+          color:#ffffff;
+          margin-bottom:10px;
+          font-family:'Poppins',sans-serif;
+        ">
+          02
+        </div>
+
+        <div style="
+          font-size:14px;
+          font-weight:700;
+          color:#fff;
+          margin-bottom:8px;
+          font-family:'Poppins',sans-serif;
+        ">
+          Cualitativa Periódica
+        </div>
+
+        <div style="
+          font-size:12px;
+          line-height:1.7;
+          color:rgba(255,255,255,.92);
+          margin-bottom:14px;
+          font-family:'Poppins',sans-serif;
+        ">
+          5 entrevistas mensuales para 
+          entender el por qué detrás 
+          de los números.
+        </div>
+
+        <div style="
+          display:inline-flex;
+          padding:6px 12px;
+          border-radius:999px;
+          background:rgba(212,170,255,.18);
+          color:#fff;
+          font-size:9px;
+          font-weight:700;
+          letter-spacing:1px;
+          font-family:'Poppins',sans-serif;
+        ">
+          ¿POR QUÉ? → Contexto
+        </div>
+
+      </div>
+
+      <!-- CARD 3 -->
+      <div style="
+        background:#15c9b4;
+        border-radius:16px;
+        padding:22px;
+        border:1.5px solid rgba(255,255,255,.18);
+      ">
+
+        <div style="
+          font-size:30px;
+          font-weight:800;
+          color:#ffffff;
+          margin-bottom:10px;
+          font-family:'Poppins',sans-serif;
+        ">
+          03
+        </div>
+
+        <div style="
+          font-size:14px;
+          font-weight:700;
+          color:#fff;
+          margin-bottom:8px;
+          font-family:'Poppins',sans-serif;
+        ">
+          Comportamiento Pasivo
+        </div>
+
+        <div style="
+          font-size:12px;
+          line-height:1.7;
+          color:rgba(255,255,255,.92);
+          margin-bottom:14px;
+          font-family:'Poppins',sans-serif;
+        ">
+          Grabaciones de sesión para 
+          descubrir patrones invisibles 
+          para el propio usuario.
+        </div>
+
+        <div style="
+          display:inline-flex;
+          padding:6px 12px;
+          border-radius:999px;
+          background:rgba(255,212,110,.18);
+          color:#fff;
+          font-size:9px;
+          font-weight:700;
+          letter-spacing:1px;
+          font-family:'Poppins',sans-serif;
+        ">
+          ¿CÓMO? → Patrones
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- DASHBOARD -->
+    <div style="
+      max-width:960px;
+      width:100%;
+      padding:18px 20px;
+      background:#15c9b4;
+      border-radius:16px;
+      border:1.5px solid rgba(255,255,255,.18);
+    ">
+
+      <div style="
+        font-size:12px;
+        font-weight:700;
+        color:#fff;
+        margin-bottom:14px;
+        letter-spacing:.5px;
+        font-family:'Poppins',sans-serif;
+      ">
+        Dashboard ejecutivo → 5 números clave
+      </div>
+
+      <div style="
+        display:grid;
+        grid-template-columns:repeat(5,1fr);
+        gap:10px;
+      ">
+
+        <!-- KPI -->
+        <div style="
+          text-align:center;
+          padding:12px;
+          background:rgba(116,35,132,.18);
+          border-radius:12px;
+        ">
+
+          <div style="
+            font-size:10px;
+            color:#fff;
+            font-weight:700;
+            margin-bottom:5px;
+            font-family:'Poppins',sans-serif;
+          ">
+            Adopción
+          </div>
+
+          <div style="
+            font-size:22px;
+            font-weight:800;
+            color:#fff;
+            font-family:'Poppins',sans-serif;
+          ">
+            X%
+          </div>
+
+        </div>
+
+        <!-- KPI -->
+        <div style="
+          text-align:center;
+          padding:12px;
+          background:rgba(116,35,132,.18);
+          border-radius:12px;
+        ">
+
+          <div style="
+            font-size:10px;
+            color:#fff;
+            font-weight:700;
+            margin-bottom:5px;
+            font-family:'Poppins',sans-serif;
+          ">
+            Activación
+          </div>
+
+          <div style="
+            font-size:22px;
+            font-weight:800;
+            color:#fff;
+            font-family:'Poppins',sans-serif;
+          ">
+            X%
+          </div>
+
+        </div>
+
+        <!-- KPI -->
+        <div style="
+          text-align:center;
+          padding:12px;
+          background:rgba(116,35,132,.18);
+          border-radius:12px;
+        ">
+
+          <div style="
+            font-size:10px;
+            color:#fff;
+            font-weight:700;
+            margin-bottom:5px;
+            font-family:'Poppins',sans-serif;
+          ">
+            Abandono
+          </div>
+
+          <div style="
+            font-size:22px;
+            font-weight:800;
+            color:#fff;
+            font-family:'Poppins',sans-serif;
+          ">
+            X%
+          </div>
+
+        </div>
+
+        <!-- KPI -->
+        <div style="
+          text-align:center;
+          padding:12px;
+          background:rgba(116,35,132,.18);
+          border-radius:12px;
+        ">
+
+          <div style="
+            font-size:10px;
+            color:#fff;
+            font-weight:700;
+            margin-bottom:5px;
+            font-family:'Poppins',sans-serif;
+          ">
+            CSAT
+          </div>
+
+          <div style="
+            font-size:22px;
+            font-weight:800;
+            color:#fff;
+            font-family:'Poppins',sans-serif;
+          ">
+            X/5
+          </div>
+
+        </div>
+
+        <!-- KPI -->
+        <div style="
+          text-align:center;
+          padding:12px;
+          background:rgba(116,35,132,.18);
+          border-radius:12px;
+        ">
+
+          <div style="
+            font-size:10px;
+            color:#fff;
+            font-weight:700;
+            margin-bottom:5px;
+            font-family:'Poppins',sans-serif;
+          ">
+            Error
+          </div>
+
+          <div style="
+            font-size:22px;
+            font-weight:800;
+            color:#fff;
+            font-family:'Poppins',sans-serif;
+          ">
+            X%
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ SLIDE 12 — PLAN FASES ═══ -->
+<div class="slide on" id="s12" style="background:#742384;">
+  <div class="vcenter pad">
+
+    <div class="tag" style="align-self:flex-start;">FASE 05</div>
+    <div class="title-lg" style="margin-bottom:6px;">
+      Plan de Acción: <span style="color:#15c9b4;">4 Fases</span> — Diagrama de <span style="color:#15c9b4;">Gantt</span>
+    </div>
+    <div class="divider"></div>
+
+    <div class="g4" style="gap:12px;margin-bottom:20px;max-width:960px;">
+      <div class="pc">
+        <div class="pc-top"><div class="pc-num">01</div><div class="pc-badge">Sem 1–2</div></div>
+        <div class="pc-title">Research &amp; Discovery</div>
+        <div class="pc-item"><div class="db" style="background:#fff;"></div><div class="pc-text">Journey con analytics</div></div>
+        <div class="pc-item"><div class="db" style="background:#fff;"></div><div class="pc-text">5-8 entrevistas usuarios</div></div>
+        <div class="pc-item"><div class="db" style="background:#fff;"></div><div class="pc-text">Benchmark competidores</div></div>
+        <div class="pc-item"><div class="db" style="background:#fff;"></div><div class="pc-text">Hipótesis priorizadas</div></div>
+      </div>
+      <div class="pc">
+        <div class="pc-top"><div class="pc-num">02</div><div class="pc-badge">Sem 3–4</div></div>
+        <div class="pc-title">Diseño &amp; Prototipo</div>
+        <div class="pc-item"><div class="db" style="background:#fff;"></div><div class="pc-text">Rediseño flujo inicio</div></div>
+        <div class="pc-item"><div class="db" style="background:#fff;"></div><div class="pc-text">Prototipo Figma</div></div>
+        <div class="pc-item"><div class="db" style="background:#fff;"></div><div class="pc-text">Test 5 usuarios</div></div>
+        <div class="pc-item"><div class="db" style="background:#fff;"></div><div class="pc-text">&gt;80% sin asistencia = OK</div></div>
+      </div>
+      <div class="pc">
+        <div class="pc-top"><div class="pc-num">03</div><div class="pc-badge">Sem 5–9</div></div>
+        <div class="pc-title">Desarrollo</div>
+        <div class="pc-item"><div class="db" style="background:#fff;"></div><div class="pc-text">Sprint 1: Rediseño UX</div></div>
+        <div class="pc-item"><div class="db" style="background:#fff;"></div><div class="pc-text">Sprint 2: Performance</div></div>
+        <div class="pc-item"><div class="db" style="background:#fff;"></div><div class="pc-text">Sprint 3: Tooltips + QA</div></div>
+        <div class="pc-item"><div class="db" style="background:#fff;"></div><div class="pc-text">Feature flags rollout</div></div>
+      </div>
+      <div class="pc">
+        <div class="pc-top"><div class="pc-num">04</div><div class="pc-badge">Sem 10–12</div></div>
+        <div class="pc-title">Lanzamiento</div>
+        <div class="pc-item"><div class="db" style="background:#fff;"></div><div class="pc-text">10% → 50% → 100%</div></div>
+        <div class="pc-item"><div class="db" style="background:#fff;"></div><div class="pc-text">KPIs en tiempo real</div></div>
+        <div class="pc-item"><div class="db" style="background:#fff;"></div><div class="pc-text">Rollback &lt;15 min</div></div>
+        <div class="pc-item"><div class="db" style="background:#fff;"></div><div class="pc-text">Feedback post-lanzamiento</div></div>
+      </div>
+    </div>
+
+    <div class="gantt-wrap" style="max-width:960px;">
+      <div class="gantt-lbl">DIAGRAMA DE GANTT — 12 SEMANAS</div>
+      <table class="gantt-table" id="gt12"></table>
+      <div class="legend">
+        <div class="li"><div class="ld" style="background:#15c9b4;"></div>Research &amp; Discovery</div>
+        <div class="li"><div class="ld" style="background:#aabbff;"></div>Diseño &amp; Prototipo</div>
+        <div class="li"><div class="ld" style="background:#ffd46e;"></div>Desarrollo</div>
+        <div class="li"><div class="ld" style="background:#ff8fa3;"></div>Lanzamiento</div>
+        <div class="li"><div class="ld" style="background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);"></div>Discovery paralelo</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ SLIDE 13 — ROLLOUT ═══ -->
+<div class="slide" id="s13" style="background:#742384;">
+  <div class="vcenter pad">
+
+    <div class="tag" style="margin-bottom:12px;align-self:flex-start;"> ESTRATEGIA DE LANZAMIENTO </div>
+
+    <!-- TITLE -->
+    <div class="title-md" style="
+      margin-bottom:6px;
+      color:#fff;
+    ">
+      Rollout Gradual con 
+      <span style="color:#15c9b4;">criterios de seguridad</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- TIMELINE -->
+    <div style="
+      max-width:900px;
+      margin-bottom:22px;
+      width:100%;
+    ">
+
+      <div style="
+        display:flex;
+        gap:0;
+        align-items:stretch;
+      ">
+
+        <!-- 10% -->
+        <div style="
+          flex:1;
+          text-align:center;
+          padding:18px;
+          background:#15c9b4;
+          border-radius:14px 0 0 14px;
+          border:1.5px solid rgba(255,255,255,.18);
+        ">
+
+          <div style="
+            font-size:30px;
+            font-weight:800;
+            color:#fff;
+            font-family:'Poppins',sans-serif;
+          ">
+            10%
+          </div>
+
+          <div style="
+            font-size:10px;
+            color:#fff;
+            margin-top:5px;
+            font-family:'Poppins',sans-serif;
+          ">
+            Semana 10
+          </div>
+
+          <div style="
+            font-size:9px;
+            color:rgba(255,255,255,.9);
+            margin-top:2px;
+            font-family:'Poppins',sans-serif;
+          ">
+            Usuarios recurrentes
+          </div>
+
+        </div>
+
+        <!-- ARROW -->
+        <div style="
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          padding:0 12px;
+          background:rgba(255,255,255,.06);
+          border-top:1.5px solid rgba(255,255,255,.1);
+          border-bottom:1.5px solid rgba(255,255,255,.1);
+        ">
+
+          <div style="
+            color:rgba(255,255,255,.45);
+            font-size:18px;
+          ">
+            →
+          </div>
+
+        </div>
+
+        <!-- 50% -->
+        <div style="
+          flex:1;
+          text-align:center;
+          padding:18px;
+          background:rgba(21,201,180,.88);
+          border-top:1.5px solid rgba(255,255,255,.18);
+          border-bottom:1.5px solid rgba(255,255,255,.18);
+        ">
+
+          <div style="
+            font-size:30px;
+            font-weight:800;
+            color:#ffffff;
+            font-family:'Poppins',sans-serif;
+          ">
+            50%
+          </div>
+
+          <div style="
+            font-size:10px;
+            color:#fff;
+            margin-top:5px;
+            font-family:'Poppins',sans-serif;
+          ">
+            Semana 11
+          </div>
+
+          <div style="
+            font-size:9px;
+            color:rgba(255,255,255,.9);
+            margin-top:2px;
+            font-family:'Poppins',sans-serif;
+          ">
+            Incluye nuevos
+          </div>
+
+        </div>
+
+        <!-- ARROW -->
+        <div style="
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          padding:0 12px;
+          background:rgba(255,255,255,.06);
+          border-top:1.5px solid rgba(255,255,255,.1);
+          border-bottom:1.5px solid rgba(255,255,255,.1);
+        ">
+
+          <div style="
+            color:rgba(255,255,255,.45);
+            font-size:18px;
+          ">
+            →
+          </div>
+
+        </div>
+
+        <!-- 100% -->
+        <div style="
+          flex:1;
+          text-align:center;
+          padding:18px;
+          background:#15c9b4;
+          border-radius:0 14px 14px 0;
+          border:1.5px solid rgba(255,255,255,.18);
+        ">
+
+          <div style="
+            font-size:30px;
+            font-weight:800;
+            color:#fff;
+            font-family:'Poppins',sans-serif;
+          ">
+            100%
+          </div>
+
+          <div style="
+            font-size:10px;
+            color:#fff;
+            margin-top:5px;
+            font-family:'Poppins',sans-serif;
+          ">
+            Semana 12
+          </div>
+
+          <div style="
+            font-size:9px;
+            color:rgba(255,255,255,.9);
+            margin-top:2px;
+            font-family:'Poppins',sans-serif;
+          ">
+            Todos los usuarios
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- LOWER GRID -->
+    <div class="g2" style="
+      max-width:900px;
+      gap:16px;
+    ">
+
+      <!-- LEFT CARD -->
+      <div style="
+        background:#15c9b4;
+        border-radius:16px;
+        padding:18px;
+        border:1.5px solid rgba(255,255,255,.18);
+      ">
+
+        <div style="
+          font-size:10px;
+          font-weight:700;
+          color:#fff;
+          margin-bottom:12px;
+          letter-spacing:1.5px;
+          font-family:'Poppins',sans-serif;
+        ">
+          CRITERIOS PARA AVANZAR
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:7px;">
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#742384;margin-top:4px;"></div>
+            <div style="
+              font-size:11px;
+              color:#fff;
+              font-family:'Poppins',sans-serif;
+            ">
+              Error &lt;3%
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#742384;margin-top:4px;"></div>
+            <div style="
+              font-size:11px;
+              color:#fff;
+              font-family:'Poppins',sans-serif;
+            ">
+              CSAT &gt;4.0
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#742384;margin-top:4px;"></div>
+            <div style="
+              font-size:11px;
+              color:#fff;
+              font-family:'Poppins',sans-serif;
+            ">
+              Sin incidentes en 48h
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- RIGHT CARD -->
+      <div style="
+        background:#15c9b4;
+        border-radius:16px;
+        padding:18px;
+        border:1.5px solid rgba(255,255,255,.18);
+      ">
+
+        <div style="
+          font-size:10px;
+          font-weight:700;
+          color:#FFF;
+          margin-bottom:12px;
+          letter-spacing:1.5px;
+          font-family:'Poppins',sans-serif;
+        ">
+          ALERTAS Y ROLLBACK
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:7px;">
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#742384;margin-top:4px;"></div>
+            <div style="
+              font-size:11px;
+              color:#fff;
+              font-family:'Poppins',sans-serif;
+            ">
+              Error &gt;5% → pausa inmediata
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#742384;margin-top:4px;"></div>
+            <div style="
+              font-size:11px;
+              color:#fff;
+              font-family:'Poppins',sans-serif;
+            ">
+              P95 &gt;4s → revisión
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#742384;margin-top:4px;"></div>
+            <div style="
+              font-size:11px;
+              color:#fff;
+              font-family:'Poppins',sans-serif;
+            ">
+              Reversión &lt;15 min (probada)
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+<!-- ═══ SLIDE 14 — EQUIPOS ═══ -->
+<div class="slide" id="s14" style="background:#742384;">
+  <div class="vcenter pad">
+
+    <!-- TAG -->
+    <div class="tag" style="margin-bottom:12px;align-self:flex-start;">
+      FASE 06
+    </div>
+
+    <!-- TITLE -->
+    <div class="title-lg" style="
+      margin-bottom:6px;
+      color:#fff;
+    ">
+      Coordinación de 
+      <span style="color:#15c9b4;">Equipos</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- SUBTITLE -->
+    <div style="
+      margin-bottom:22px;
+      max-width:640px;
+      padding:12px 16px;
+      background:rgba(21,201,180,.12);
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.12);
+      font-size:12px;
+      color:#fff;
+      line-height:1.7;
+      font-family:'Poppins',sans-serif;
+    ">
+      Los proyectos no fallan por falta de talento.
+      <span style="color:#15c9b4;font-weight:700;">
+        Fallan por falta de alineación.
+      </span>
+    </div>
+
+    <!-- GRID -->
+    <div class="g2" style="
+      max-width:960px;
+      gap:14px;
+    ">
+
+      <!-- DESARROLLO -->
+      <div style="
+        display:flex;
+        gap:14px;
+        padding:18px;
+        background:#15c9b4;
+        border-radius:16px;
+        border:1.5px solid rgba(255,255,255,.18);
+      ">
+
+        <!-- ICON -->
+        <div style="
+          width:42px;
+          height:42px;
+          background:#742384;
+          border-radius:12px;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          flex-shrink:0;
+          font-size:18px;
+          color:#fff;
+          box-shadow:0 4px 12px rgba(0,0,0,.18);
+        ">
+          ⚙️
+        </div>
+
+        <!-- CONTENT -->
+        <div>
+
+          <div style="
+            font-size:13px;
+            font-weight:700;
+            color:#fff;
+            margin-bottom:3px;
+            font-family:'Poppins',sans-serif;
+            letter-spacing:.5px;
+          ">
+            DESARROLLO
+          </div>
+
+          <div style="
+            font-size:10px;
+            color:rgba(255,255,255,.92);
+            margin-bottom:8px;
+            font-style:italic;
+            font-family:'Poppins',sans-serif;
+          ">
+            Líder técnico del sprint
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:5px;">
+
+            <div style="display:flex;gap:7px;">
+              <div class="db" style="background:#742384;margin-top:4px;"></div>
+              <div style="font-size:11px;color:#fff;font-family:'Poppins',sans-serif;">
+                Estimaciones honestas
+              </div>
+            </div>
+
+            <div style="display:flex;gap:7px;">
+              <div class="db" style="background:#742384;margin-top:4px;"></div>
+              <div style="font-size:11px;color:#fff;font-family:'Poppins',sans-serif;">
+                Fase 1-2 prioritarias
+              </div>
+            </div>
+
+            <div style="display:flex;gap:7px;">
+              <div class="db" style="background:#742384;margin-top:4px;"></div>
+              <div style="font-size:11px;color:#fff;font-family:'Poppins',sans-serif;">
+                Bloqueos visibles en daily
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- UX -->
+      <div style="
+        display:flex;
+        gap:14px;
+        padding:18px;
+        background:#15c9b4;
+        border-radius:16px;
+        border:1.5px solid rgba(255,255,255,.18);
+      ">
+
+        <div style="
+          width:42px;
+          height:42px;
+          background:#d4aaff;
+          border-radius:12px;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          flex-shrink:0;
+          font-size:18px;
+          box-shadow:0 4px 12px rgba(0,0,0,.18);
+        ">
+          🎨
+        </div>
+
+        <div>
+
+          <div style="
+            font-size:13px;
+            font-weight:700;
+            color:#fff;
+            margin-bottom:3px;
+            font-family:'Poppins',sans-serif;
+          ">
+            DISEÑO UX
+          </div>
+
+          <div style="
+            font-size:10px;
+            color:rgba(255,255,255,.92);
+            margin-bottom:8px;
+            font-style:italic;
+            font-family:'Poppins',sans-serif;
+          ">
+            Dueño de la experiencia
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:5px;">
+
+            <div style="display:flex;gap:7px;">
+              <div class="db" style="background:#d4aaff;margin-top:4px;"></div>
+              <div style="font-size:11px;color:#fff;font-family:'Poppins',sans-serif;">
+                Prototipo antes del dev
+              </div>
+            </div>
+
+            <div style="display:flex;gap:7px;">
+              <div class="db" style="background:#d4aaff;margin-top:4px;"></div>
+              <div style="font-size:11px;color:#fff;font-family:'Poppins',sans-serif;">
+                Design system alineado
+              </div>
+            </div>
+
+            <div style="display:flex;gap:7px;">
+              <div class="db" style="background:#d4aaff;margin-top:4px;"></div>
+              <div style="font-size:11px;color:#fff;font-family:'Poppins',sans-serif;">
+                Testing continuo
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- MARKETING -->
+      <div style="
+        display:flex;
+        gap:14px;
+        padding:18px;
+        background:#15c9b4;
+        border-radius:16px;
+        border:1.5px solid rgba(255,255,255,.18);
+      ">
+
+        <div style="
+          width:42px;
+          height:42px;
+          background:#742384;
+          border-radius:12px;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          flex-shrink:0;
+          font-size:18px;
+          color:#fff;
+          box-shadow:0 4px 12px rgba(0,0,0,.18);
+        ">
+          📢
+        </div>
+
+        <div>
+
+          <div style="
+            font-size:13px;
+            font-weight:700;
+            color:#fff;
+            margin-bottom:3px;
+            font-family:'Poppins',sans-serif;
+          ">
+            MARKETING
+          </div>
+
+          <div style="
+            font-size:10px;
+            color:rgba(255,255,255,.92);
+            margin-bottom:8px;
+            font-style:italic;
+            font-family:'Poppins',sans-serif;
+          ">
+            Acelerador de adopción
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:5px;">
+
+            <div style="display:flex;gap:7px;">
+              <div class="db" style="background:#742384;margin-top:4px;"></div>
+              <div style="font-size:11px;color:#fff;font-family:'Poppins',sans-serif;">
+                Plan antes del rollout
+              </div>
+            </div>
+
+            <div style="display:flex;gap:7px;">
+              <div class="db" style="background:#742384;margin-top:4px;"></div>
+              <div style="font-size:11px;color:#fff;font-family:'Poppins',sans-serif;">
+                Segmentación usuarios
+              </div>
+            </div>
+
+            <div style="display:flex;gap:7px;">
+              <div class="db" style="background:#742384;margin-top:4px;"></div>
+              <div style="font-size:11px;color:#fff;font-family:'Poppins',sans-serif;">
+                Mensajes claros de valor
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- CX -->
+      <div style="
+        display:flex;
+        gap:14px;
+        padding:18px;
+        background:#15c9b4;
+        border-radius:16px;
+        border:1.5px solid rgba(255,255,255,.18);
+      ">
+
+        <div style="
+          width:42px;
+          height:42px;
+          background:#d4aaff;
+          border-radius:12px;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          flex-shrink:0;
+          font-size:18px;
+          box-shadow:0 4px 12px rgba(0,0,0,.18);
+        ">
+          💬
+        </div>
+
+        <div>
+
+          <div style="
+            font-size:13px;
+            font-weight:700;
+            color:#fff;
+            margin-bottom:3px;
+            font-family:'Poppins',sans-serif;
+          ">
+            CX / EXPERIENCIA
+          </div>
+
+          <div style="
+            font-size:10px;
+            color:rgba(255,255,255,.92);
+            margin-bottom:8px;
+            font-style:italic;
+            font-family:'Poppins',sans-serif;
+          ">
+            Voz del usuario
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:5px;">
+
+            <div style="display:flex;gap:7px;">
+              <div class="db" style="background:#d4aaff;margin-top:4px;"></div>
+              <div style="font-size:11px;color:#fff;font-family:'Poppins',sans-serif;">
+                Tickets y patrones
+              </div>
+            </div>
+
+            <div style="display:flex;gap:7px;">
+              <div class="db" style="background:#d4aaff;margin-top:4px;"></div>
+              <div style="font-size:11px;color:#fff;font-family:'Poppins',sans-serif;">
+                Feedback estructurado
+              </div>
+            </div>
+
+            <div style="display:flex;gap:7px;">
+              <div class="db" style="background:#d4aaff;margin-top:4px;"></div>
+              <div style="font-size:11px;color:#fff;font-family:'Poppins',sans-serif;">
+                Co-definición de CSAT
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ SLIDE 15 — RITUALES ═══ -->
+<div class="slide" id="s15" style="background:#742384;">
+  <div class="vcenter pad">
+
+  <div class="tag" style="margin-bottom:12px;align-self:flex-start;">
+      RITUALES
+    </div>
+
+    <!-- TITLE -->
+    <div class="title-md" style="
+      margin-bottom:6px;
+      color:#fff;
+    ">
+      Los rituales previenen la 
+      <span style="color:#15c9b4;">
+        desalineación silenciosa
+      </span>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- TIMELINE -->
+    <div style="
+      max-width:900px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      margin-bottom:20px;
+    ">
+
+      <!-- DAILY -->
+      <div style="
+        display:flex;
+        gap:14px;
+        align-items:stretch;
+      ">
+
+        <!-- TIME -->
+        <div style="
+          min-width:82px;
+          background:#15c9b4;
+          border-radius:14px;
+          padding:10px 12px;
+          text-align:center;
+          display:flex;
+          flex-direction:column;
+          justify-content:center;
+          border:1.5px solid rgba(255,255,255,.18);
+        ">
+
+          <div style="
+            font-size:10px;
+            font-weight:700;
+            color:#fff;
+            letter-spacing:1px;
+            font-family:'Poppins',sans-serif;
+          ">
+            DIARIO
+          </div>
+
+          <div style="
+            font-size:24px;
+            font-weight:800;
+            color:#742384;
+            margin-top:2px;
+            font-family:'Poppins',sans-serif;
+          ">
+            15'
+          </div>
+
+        </div>
+
+        <!-- CONTENT -->
+        <div style="
+          flex:1;
+          background:rgba(21,201,180,.12);
+          border-radius:16px;
+          padding:16px;
+          border:1.5px solid rgba(255,255,255,.12);
+        ">
+
+          <div style="
+            font-size:14px;
+            font-weight:700;
+            color:#fff;
+            margin-bottom:5px;
+            font-family:'Poppins',sans-serif;
+          ">
+            Daily Standup
+          </div>
+
+          <div style="
+            font-size:11px;
+            line-height:1.7;
+            color:rgba(255,255,255,.92);
+            font-family:'Poppins',sans-serif;
+          ">
+            PM + Dev + UX. ¿Qué hice? ¿Qué haré? ¿Bloqueo?
+            Si algo toma más de 2 minutos, sale del ritual y entra a una conversación aparte.
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- SPRINT REVIEW -->
+      <div style="
+        display:flex;
+        gap:14px;
+        align-items:stretch;
+      ">
+
+        <div style="
+          min-width:82px;
+          background:#15c9b4;
+          border-radius:14px;
+          padding:10px 12px;
+          text-align:center;
+          display:flex;
+          flex-direction:column;
+          justify-content:center;
+          border:1.5px solid rgba(255,255,255,.18);
+        ">
+
+          <div style="
+            font-size:10px;
+            font-weight:700;
+            color:#742384;
+            letter-spacing:1px;
+            font-family:'Poppins',sans-serif;
+          ">
+            BISEMANAL
+          </div>
+
+          <div style="
+            font-size:24px;
+            font-weight:800;
+            color:#fff;
+            margin-top:2px;
+            font-family:'Poppins',sans-serif;
+          ">
+            1h
+          </div>
+
+        </div>
+
+        <div style="
+          flex:1;
+          background:rgba(212,170,255,.12);
+          border-radius:16px;
+          padding:16px;
+          border:1.5px solid rgba(255,255,255,.12);
+        ">
+
+          <div style="
+            font-size:14px;
+            font-weight:700;
+            color:#fff;
+            margin-bottom:5px;
+            font-family:'Poppins',sans-serif;
+          ">
+            Sprint Review
+          </div>
+
+          <div style="
+            font-size:11px;
+            line-height:1.7;
+            color:rgba(255,255,255,.92);
+            font-family:'Poppins',sans-serif;
+          ">
+            Todos los equipos + stakeholders.
+            Demo del producto funcionando.
+            No slides. No promesas. Producto real, métricas y decisiones.
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- STEERING -->
+      <div style="
+        display:flex;
+        gap:14px;
+        align-items:stretch;
+      ">
+
+        <div style="
+          min-width:82px;
+          background:#15c9b4;
+          border-radius:14px;
+          padding:10px 12px;
+          text-align:center;
+          display:flex;
+          flex-direction:column;
+          justify-content:center;
+          border:1.5px solid rgba(255,255,255,.18);
+        ">
+
+          <div style="
+            font-size:10px;
+            font-weight:700;
+            color:#fff;
+            letter-spacing:1px;
+            font-family:'Poppins',sans-serif;
+          ">
+            MENSUAL
+          </div>
+
+          <div style="
+            font-size:24px;
+            font-weight:800;
+            color:#742384;
+            margin-top:2px;
+            font-family:'Poppins',sans-serif;
+          ">
+            1h
+          </div>
+
+        </div>
+
+        <div style="
+          flex:1;
+          background:rgba(21,201,180,.12);
+          border-radius:16px;
+          padding:16px;
+          border:1.5px solid rgba(255,255,255,.12);
+        ">
+
+          <div style="
+            font-size:14px;
+            font-weight:700;
+            color:#fff;
+            margin-bottom:5px;
+            font-family:'Poppins',sans-serif;
+          ">
+            Steering con Negocio
+          </div>
+
+          <div style="
+            font-size:11px;
+            line-height:1.7;
+            color:rgba(255,255,255,.92);
+            font-family:'Poppins',sans-serif;
+          ">
+            No es pedir permiso.
+            Es informar, alinear prioridades y escalar decisiones ejecutivas con evidencia.
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- RETRO -->
+      <div style="
+        display:flex;
+        gap:14px;
+        align-items:stretch;
+      ">
+
+        <div style="
+          min-width:82px;
+          background:#15c9b4;
+          border-radius:14px;
+          padding:10px 12px;
+          text-align:center;
+          display:flex;
+          flex-direction:column;
+          justify-content:center;
+          border:1.5px solid rgba(255,255,255,.18);
+        ">
+
+          <div style="
+            font-size:10px;
+            font-weight:700;
+            color:#742384;
+            letter-spacing:1px;
+            font-family:'Poppins',sans-serif;
+          ">
+            BISEMANAL
+          </div>
+
+          <div style="
+            font-size:24px;
+            font-weight:800;
+            color:#fff;
+            margin-top:2px;
+            font-family:'Poppins',sans-serif;
+          ">
+            45'
+          </div>
+
+        </div>
+
+        <div style="
+          flex:1;
+          background:rgba(212,170,255,.12);
+          border-radius:16px;
+          padding:16px;
+          border:1.5px solid rgba(255,255,255,.12);
+        ">
+
+          <div style="
+            font-size:14px;
+            font-weight:700;
+            color:#fff;
+            margin-bottom:5px;
+            font-family:'Poppins',sans-serif;
+          ">
+            Retrospectiva
+          </div>
+
+          <div style="
+            font-size:11px;
+            line-height:1.7;
+            color:rgba(255,255,255,.92);
+            font-family:'Poppins',sans-serif;
+          ">
+            Dev + UX revisan qué funcionó y qué no.
+            Toda acción debe tener dueño y fecha.
+            Sin eso, son solo quejas archivadas.
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- DECISION LOG -->
+    <div style="
+      max-width:900px;
+      background:#15c9b4;
+      border-radius:14px;
+      padding:14px 18px;
+      border:1.5px solid rgba(255,255,255,.18);
+    ">
+
+      <div style="
+        font-size:11px;
+        line-height:1.8;
+        color:#fff;
+        font-family:'Poppins',sans-serif;
+      ">
+
+        <span style="
+          font-weight:700;
+          color:#742384;
+        ">
+          Decision Log:
+        </span>
+
+        Contexto · Opciones · Decisión · Razón · Quién decidió
+
+        <span style="
+          color:rgba(255,255,255,.92);
+        ">
+          → elimina el clásico “yo pensé que habíamos acordado…”
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ SLIDE 16 — CONFLICTOS ═══ -->
+<div class="slide" id="s16" style="background:#742384;">
+  <div class="vcenter pad">
+
+    <!-- TAG -->
+   <div class="tag" style="margin-bottom:12px;align-self:flex-start;">
+      GESTION DE CONFLICTOS
+    </div>
+
+    <!-- TITLE -->
+    <div class="title-md" style="
+      margin-bottom:6px;
+      color:#fff;
+    ">
+      Protocolo de 
+      <span style="color:#15c9b4;">
+        prioridades en conflicto
+      </span>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- STEPS -->
+    <div style="
+      max-width:900px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      margin-bottom:20px;
+    ">
+
+      <!-- STEP 1 -->
+      <div style="
+        display:flex;
+        gap:14px;
+        padding:18px;
+        background:rgba(21,201,180,.10);
+        border-radius:16px;
+        border:1.5px solid rgba(255,255,255,.12);
+      ">
+
+        <div style="
+          min-width:46px;
+          height:46px;
+          border-radius:14px;
+          background:#15c9b4;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          color:#742384;
+          font-size:18px;
+          font-weight:800;
+          font-family:'Poppins',sans-serif;
+        ">
+          1
+        </div>
+
+        <div>
+
+          <div style="
+            font-size:14px;
+            font-weight:700;
+            color:#fff;
+            margin-bottom:5px;
+            font-family:'Poppins',sans-serif;
+          ">
+            ¿Tenemos los mismos datos?
+          </div>
+
+          <div style="
+            font-size:11px;
+            line-height:1.7;
+            color:rgba(255,255,255,.9);
+            font-family:'Poppins',sans-serif;
+          ">
+            La mayoría de los conflictos nacen de información parcial.
+            Antes de debatir prioridades, ambos lados deben mirar la misma realidad.
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- STEP 2 -->
+      <div style="
+        display:flex;
+        gap:14px;
+        padding:18px;
+        background:rgba(212,170,255,.10);
+        border-radius:16px;
+        border:1.5px solid rgba(255,255,255,.12);
+      ">
+
+        <div style="
+          min-width:46px;
+          height:46px;
+          border-radius:14px;
+          background:#15c9b4;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          color:#742384;
+          font-size:18px;
+          font-weight:800;
+          font-family:'Poppins',sans-serif;
+        ">
+          2
+        </div>
+
+        <div>
+
+          <div style="
+            font-size:14px;
+            font-weight:700;
+            color:#fff;
+            margin-bottom:5px;
+            font-family:'Poppins',sans-serif;
+          ">
+            ¿Cuál es el impacto en el KPI norte?
+          </div>
+
+          <div style="
+            font-size:11px;
+            line-height:1.7;
+            color:rgba(255,255,255,.9);
+            font-family:'Poppins',sans-serif;
+          ">
+            El +25% de adopción funciona como árbitro neutral.
+            No gana la voz más fuerte.
+            Ganan los datos.
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- STEP 3 -->
+      <div style="
+        display:flex;
+        gap:14px;
+        padding:18px;
+        background:rgba(21,201,180,.10);
+        border-radius:16px;
+        border:1.5px solid rgba(255,255,255,.12);
+      ">
+
+        <div style="
+          min-width:46px;
+          height:46px;
+          border-radius:14px;
+          background:#15c9b4;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          color:#742384;
+          font-size:18px;
+          font-weight:800;
+          font-family:'Poppins',sans-serif;
+        ">
+          3
+        </div>
+
+        <div>
+
+          <div style="
+            font-size:14px;
+            font-weight:700;
+            color:#fff;
+            margin-bottom:5px;
+            font-family:'Poppins',sans-serif;
+          ">
+            ¿Puedo decidirlo yo?
+          </div>
+
+          <div style="
+            font-size:11px;
+            line-height:1.7;
+            color:rgba(255,255,255,.9);
+            font-family:'Poppins',sans-serif;
+          ">
+            Si involucra presupuesto, alcance o recursos fuera de mi autoridad,
+            lo escalo al steering.
+            Nunca dejo que se oxide dentro del backlog.
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- BOTTOM CARDS -->
+    <div class="g2" style="
+      max-width:900px;
+      gap:14px;
+    ">
+
+      <!-- ALERTS -->
+      <div style="
+        background:rgba(212,170,255,.10);
+        border-radius:16px;
+        padding:18px;
+        border:1.5px solid rgba(212,170,255,.22);
+      ">
+
+        <div style="
+          font-size:10px;
+          font-weight:700;
+          color:#d4aaff;
+          margin-bottom:10px;
+          letter-spacing:1.5px;
+          font-family:'Poppins',sans-serif;
+        ">
+          SEÑALES DE DESALINEACIÓN
+        </div>
+
+        <div style="
+          display:flex;
+          flex-direction:column;
+          gap:8px;
+        ">
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#d4aaff;margin-top:5px;"></div>
+            <div class="subtitle" style="font-size:11px;">
+              Diseño entrega mockups imposibles
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#d4aaff;margin-top:5px;"></div>
+            <div class="subtitle" style="font-size:11px;">
+              Marketing comunica antes del rollout
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#d4aaff;margin-top:5px;"></div>
+            <div class="subtitle" style="font-size:11px;">
+              Negocio descubre cambios en retrospectiva
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- SOLUTIONS -->
+      <div style="
+        background:rgba(21,201,180,.10);
+        border-radius:16px;
+        padding:18px;
+        border:1.5px solid rgba(21,201,180,.22);
+      ">
+
+        <div style="
+          font-size:10px;
+          font-weight:700;
+          color:#15c9b4;
+          margin-bottom:10px;
+          letter-spacing:1.5px;
+          font-family:'Poppins',sans-serif;
+        ">
+          SOLUCIONES PREVENTIVAS
+        </div>
+
+        <div style="
+          display:flex;
+          flex-direction:column;
+          gap:8px;
+        ">
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#15c9b4;margin-top:5px;"></div>
+            <div class="subtitle" style="font-size:11px;">
+              Dev participa desde Fase 2
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#15c9b4;margin-top:5px;"></div>
+            <div class="subtitle" style="font-size:11px;">
+              Marketing entra antes del Sprint 2
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#15c9b4;margin-top:5px;"></div>
+            <div class="subtitle" style="font-size:11px;">
+              Steering mensual mantiene contexto compartido
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ SLIDE 17 — SÍNTESIS ═══ -->
+<!-- ═══════════════════════════════════════ -->
+<!-- SLIDE 16 — GESTIÓN DE CONFLICTOS -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="slide" id="s16" style="background:#742384;">
+  <div class="vcenter pad">
+
+    <!-- TAG -->
+    <div class="tag" style="
+      margin-bottom:12px;
+      align-self:flex-start;
+      background:#15c9b4;
+      color:#fff;
+      padding:7px 14px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:1.5px;
+      font-family:'Poppins',sans-serif;
+      box-shadow:0 4px 14px rgba(21,201,180,.25);
+    ">
+      GESTIÓN DE CONFLICTOS
+    </div>
+
+    <!-- TITLE -->
+    <div class="title-md" style="
+      margin-bottom:6px;
+      color:#fff;
+    ">
+      Protocolo de 
+      <span style="color:#15c9b4;">
+        prioridades en conflicto
+      </span>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- FLOW -->
+    <div style="
+      max-width:900px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      margin-bottom:20px;
+    ">
+
+      <!-- STEP 1 -->
+      <div style="
+        display:flex;
+        gap:14px;
+        padding:18px;
+        background:rgba(21,201,180,.10);
+        border-radius:16px;
+        border:1.5px solid rgba(255,255,255,.12);
+      ">
+
+        <div style="
+          min-width:44px;
+          height:44px;
+          border-radius:12px;
+          background:#15c9b4;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          font-size:18px;
+          font-weight:800;
+          color:#742384;
+          font-family:'Poppins',sans-serif;
+        ">
+          1
+        </div>
+
+        <div>
+
+          <div style="
+            font-size:14px;
+            font-weight:700;
+            color:#fff;
+            margin-bottom:5px;
+            font-family:'Poppins',sans-serif;
+          ">
+            ¿Tenemos los mismos datos?
+          </div>
+
+          <div style="
+            font-size:11px;
+            line-height:1.7;
+            color:rgba(255,255,255,.9);
+            font-family:'Poppins',sans-serif;
+          ">
+            La mayoría de los conflictos no son de valores.
+            Son interpretaciones distintas de la realidad.
+            Antes de decidir, ambas partes deben mirar el mismo tablero.
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- STEP 2 -->
+      <div style="
+        display:flex;
+        gap:14px;
+        padding:18px;
+        background:rgba(212,170,255,.10);
+        border-radius:16px;
+        border:1.5px solid rgba(255,255,255,.12);
+      ">
+
+        <div style="
+          min-width:44px;
+          height:44px;
+          border-radius:12px;
+          background:#15c9b4;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          font-size:18px;
+          font-weight:800;
+          color:#742384;
+          font-family:'Poppins',sans-serif;
+        ">
+          2
+        </div>
+
+        <div>
+
+          <div style="
+            font-size:14px;
+            font-weight:700;
+            color:#fff;
+            margin-bottom:5px;
+            font-family:'Poppins',sans-serif;
+          ">
+            ¿Cuál es el impacto en el KPI norte?
+          </div>
+
+          <div style="
+            font-size:11px;
+            line-height:1.7;
+            color:rgba(255,255,255,.9);
+            font-family:'Poppins',sans-serif;
+          ">
+            El +25% de adopción funciona como árbitro neutral.
+            No gana la persona con más jerarquía.
+            Ganan los datos.
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- STEP 3 -->
+      <div style="
+        display:flex;
+        gap:14px;
+        padding:18px;
+        background:rgba(21,201,180,.10);
+        border-radius:16px;
+        border:1.5px solid rgba(255,255,255,.12);
+      ">
+
+        <div style="
+          min-width:44px;
+          height:44px;
+          border-radius:12px;
+          background:#15c9b4;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          font-size:18px;
+          font-weight:800;
+          color:#742384;
+          font-family:'Poppins',sans-serif;
+        ">
+          3
+        </div>
+
+        <div>
+
+          <div style="
+            font-size:14px;
+            font-weight:700;
+            color:#fff;
+            margin-bottom:5px;
+            font-family:'Poppins',sans-serif;
+          ">
+            ¿Puedo decidirlo yo?
+          </div>
+
+          <div style="
+            font-size:11px;
+            line-height:1.7;
+            color:rgba(255,255,255,.9);
+            font-family:'Poppins',sans-serif;
+          ">
+            Si involucra presupuesto, alcance o recursos fuera de mi autoridad,
+            se escala al steering.
+            Nunca se deja pudrir en el backlog fantasma.
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ALERTS -->
+    <div class="g2" style="
+      max-width:900px;
+      gap:14px;
+    ">
+
+      <!-- BAD -->
+      <div style="
+        background:rgba(212,170,255,.10);
+        border-radius:16px;
+        padding:18px;
+        border:1.5px solid rgba(212,170,255,.2);
+      ">
+
+        <div style="
+          font-size:10px;
+          font-weight:700;
+          color:#d4aaff;
+          margin-bottom:10px;
+          letter-spacing:1.5px;
+          font-family:'Poppins',sans-serif;
+        ">
+          SEÑALES DE DESALINEACIÓN
+        </div>
+
+        <div style="
+          display:flex;
+          flex-direction:column;
+          gap:8px;
+        ">
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#d4aaff;margin-top:5px;"></div>
+            <div class="subtitle" style="font-size:11px;">
+              Diseño entrega mockups imposibles
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#d4aaff;margin-top:5px;"></div>
+            <div class="subtitle" style="font-size:11px;">
+              Marketing lanza antes del rollout
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#d4aaff;margin-top:5px;"></div>
+            <div class="subtitle" style="font-size:11px;">
+              Negocio se entera en la retrospectiva
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- GOOD -->
+      <div style="
+        background:rgba(21,201,180,.10);
+        border-radius:16px;
+        padding:18px;
+        border:1.5px solid rgba(21,201,180,.22);
+      ">
+
+        <div style="
+          font-size:10px;
+          font-weight:700;
+          color:#15c9b4;
+          margin-bottom:10px;
+          letter-spacing:1.5px;
+          font-family:'Poppins',sans-serif;
+        ">
+          SOLUCIONES PREVENTIVAS
+        </div>
+
+        <div style="
+          display:flex;
+          flex-direction:column;
+          gap:8px;
+        ">
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#15c9b4;margin-top:5px;"></div>
+            <div class="subtitle" style="font-size:11px;">
+              Dev participa desde Fase 2
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#15c9b4;margin-top:5px;"></div>
+            <div class="subtitle" style="font-size:11px;">
+              Marketing entra antes del Sprint 2
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;">
+            <div class="db" style="background:#15c9b4;margin-top:5px;"></div>
+            <div class="subtitle" style="font-size:11px;">
+              Steering mensual mantiene contexto compartido
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SLIDE 17 — SÍNTESIS EJECUTIVA -->
+<!-- ═══════════════════════════════════════ -->
+
+<div class="slide" id="s17" style="background:#742384;">
+  <div class="vcenter pad">
+
+    <!-- TAG -->
+    <div class="tag" style="margin-bottom:12px;align-self:flex-start;">
+      SINTESIS EJECUTIVA
+    </div>
+
+    <!-- TITLE -->
+    <div class="title-lg" style="
+      margin-bottom:6px;
+      color:#fff;
+    ">
+      5 ideas que se 
+      <span style="color:#15c9b4;">
+        sostienen mutuamente
+      </span>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- LIST -->
+    <div style="
+      max-width:900px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    ">
+
+      <!-- ITEM -->
+      <div style="
+        display:flex;
+        gap:14px;
+        align-items:flex-start;
+        padding:16px;
+        background:rgba(21,201,180,.10);
+        border-radius:15px;
+        border:1.5px solid rgba(255,255,255,.12);
+      ">
+
+        <div style="
+          min-width:42px;
+          height:42px;
+          border-radius:12px;
+          background:#15c9b4;
+          color:#742384;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          font-size:16px;
+          font-weight:800;
+          font-family:'Poppins',sans-serif;
+        ">
+          01
+        </div>
+
+        <div>
+          <div style="
+            font-size:14px;
+            font-weight:700;
+            color:#fff;
+            margin-bottom:4px;
+            font-family:'Poppins',sans-serif;
+          ">
+            El problema es de ejecución, no de concepto
+          </div>
+
+          <div class="subtitle" style="font-size:11px;">
+            La propuesta de valor es correcta.
+            La fricción impide que los nuevos usuarios la descubran.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ITEM -->
+      <div style="
+        display:flex;
+        gap:14px;
+        align-items:flex-start;
+        padding:16px;
+        background:rgba(212,170,255,.10);
+        border-radius:15px;
+        border:1.5px solid rgba(255,255,255,.12);
+      ">
+
+        <div style="
+          min-width:42px;
+          height:42px;
+          border-radius:12px;
+          background:#15c9b4;
+          color:#742384;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          font-size:16px;
+          font-weight:800;
+          font-family:'Poppins',sans-serif;
+        ">
+          02
+        </div>
+
+        <div>
+          <div style="
+            font-size:14px;
+            font-weight:700;
+            color:#fff;
+            margin-bottom:4px;
+            font-family:'Poppins',sans-serif;
+          ">
+            Priorizar es renunciar con criterio
+          </div>
+
+          <div class="subtitle" style="font-size:11px;">
+            Matriz impacto/esfuerzo y RICE Score.
+            Las decisiones salen de evidencia, no de volumen político.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ITEM -->
+      <div style="
+        display:flex;
+        gap:14px;
+        align-items:flex-start;
+        padding:16px;
+        background:rgba(21,201,180,.10);
+        border-radius:15px;
+        border:1.5px solid rgba(255,255,255,.12);
+      ">
+
+        <div style="
+          min-width:42px;
+          height:42px;
+          border-radius:12px;
+          background:#15c9b4;
+          color:#742384;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          font-size:16px;
+          font-weight:800;
+          font-family:'Poppins',sans-serif;
+        ">
+          03
+        </div>
+
+        <div>
+          <div style="
+            font-size:14px;
+            font-weight:700;
+            color:#fff;
+            margin-bottom:4px;
+            font-family:'Poppins',sans-serif;
+          ">
+            La tensión negocio-producto es saludable
+          </div>
+
+          <div class="subtitle" style="font-size:11px;">
+            El roadmap en dos horizontes convierte conflicto en dirección compartida.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ITEM -->
+      <div style="
+        display:flex;
+        gap:14px;
+        align-items:flex-start;
+        padding:16px;
+        background:rgba(212,170,255,.10);
+        border-radius:15px;
+        border:1.5px solid rgba(255,255,255,.12);
+      ">
+
+        <div style="
+          min-width:42px;
+          height:42px;
+          border-radius:12px;
+          background:#15c9b4;
+          color:#742384;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          font-size:16px;
+          font-weight:800;
+          font-family:'Poppins',sans-serif;
+        ">
+          04
+        </div>
+
+        <div>
+          <div style="
+            font-size:14px;
+            font-weight:700;
+            color:#fff;
+            margin-bottom:4px;
+            font-family:'Poppins',sans-serif;
+          ">
+            Los KPIs son compromisos
+          </div>
+
+          <div class="subtitle" style="font-size:11px;">
+            +25% operacionalizado con precisión.
+            Cinco métricas claras valen más que veinte decorativas.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ITEM -->
+      <div style="
+        display:flex;
+        gap:14px;
+        align-items:flex-start;
+        padding:16px;
+        background:rgba(21,201,180,.10);
+        border-radius:15px;
+        border:1.5px solid rgba(255,255,255,.12);
+      ">
+
+        <div style="
+          min-width:42px;
+          height:42px;
+          border-radius:12px;
+          background:#15c9b4;
+          color:#742384;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          font-size:16px;
+          font-weight:800;
+          font-family:'Poppins',sans-serif;
+        ">
+          05
+        </div>
+
+        <div>
+          <div style="
+            font-size:14px;
+            font-weight:700;
+            color:#fff;
+            margin-bottom:4px;
+            font-family:'Poppins',sans-serif;
+          ">
+            La coordinación se diseña
+          </div>
+
+          <div class="subtitle" style="font-size:11px;">
+            Roles claros, rituales simples, backlog único y decision log.
+            La alineación no aparece por accidente.
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ SLIDE 18 — CIERRE ═══ -->
+
+<div 
+  class="slide" 
+  id="s18" 
+  style="
+    background:#742384;
+    overflow:hidden;
+    position:relative;
+  "
+>
+
+  <div style="
+    width:100%;
+    height:100%;
+    min-height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:24px;
+    box-sizing:border-box;
+  ">
+
+    <!-- CONTENT -->
+    <div style="
+      width:100%;
+      max-width:920px;
+      transform:scale(.92);
+      transform-origin:center;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      text-align:center;
+    ">
+
+
+
+      <!-- LOGO -->
+      <div style="
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        margin-bottom:14px;
+      ">
+        <img 
+          src="https://i.postimg.cc/vZpLB5Ng/yape-bolivia-37328.png"
+          alt="Yape Logo"
+          style="
+            width:160px;
+            height:auto;
+            display:block;
+            object-fit:contain;
+          "
+        >
+      </div>
+
+      <!-- TITLE -->
+      <div 
+        class="title-xl" 
+        style="
+          max-width:760px;
+          margin-bottom:14px;
+          line-height:1.04;
+          font-size:58px;
+        "
+      >
+        Construyamos la mejor<br>
+        experiencia de <span style="color:#15c9b4;">pagos</span> en Bolivia
+      </div>
+
+      <!-- SUBTITLE -->
+      <div 
+        class="subtitle" 
+        style="
+          max-width:620px;
+          font-size:13px;
+          line-height:1.7;
+          color:rgba(255,255,255,.82);
+          margin-bottom:18px;
+        "
+      >
+        La propuesta de valor ya existe.
+        El reto ahora es remover fricción, alinear equipos y construir una experiencia que inspire confianza desde el primer pago.
+      </div>
+
+      <!-- METRICS -->
+      <div style="
+        display:flex;
+        gap:10px;
+        flex-wrap:wrap;
+        justify-content:center;
+        margin-bottom:18px;
+      ">
+
+        <div style="
+          padding:10px 18px;
+          background:#15c9b4;
+          border-radius:999px;
+          font-size:11px;
+          font-weight:700;
+          color:#fff;
+          font-family:'Poppins',sans-serif;
+        ">
+          +25% adopción en 3 meses
+        </div>
+
+        <div style="
+          padding:10px 18px;
+          background:rgba(255,255,255,.08);
+          border:1px solid rgba(255,255,255,.12);
+          border-radius:999px;
+          font-size:11px;
+          font-weight:600;
+          color:#fff;
+          font-family:'Poppins',sans-serif;
+        ">
+          12 semanas · 4 fases
+        </div>
+
+      </div>
+
+      <!-- FINAL CARD -->
+      <div style="
+        max-width:620px;
+        padding:18px;
+        background:rgba(255,255,255,.06);
+        border:1px solid rgba(255,255,255,.1);
+        border-radius:18px;
+        margin-bottom:16px;
+      ">
+
+        <div style="
+          font-size:10px;
+          letter-spacing:2px;
+          font-weight:700;
+          color:#15c9b4;
+          margin-bottom:8px;
+          font-family:'Poppins',sans-serif;
+        ">
+          GRACIAS
+        </div>
+
+        <div style="
+          font-size:15px;
+          line-height:1.6;
+          color:#fff;
+          font-family:'Poppins',sans-serif;
+        ">
+          Ojalá me llamen :)
+        </div>
+
+      </div>
+
+      <!-- FOOTER -->
+      <div 
+        class="subtitle" 
+        style="
+          font-size:10px;
+          color:rgba(255,255,255,.55);
+        "
+      >
+        by Sandra Maria Abasto
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+const T=18;let c=1;
+function buildDots(){const d=document.getElementById('ndots');d.innerHTML='';for(let i=1;i<=T;i++){const b=document.createElement('div');b.className='nd'+(i===c?' on':'');b.onclick=()=>go(i);d.appendChild(b);}}
+function ui(){document.querySelectorAll('.slide').forEach(s=>s.classList.remove('on'));document.getElementById('s'+c).classList.add('on');document.getElementById('ctr').textContent=c+' / '+T;document.getElementById('pb').style.width=((c/T)*100)+'%';buildDots();}
+function go(n){c=Math.max(1,Math.min(T,n));ui();}
+function next(){go(c+1);} function prev(){go(c-1);}
+document.addEventListener('keydown',e=>{if(['ArrowRight','ArrowDown',' '].includes(e.key)){e.preventDefault();next();}if(['ArrowLeft','ArrowUp'].includes(e.key)){e.preventDefault();prev();}});
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',e=>{const dx=tx-e.changedTouches[0].clientX;if(Math.abs(dx)>45){dx>0?next():prev();}});
+ui();
+
+(function(){
+  const tasks=[
+    {name:"Research &amp; Discovery",  sub:"Fase 01",               cls:"b1",s:0,e:2},
+    {name:"Diseño &amp; Prototipo",     sub:"Fase 02",               cls:"b2",s:2,e:4},
+    {name:"Sprint 1 — Rediseño UX",   sub:"Fase 03 · Dev",         cls:"b3",s:4,e:6},
+    {name:"Sprint 2 — Performance",   sub:"Fase 03 · Dev",         cls:"b3",s:6,e:8},
+    {name:"Sprint 3 — Tooltips + QA", sub:"Fase 03 · Dev",         cls:"b3",s:7,e:9},
+    {name:"Rollout 10%→50%→100%",     sub:"Fase 04 · Lanzamiento", cls:"b4",s:9,e:12},
+    {name:"Discovery paralelo",       sub:"Voz / biometría",       cls:"bd",s:0,e:8},
+  ];
+  const W=12;
+  const tbl=document.getElementById('gt12');
+
+  // thead
+  const th=tbl.createTHead();
+  const hr=th.insertRow();
+  const lh=document.createElement('th');
+  lh.className='gl-col';lh.textContent='Actividad';hr.appendChild(lh);
+  for(let i=1;i<=W;i++){const t=document.createElement('th');t.className='gh';t.textContent='S'+i;hr.appendChild(t);}
+
+  // tbody
+  const tb=tbl.createTBody();
+  tasks.forEach((task,ti)=>{
+    if(ti===tasks.length-1){
+      const dr=tb.insertRow();dr.className='gdiv';
+      const dtd=document.createElement('td');dtd.colSpan=W+1;
+      const dl=document.createElement('div');dl.className='gdiv-line';
+      dtd.appendChild(dl);dr.appendChild(dtd);
+    }
+    const row=tb.insertRow();row.className='gr';
+    const lbl=document.createElement('td');lbl.className='gl';
+    lbl.innerHTML='<div class="gn">'+task.name+'</div><div class="gs">'+task.sub+'</div>';
+    row.appendChild(lbl);
+    for(let w=0;w<W;w++){
+      const td=document.createElement('td');td.className='gc';
+      const bar=document.createElement('div');bar.className='bar';
+      if(w>=task.s&&w<task.e)bar.classList.add(task.cls);
+      td.appendChild(bar);row.appendChild(td);
+    }
+  });
+})();
+
+</script>
+</body>
+</html>
