@@ -1,100 +1,260 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Datrio | Data Science & Business Intelligence</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background-color: #0a0a0a;
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            text-align: center;
-        }
-        .container {
-            max-width: 800px;
-            padding: 40px;
-        }
-        h1 {
-            font-size: 4rem;
-            margin-bottom: 10px;
-            background: linear-gradient(90deg, #00C9FF 0%, #92FE9D 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        h2 {
-            font-size: 1.5rem;
-            font-weight: 300;
-            color: #a0a0a0;
-            margin-bottom: 30px;
-        }
-        p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: #cccccc;
-            margin-bottom: 40px;
-        }
-        .btn {
-            display: inline-block;
-            padding: 15px 30px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #0a0a0a;
-            background-color: #ffffff;
-            text-decoration: none;
-            border-radius: 30px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.2);
-        }
-        .btn-mundial {
-            color: #0a0a0a;
-            background: linear-gradient(90deg, #00C9FF 0%, #92FE9D 100%);
-        }
-        .btn-mundial:hover {
-            box-shadow: 0 10px 24px rgba(0, 201, 255, 0.3);
-        }
-    </style>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Predicciones Mundial 2026 · datrio.space</title>
+<style>
+  :root{
+    --navy:#0C324A;
+    --red:#C11720;
+    --blue:#679CBC;
+    --cream:#FEF1D5;
+    --navy-2:#0a2a3e;
+    --navy-card:#10405e;
+    --muted:#9bb8c9;
+    --border:#1d4a66;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--navy);
+    color:var(--cream);
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    line-height:1.6;
+    min-height:100vh;
+  }
+  .wrap{max-width:980px;margin:0 auto;padding:0 20px 80px}
+  a{color:inherit}
+
+  .topbar{padding:20px 0;font-size:13px;letter-spacing:.04em}
+  .topbar a{color:var(--blue);text-decoration:none}
+  .topbar a:hover{color:var(--cream)}
+
+  header{padding:30px 0 28px;border-bottom:3px solid var(--red)}
+  .eyebrow{font-size:12px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--blue);font-weight:600;margin-bottom:14px}
+  h1{font-size:clamp(36px,7vw,64px);font-weight:800;line-height:.98;
+    letter-spacing:-.02em;text-transform:uppercase;color:var(--cream)}
+  h1 span{color:var(--red)}
+  .sub{color:var(--muted);margin-top:16px;max-width:580px;font-size:16px}
+
+  .about{
+    background:var(--navy-card);border:1px solid var(--border);
+    border-radius:16px;padding:26px 28px;margin:30px 0;
+  }
+  .about h2{font-size:13px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--red);margin-bottom:6px}
+  .about .author{font-size:20px;font-weight:700;color:var(--cream);margin-bottom:18px}
+  .about .author small{display:block;font-size:13px;font-weight:400;
+    color:var(--muted);letter-spacing:.02em;margin-top:2px}
+  .steps{list-style:none;counter-reset:s;display:grid;gap:12px}
+  .steps li{counter-increment:s;display:flex;gap:14px;align-items:flex-start;
+    font-size:14px;color:var(--cream)}
+  .steps li::before{content:counter(s);flex:0 0 26px;height:26px;
+    background:var(--red);color:var(--cream);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;font-weight:700}
+  .steps li b{color:var(--blue)}
+
+  .filters{display:flex;gap:9px;flex-wrap:wrap;margin:28px 0 8px;
+    position:sticky;top:0;background:var(--navy);padding:14px 0;z-index:5}
+  .fbtn{background:transparent;border:1px solid var(--border);color:var(--muted);
+    padding:8px 15px;border-radius:30px;font-size:13px;font-weight:600;
+    cursor:pointer;transition:all .15s;font-family:inherit}
+  .fbtn:hover{border-color:var(--blue);color:var(--cream)}
+  .fbtn.active{background:var(--red);border-color:var(--red);color:var(--cream)}
+  .datepick{display:flex;align-items:center;gap:8px;margin-left:auto}
+  .datepick label{font-size:12px;color:var(--muted);letter-spacing:.04em}
+  .datepick input{background:var(--navy-card);border:1px solid var(--border);
+    color:var(--cream);padding:7px 11px;border-radius:8px;font-size:13px;
+    font-family:inherit;cursor:pointer}
+  .datepick input:hover{border-color:var(--blue)}
+  .datepick button{background:transparent;border:1px solid var(--border);
+    color:var(--muted);padding:7px 11px;border-radius:8px;font-size:13px;
+    cursor:pointer;font-family:inherit}
+  .datepick button:hover{border-color:var(--blue);color:var(--cream)}
+
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:10px 0 4px;font-size:13px}
+  .legend span{display:flex;align-items:center;gap:7px;color:var(--muted)}
+  .dot{width:11px;height:11px;border-radius:2px;display:inline-block}
+
+  .group{margin-top:30px}
+  .group-head{display:flex;align-items:baseline;gap:14px;margin-bottom:16px;
+    padding-bottom:10px;border-bottom:1px solid var(--border)}
+  .group-head h3{font-size:22px;font-weight:800;text-transform:uppercase;
+    letter-spacing:.04em;color:var(--cream)}
+  .group-head .teams{font-size:13px;color:var(--muted)}
+
+  .match{background:var(--navy-card);border:1px solid var(--border);
+    border-radius:14px;padding:18px 20px;margin-bottom:14px}
+  .match-top{display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:16px}
+  .vs{font-size:18px;font-weight:600}
+  .vs .x{color:var(--muted);font-size:12px;font-weight:400;margin:0 6px}
+  .date{font-size:12px;color:var(--blue)}
+
+  .model{margin-top:12px}
+  .model-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:6px}
+  .bar{display:flex;height:32px;border-radius:7px;overflow:hidden;
+    border:1px solid var(--navy)}
+  .seg{display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:600;min-width:0;white-space:nowrap;transition:filter .15s}
+  .seg:hover{filter:brightness(1.1)}
+  .seg.h{background:var(--red);color:var(--cream)}
+  .seg.d{background:var(--cream);color:var(--navy)}
+  .seg.a{background:var(--blue);color:var(--navy)}
+
+  .scores{margin-top:12px;padding-top:12px;border-top:1px dashed var(--border);
+    display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+  .scores .lbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .chip{background:var(--navy);border:1px solid var(--border);border-radius:6px;
+    padding:4px 10px;font-size:13px;font-variant-numeric:tabular-nums}
+  .chip b{color:var(--red)}
+
+  .empty{text-align:center;padding:50px 20px;color:var(--muted)}
+  .loading,.error{text-align:center;padding:80px 20px;color:var(--muted)}
+  .error{color:#f0a8a8}
+  footer{margin-top:50px;padding-top:24px;border-top:1px solid var(--border);
+    font-size:13px;color:var(--muted)}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h1>datrio.space</h1>
-        <h2>
-            Consultoría en Data Science & Business Intelligence
-        </h2>
-        <p>
-            Transformando datos complejos en decisiones estratégicas.
-            <br>
-            Especialistas en Power BI, SQL, Python y arquitecturas de datos.
-        </p>
-        <div style="
-            display:flex;
-            gap:20px;
-            justify-content:center;
-            flex-wrap:wrap;
-        ">
-            <a href="mundial.html" class="btn btn-mundial">
-                Predicciones Mundial 2026
-            </a>
-            <a href="yape.html" class="btn">
-                Presentación Yape
-            </a>
-            <a href="Guia_Visualizaciones_PowerBI_SandraAbasto.html" class="btn">
-                Ver Proyecto
-            </a>
-            <a href="mailto:sandra36235@gmail.com" class="btn">
-                Contactar
-            </a>
-        </div>
-    </div>
+<div class="wrap">
+  <div class="topbar"><a href="index.html">&larr; datrio.space</a></div>
+
+  <header>
+    <div class="eyebrow">Mundial 2026 · modelo predictivo</div>
+    <h1>Quién gana,<br>según los <span>datos</span></h1>
+    <p class="sub">Predicciones de la fase de grupos calculadas con dos modelos
+      estadísticos independientes. Cada barra muestra la probabilidad de
+      victoria local, empate y visitante.</p>
+  </header>
+
+  <section class="about">
+    <h2>¿Qué se hizo?</h2>
+    <div class="author">Sandra Abasto
+      <small>Senior Business Analyst · Data Science & BI</small></div>
+    <ol class="steps">
+      <li><b>Datos:</b> 15.534 partidos de selecciones desde 2010, con resultados
+        del Mundial en curso integrados vía API-Football.</li>
+      <li><b>Ingeniería:</b> features de forma reciente sin fuga de información
+        (data leakage) y normalización de nombres entre fuentes.</li>
+      <li><b>Modelos:</b> Dixon-Coles (Poisson) y XGBoost, entrenados y comparados
+        con validación temporal.</li>
+      <li><b>Predicción:</b> probabilidad 1X2 de ambos modelos y marcadores más
+        probables para cada partido pendiente.</li>
+      <li><b>Despliegue:</b> esta web, alojada en datrio.space.</li>
+    </ol>
+  </section>
+
+  <div class="filters" id="filters"></div>
+
+  <div class="legend">
+    <span><i class="dot" style="background:var(--red)"></i> gana local</span>
+    <span><i class="dot" style="background:var(--cream)"></i> empate</span>
+    <span><i class="dot" style="background:var(--blue)"></i> gana visitante</span>
+  </div>
+
+  <main id="app"><div class="loading">Cargando predicciones…</div></main>
+
+  <footer>El fútbol es impredecible por naturaleza: estas probabilidades reflejan
+    tendencias históricas, no certezas. · Sandra Abasto · datrio.space</footer>
+</div>
+
+<script>
+let MATCHES = [], GROUPS = {}, current = "ALL", pickedDate = "";
+const fmt = p => Math.round(p*100);
+
+function seg(cls, prob, label){
+  const pct = fmt(prob);
+  if(pct < 1) return '';
+  const txt = pct >= 10 ? `${label} ${pct}%` : `${pct}`;
+  return `<div class="seg ${cls}" style="flex:${prob}" title="${label}: ${pct}%">${txt}</div>`;
+}
+function bar(m, name){
+  if(!m) return `<div class="model"><div class="model-label">${name} · sin datos</div></div>`;
+  return `<div class="model"><div class="model-label">${name}</div>
+    <div class="bar">${seg('h',m.home_win,'Local')}${seg('d',m.draw,'Empate')}${seg('a',m.away_win,'Visita')}</div></div>`;
+}
+function scores(dc){
+  if(!dc || !dc.top_scorelines) return '';
+  const c = dc.top_scorelines.slice(0,3).map(s=>
+    `<span class="chip"><b>${s.home_goals}-${s.away_goals}</b> ${fmt(s.prob)}%</span>`).join('');
+  return `<div class="scores"><span class="lbl">Marcadores probables</span>${c}</div>`;
+}
+function card(p){
+  return `<div class="match"><div class="match-top">
+    <div class="vs">${p.home_team}<span class="x">vs</span>${p.away_team}</div>
+    <div class="date">${p.date||''}</div></div>
+    ${bar(p.dixon_coles,'Dixon-Coles')}${bar(p.xgboost,'XGBoost')}${scores(p.dixon_coles)}</div>`;
+}
+
+function render(){
+  const app = document.getElementById('app');
+  let list = MATCHES;
+  if(pickedDate) list = list.filter(m=>m.date===pickedDate);
+  if(current !== 'ALL') list = list.filter(m=>m.group===current);
+
+  if(!list.length){
+    app.innerHTML = `<div class="empty">No hay partidos para este filtro.
+      ${pickedDate?'<br>No hay partidos programados para el '+pickedDate+'.':''}</div>`;
+    return;
+  }
+  // agrupar por grupo
+  const byG = {};
+  for(const m of list){ (byG[m.group]=byG[m.group]||[]).push(m); }
+  app.innerHTML = Object.keys(byG).sort().map(g=>{
+    const teams=[...new Set(byG[g].flatMap(p=>[p.home_team,p.away_team]))];
+    return `<section class="group"><div class="group-head"><h3>${g}</h3>
+      <span class="teams">${teams.join(' · ')}</span></div>
+      ${byG[g].map(card).join('')}</section>`;
+  }).join('');
+}
+
+function buildFilters(){
+  const groups = [...new Set(MATCHES.map(m=>m.group))].sort();
+  const dates = [...new Set(MATCHES.map(m=>m.date).filter(Boolean))].sort();
+  const minD = dates[0]||'', maxD = dates[dates.length-1]||'';
+  const f = document.getElementById('filters');
+  const btns = [`<button class="fbtn active" data-f="ALL">Todos</button>`];
+  groups.forEach(g=>btns.push(`<button class="fbtn" data-f="${g}">${g.replace('Group','Grupo')}</button>`));
+  btns.push(`<span class="datepick">
+    <label>Por fecha:</label>
+    <input type="date" id="datein" min="${minD}" max="${maxD}">
+    <button id="dateclear">Limpiar</button></span>`);
+  f.innerHTML = btns.join('');
+
+  f.querySelectorAll('.fbtn').forEach(b=>b.onclick=()=>{
+    current=b.dataset.f;
+    f.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    render();
+  });
+  document.getElementById('datein').onchange = e=>{ pickedDate=e.target.value; render(); };
+  document.getElementById('dateclear').onclick = ()=>{
+    pickedDate=''; document.getElementById('datein').value=''; render();
+  };
+}
+
+async function load(){
+  const app=document.getElementById('app');
+  try{
+    const [pR,gR]=await Promise.all([fetch('predictions.json'),fetch('groups.json')]);
+    if(!pR.ok) throw new Error('No se encontró predictions.json');
+    const data=await pR.json();
+    GROUPS = gR.ok ? await gR.json() : {};
+    MATCHES = data.predictions.map(p=>({
+      ...p, group: GROUPS[p.home_team]||GROUPS[p.away_team]||'Otros'}));
+    buildFilters();
+    render();
+  }catch(err){
+    app.innerHTML=`<div class="error">No se pudieron cargar las predicciones.<br>
+      ${err.message}</div>`;
+  }
+}
+load();
+</script>
 </body>
 </html>
