@@ -1,254 +1,100 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Predicciones Mundial 2026 · Dos modelos</title>
-<style>
-  :root{
-    --pitch:#0e2a23;        /* verde pizarra profundo */
-    --pitch-2:#13362c;
-    --line:#d8e8df;         /* línea de cal */
-    --chalk:#eef4f0;
-    --muted:#7fa394;
-    --home:#e8a33d;         /* ámbar: local */
-    --draw:#5f7d72;         /* gris verdoso: empate */
-    --away:#4a9ec4;         /* azul: visitante */
-    --card:#11302770;
-    --border:#274a3e;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{
-    background:var(--pitch);
-    color:var(--chalk);
-    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
-    line-height:1.6;
-    background-image:linear-gradient(180deg,#0e2a23 0%,#0b211b 100%);
-    min-height:100vh;
-  }
-  .wrap{max-width:980px;margin:0 auto;padding:0 20px 80px}
-
-  header{
-    padding:56px 0 36px;
-    border-bottom:2px solid var(--border);
-    margin-bottom:8px;
-  }
-  .eyebrow{
-    font-size:13px;letter-spacing:.22em;text-transform:uppercase;
-    color:var(--home);font-weight:600;margin-bottom:14px;
-  }
-  h1{
-    font-family:'Arial Narrow','Segoe UI',sans-serif;
-    font-size:clamp(38px,7vw,68px);
-    font-weight:800;line-height:.96;letter-spacing:-.02em;
-    text-transform:uppercase;color:var(--chalk);
-  }
-  h1 span{color:var(--home)}
-  .sub{color:var(--muted);margin-top:16px;max-width:560px;font-size:16px}
-  .meta{
-    margin-top:22px;display:flex;gap:24px;flex-wrap:wrap;
-    font-size:13px;color:var(--muted);
-  }
-  .meta b{color:var(--chalk);font-weight:600}
-
-  .legend{
-    display:flex;gap:18px;flex-wrap:wrap;margin:28px 0 8px;font-size:13px;
-  }
-  .legend span{display:flex;align-items:center;gap:7px;color:var(--muted)}
-  .dot{width:11px;height:11px;border-radius:2px;display:inline-block}
-
-  .group{margin-top:44px}
-  .group-head{
-    display:flex;align-items:baseline;gap:14px;margin-bottom:18px;
-    padding-bottom:10px;border-bottom:1px solid var(--border);
-  }
-  .group-head h2{
-    font-family:'Arial Narrow','Segoe UI',sans-serif;
-    font-size:26px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;
-  }
-  .group-head .teams{font-size:13px;color:var(--muted)}
-
-  .match{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:14px;
-    padding:20px 22px;
-    margin-bottom:16px;
-  }
-  .match-top{
-    display:flex;justify-content:space-between;align-items:center;
-    margin-bottom:18px;
-  }
-  .vs{display:flex;align-items:center;gap:14px;font-size:19px;font-weight:600}
-  .vs .home-t{text-align:right}
-  .vs .x{color:var(--muted);font-size:13px;font-weight:400}
-  .date{font-size:12px;color:var(--muted)}
-
-  .model{margin-top:14px}
-  .model-label{
-    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
-    color:var(--muted);margin-bottom:7px;display:flex;justify-content:space-between;
-  }
-  .model-label .acc{color:var(--home)}
-
-  .bar{
-    display:flex;height:34px;border-radius:7px;overflow:hidden;
-    border:1px solid #0c211b;
-  }
-  .seg{
-    display:flex;align-items:center;justify-content:center;
-    font-size:13px;font-weight:600;color:#0c211b;
-    min-width:0;transition:filter .15s;white-space:nowrap;
-  }
-  .seg:hover{filter:brightness(1.08)}
-  .seg.h{background:var(--home)}
-  .seg.d{background:var(--draw);color:var(--chalk)}
-  .seg.a{background:var(--away)}
-  .seg small{opacity:.7;font-weight:400;margin-left:3px}
-
-  .scores{
-    margin-top:14px;padding-top:14px;border-top:1px dashed var(--border);
-    display:flex;gap:10px;flex-wrap:wrap;align-items:center;
-  }
-  .scores .lbl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-  .chip{
-    background:#0c211b;border:1px solid var(--border);border-radius:6px;
-    padding:4px 10px;font-size:13px;font-variant-numeric:tabular-nums;
-  }
-  .chip b{color:var(--home)}
-
-  .loading,.error{text-align:center;padding:80px 20px;color:var(--muted)}
-  .error{color:#e89a9a}
-
-  footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--border);
-    font-size:13px;color:var(--muted)}
-
-  @media (max-width:560px){
-    .match-top{flex-direction:column;align-items:flex-start;gap:8px}
-    .vs{font-size:16px}
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datrio | Data Science & Business Intelligence</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            padding: 40px;
+        }
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #00C9FF 0%, #92FE9D 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: #a0a0a0;
+            margin-bottom: 30px;
+        }
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #cccccc;
+            margin-bottom: 40px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #0a0a0a;
+            background-color: #ffffff;
+            text-decoration: none;
+            border-radius: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.2);
+        }
+        .btn-mundial {
+            color: #0a0a0a;
+            background: linear-gradient(90deg, #00C9FF 0%, #92FE9D 100%);
+        }
+        .btn-mundial:hover {
+            box-shadow: 0 10px 24px rgba(0, 201, 255, 0.3);
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div class="eyebrow">Mundial 2026 · Modelo predictivo</div>
-    <h1>Quién gana,<br>según los <span>datos</span></h1>
-    <p class="sub">Predicciones de la fase de grupos calculadas con dos modelos
-      independientes: Dixon-Coles (Poisson) y XGBoost. Cada barra muestra la
-      probabilidad de victoria local, empate y visitante.</p>
-    <div class="meta">
-      <div>Partidos: <b id="m-count">—</b></div>
-      <div>Histórico: <b>15.534 partidos desde 2010</b></div>
-      <div>Actualizado: <b id="m-date">—</b></div>
-    </div>
-    <div class="legend">
-      <span><i class="dot" style="background:var(--home)"></i> Gana local</span>
-      <span><i class="dot" style="background:var(--draw)"></i> Empate</span>
-      <span><i class="dot" style="background:var(--away)"></i> Gana visitante</span>
-    </div>
-  </header>
-
-  <main id="app">
-    <div class="loading">Cargando predicciones…</div>
-  </main>
-
-  <footer>
-    Predicciones generadas con modelos estadísticos sobre datos históricos de
-    selecciones. El fútbol es impredecible por naturaleza: estas probabilidades
-    reflejan tendencias, no certezas.
-  </footer>
-</div>
-
-<script>
-const fmt = p => Math.round(p*100);
-
-function segment(cls, prob, label){
-  const pct = fmt(prob);
-  if(pct < 1) return '';
-  const txt = pct >= 9 ? `${label}<small>${pct}%</small>` : `${pct}`;
-  return `<div class="seg ${cls}" style="flex:${prob}"
-            title="${label}: ${pct}%">${txt}</div>`;
-}
-
-function modelBar(m, name){
-  if(!m) return `<div class="model"><div class="model-label">${name}
-      <span>sin datos</span></div></div>`;
-  return `<div class="model">
-    <div class="model-label"><span>${name}</span></div>
-    <div class="bar">
-      ${segment('h', m.home_win, 'Local')}
-      ${segment('d', m.draw, 'Empate')}
-      ${segment('a', m.away_win, 'Visita')}
-    </div></div>`;
-}
-
-function scorelines(dc){
-  if(!dc || !dc.top_scorelines) return '';
-  const chips = dc.top_scorelines.slice(0,3).map(s =>
-    `<span class="chip"><b>${s.home_goals}-${s.away_goals}</b>
-       ${fmt(s.prob)}%</span>`).join('');
-  return `<div class="scores"><span class="lbl">Marcadores probables</span>
-    ${chips}</div>`;
-}
-
-function matchCard(p){
-  return `<div class="match">
-    <div class="match-top">
-      <div class="vs">
-        <span class="home-t">${p.home_team}</span>
-        <span class="x">vs</span>
-        <span>${p.away_team}</span>
-      </div>
-      <div class="date">${p.date || ''}</div>
-    </div>
-    ${modelBar(p.dixon_coles, 'Dixon-Coles')}
-    ${modelBar(p.xgboost, 'XGBoost')}
-    ${scorelines(p.dixon_coles)}
-  </div>`;
-}
-
-async function load(){
-  const app = document.getElementById('app');
-  try{
-    const [predsR, groupsR] = await Promise.all([
-      fetch('predictions.json'), fetch('groups.json')
-    ]);
-    if(!predsR.ok) throw new Error('No se encontró predictions.json');
-    const data = await predsR.json();
-    const groups = groupsR.ok ? await groupsR.json() : {};
-
-    document.getElementById('m-count').textContent = data.n_matches;
-    document.getElementById('m-date').textContent =
-      (data.generated_at||'').slice(0,10);
-
-    // agrupar partidos por grupo (segun equipo local)
-    const byGroup = {};
-    for(const p of data.predictions){
-      const g = groups[p.home_team] || groups[p.away_team] || 'Otros partidos';
-      (byGroup[g] = byGroup[g] || []).push(p);
-    }
-    const order = Object.keys(byGroup).sort();
-
-    app.innerHTML = order.map(g => {
-      const teams = [...new Set(byGroup[g].flatMap(p=>[p.home_team,p.away_team]))];
-      return `<section class="group">
-        <div class="group-head">
-          <h2>${g}</h2>
-          <span class="teams">${teams.join(' · ')}</span>
+    <div class="container">
+        <h1>datrio.space</h1>
+        <h2>
+            Consultoría en Data Science & Business Intelligence
+        </h2>
+        <p>
+            Transformando datos complejos en decisiones estratégicas.
+            <br>
+            Especialistas en Power BI, SQL, Python y arquitecturas de datos.
+        </p>
+        <div style="
+            display:flex;
+            gap:20px;
+            justify-content:center;
+            flex-wrap:wrap;
+        ">
+            <a href="mundial.html" class="btn btn-mundial">
+                Predicciones Mundial 2026
+            </a>
+            <a href="yape.html" class="btn">
+                Presentación Yape
+            </a>
+            <a href="Guia_Visualizaciones_PowerBI_SandraAbasto.html" class="btn">
+                Ver Proyecto
+            </a>
+            <a href="mailto:sandra36235@gmail.com" class="btn">
+                Contactar
+            </a>
         </div>
-        ${byGroup[g].map(matchCard).join('')}
-      </section>`;
-    }).join('');
-
-  }catch(err){
-    app.innerHTML = `<div class="error">No se pudieron cargar las predicciones.<br>
-      ${err.message}<br><br>
-      Si abriste el archivo con doble clic, necesitas un servidor local
-      (ver instrucciones).</div>`;
-  }
-}
-load();
-</script>
+    </div>
 </body>
 </html>
