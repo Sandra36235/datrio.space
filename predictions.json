@@ -89,7 +89,7 @@
     {
       "home_team": "Brazil",
       "away_team": "Haiti",
-      "date": "2026-06-20",
+      "date": "2026-06-19",
       "dixon_coles": {
         "home_win": 0.9753,
         "draw": 0.021,
@@ -131,7 +131,7 @@
     {
       "home_team": "Turkey",
       "away_team": "Paraguay",
-      "date": "2026-06-20",
+      "date": "2026-06-19",
       "dixon_coles": {
         "home_win": 0.4695,
         "draw": 0.2753,
@@ -299,7 +299,7 @@
     {
       "home_team": "Tunisia",
       "away_team": "Japan",
-      "date": "2026-06-21",
+      "date": "2026-06-20",
       "dixon_coles": {
         "home_win": 0.3852,
         "draw": 0.2875,
@@ -383,7 +383,7 @@
     {
       "home_team": "Ecuador",
       "away_team": "Curaçao",
-      "date": "2026-06-21",
+      "date": "2026-06-20",
       "dixon_coles": {
         "home_win": 0.9665,
         "draw": 0.0271,
@@ -467,7 +467,7 @@
     {
       "home_team": "New Zealand",
       "away_team": "Egypt",
-      "date": "2026-06-22",
+      "date": "2026-06-21",
       "dixon_coles": {
         "home_win": 0.151,
         "draw": 0.2703,
@@ -593,7 +593,7 @@
     {
       "home_team": "Norway",
       "away_team": "Senegal",
-      "date": "2026-06-23",
+      "date": "2026-06-22",
       "dixon_coles": {
         "home_win": 0.3871,
         "draw": 0.307,
@@ -635,7 +635,7 @@
     {
       "home_team": "Jordan",
       "away_team": "Algeria",
-      "date": "2026-06-23",
+      "date": "2026-06-22",
       "dixon_coles": {
         "home_win": 0.213,
         "draw": 0.268,
@@ -971,7 +971,7 @@
     {
       "home_team": "Colombia",
       "away_team": "DR Congo",
-      "date": "2026-06-24",
+      "date": "2026-06-23",
       "dixon_coles": {
         "home_win": 0.8265,
         "draw": 0.1305,
@@ -1013,7 +1013,7 @@
     {
       "home_team": "Czech Republic",
       "away_team": "Mexico",
-      "date": "2026-06-25",
+      "date": "2026-06-24",
       "dixon_coles": {
         "home_win": 0.3888,
         "draw": 0.2856,
@@ -1055,7 +1055,7 @@
     {
       "home_team": "South Africa",
       "away_team": "South Korea",
-      "date": "2026-06-25",
+      "date": "2026-06-24",
       "dixon_coles": {
         "home_win": 0.3428,
         "draw": 0.3266,
@@ -1349,7 +1349,7 @@
     {
       "home_team": "Paraguay",
       "away_team": "Australia",
-      "date": "2026-06-26",
+      "date": "2026-06-25",
       "dixon_coles": {
         "home_win": 0.4474,
         "draw": 0.2825,
@@ -1391,7 +1391,7 @@
     {
       "home_team": "Turkey",
       "away_team": "United States",
-      "date": "2026-06-26",
+      "date": "2026-06-25",
       "dixon_coles": {
         "home_win": 0.4424,
         "draw": 0.2676,
@@ -1433,7 +1433,7 @@
     {
       "home_team": "Uruguay",
       "away_team": "Spain",
-      "date": "2026-06-27",
+      "date": "2026-06-26",
       "dixon_coles": {
         "home_win": 0.3061,
         "draw": 0.2789,
@@ -1475,7 +1475,7 @@
     {
       "home_team": "Cape Verde",
       "away_team": "Saudi Arabia",
-      "date": "2026-06-27",
+      "date": "2026-06-26",
       "dixon_coles": {
         "home_win": 0.4181,
         "draw": 0.312,
@@ -1517,7 +1517,7 @@
     {
       "home_team": "Egypt",
       "away_team": "Iran",
-      "date": "2026-06-27",
+      "date": "2026-06-26",
       "dixon_coles": {
         "home_win": 0.3708,
         "draw": 0.3282,
@@ -1559,7 +1559,7 @@
     {
       "home_team": "New Zealand",
       "away_team": "Belgium",
-      "date": "2026-06-27",
+      "date": "2026-06-26",
       "dixon_coles": {
         "home_win": 0.0494,
         "draw": 0.1312,
@@ -1769,7 +1769,7 @@
     {
       "home_team": "Algeria",
       "away_team": "Austria",
-      "date": "2026-06-28",
+      "date": "2026-06-27",
       "dixon_coles": {
         "home_win": 0.4124,
         "draw": 0.2688,
@@ -1811,7 +1811,7 @@
     {
       "home_team": "Jordan",
       "away_team": "Argentina",
-      "date": "2026-06-28",
+      "date": "2026-06-27",
       "dixon_coles": {
         "home_win": 0.0547,
         "draw": 0.1498,
