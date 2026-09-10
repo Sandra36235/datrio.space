@@ -1,0 +1,47 @@
+name: Publicar Datrio y demo de Adriana
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '17 * * * *'
+permissions:
+  contents: read
+concurrency:
+  group: datrio-pages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: datrio
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: adrianaclaros/DBav
+          ref: main
+          path: adriana
+          persist-credentials: false
+      - name: Preparar sitio y demostración
+        run: |
+          mkdir public
+          rsync -a --exclude='.git' --exclude='.github' --exclude='scripts' datrio/ public/
+          python3 datrio/scripts/build-adriana-demo.py adriana/frontend public
+          touch public/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment
