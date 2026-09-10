@@ -1,4 +1,4 @@
-name: Publicar Datrio y demo de Adriana
+name: Publicar Datrio y demos de estudiantes
 on:
   push:
     branches: [main]
@@ -24,11 +24,18 @@ jobs:
           ref: main
           path: adriana
           persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: Dart675/Coroporacion_ASYNC
+          ref: main
+          path: antonio
+          persist-credentials: false
       - name: Preparar sitio y demostración
         run: |
           mkdir public
           rsync -a --exclude='.git' --exclude='.github' --exclude='scripts' datrio/ public/
           python3 datrio/scripts/build-adriana-demo.py adriana/frontend public
+          python3 datrio/scripts/build-async-demo.py antonio/frontend public
           touch public/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:
