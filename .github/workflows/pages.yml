@@ -36,6 +36,12 @@ jobs:
           ref: main
           path: keyla
           persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: natalyovando1/basededatos1
+          ref: main
+          path: nataly
+          persist-credentials: false
       - name: Preparar sitio y demostración
         run: |
           mkdir public
@@ -43,6 +49,7 @@ jobs:
           python3 datrio/scripts/build-adriana-demo.py adriana/frontend public
           python3 datrio/scripts/build-async-demo.py antonio/frontend public
           python3 datrio/scripts/build-animal-hospital-demo.py keyla/frontend public
+          python3 datrio/scripts/build-nativas-burgers-demo.py nataly/frontend public
           touch public/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:
