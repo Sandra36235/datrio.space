@@ -30,12 +30,19 @@ jobs:
           ref: main
           path: antonio
           persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: keylalopez1007/basesdedatos
+          ref: main
+          path: keyla
+          persist-credentials: false
       - name: Preparar sitio y demostración
         run: |
           mkdir public
           rsync -a --exclude='.git' --exclude='.github' --exclude='scripts' datrio/ public/
           python3 datrio/scripts/build-adriana-demo.py adriana/frontend public
           python3 datrio/scripts/build-async-demo.py antonio/frontend public
+          python3 datrio/scripts/build-animal-hospital-demo.py keyla/frontend public
           touch public/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:
