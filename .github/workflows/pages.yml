@@ -32,7 +32,7 @@ jobs:
           persist-credentials: false
       - uses: actions/checkout@v4
         with:
-          repository: keylalopez1007/basesdedatos
+          repository: keylalopez1007/basesededatos
           ref: main
           path: keyla
           persist-credentials: false
@@ -42,6 +42,12 @@ jobs:
           ref: main
           path: nataly
           persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: ernestoballon1/EmperadorErnesto
+          ref: main
+          path: ernesto
+          persist-credentials: false
       - name: Preparar sitio y demostración
         run: |
           mkdir public
@@ -50,6 +56,7 @@ jobs:
           python3 datrio/scripts/build-async-demo.py antonio/frontend public
           python3 datrio/scripts/build-animal-hospital-demo.py keyla/frontend public
           python3 datrio/scripts/build-nativas-burgers-demo.py nataly/frontend public
+          python3 datrio/scripts/build-eufrates-tigris-demo.py ernesto/frontend public
           touch public/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:
