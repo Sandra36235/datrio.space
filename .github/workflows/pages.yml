@@ -32,10 +32,11 @@ jobs:
           persist-credentials: false
       - uses: actions/checkout@v4
         with:
-          repository: keylalopez1007/basesededatos
+          repository: keylalopez1007/basesdedatos
           ref: main
           path: keyla
           persist-credentials: false
+        continue-on-error: true
       - uses: actions/checkout@v4
         with:
           repository: natalyovando1/basededatos1
@@ -54,7 +55,11 @@ jobs:
           rsync -a --exclude='.git' --exclude='.github' --exclude='scripts' datrio/ public/
           python3 datrio/scripts/build-adriana-demo.py adriana/frontend public
           python3 datrio/scripts/build-async-demo.py antonio/frontend public
-          python3 datrio/scripts/build-animal-hospital-demo.py keyla/frontend public
+          if [ -d keyla/frontend ]; then
+            python3 datrio/scripts/build-animal-hospital-demo.py keyla/frontend public
+          else
+            wget --quiet --recursive --level=2 --page-requisites --convert-links --adjust-extension --no-parent --no-host-directories --directory-prefix=public https://datrio.space/animal-hospital-anomaly/
+          fi
           python3 datrio/scripts/build-nativas-burgers-demo.py nataly/frontend public
           python3 datrio/scripts/build-eufrates-tigris-demo.py ernesto/frontend public
           touch public/.nojekyll
