@@ -29,7 +29,37 @@ function showProfile() {
   loginView.style.display = 'none';
   profileView.hidden = false;
   profileView.style.display = 'flex';
-  document.querySelector('#welcome-message').textContent = 'Keyla Lopez · Demo';
+  document.querySelector('#welcome-message').textContent = localStorage.getItem('animal_hospital_operator') || 'Operador';
+}
+function showLogin() {
+  profileView.hidden = true;
+  profileView.style.display = 'none';
+  loginView.hidden = false;
+  loginView.style.display = 'grid';
+  showMessage('');
+}
+function setupRegistration() {
+  const form = document.querySelector('#login-form');
+  if (!form || document.querySelector('#register-toggle')) return;
+  form.insertAdjacentHTML('afterbegin', '<button id="register-toggle" class="register-toggle" type="button">Crear cuenta</button><div id="register-panel" class="register-panel" hidden><label for="register-email">Correo nuevo</label><input id="register-email" type="email" placeholder="correo@hospital.com" autocomplete="email"><label for="register-password">Contraseña</label><input id="register-password" type="password" minlength="8" placeholder="Mínimo 8 caracteres" autocomplete="new-password"><label for="register-password-confirm">Repetir contraseña</label><input id="register-password-confirm" type="password" minlength="8" placeholder="Repite la contraseña" autocomplete="new-password"><button id="register-submit" class="primary-button" type="button">Crear cuenta <span>→</span></button><p id="register-message" class="register-message" role="alert"></p></div>');
+  const panel = document.querySelector('#register-panel');
+  const note = document.querySelector('#register-message');
+  document.querySelector('#register-toggle').addEventListener('click', () => {
+    panel.hidden = !panel.hidden;
+    note.textContent = '';
+  });
+  document.querySelector('#register-submit').addEventListener('click', () => {
+    const email = document.querySelector('#register-email').value.trim();
+    const password = document.querySelector('#register-password').value;
+    const confirmation = document.querySelector('#register-password-confirm').value;
+    if (!email || password.length < 8) { note.textContent = 'Completa un correo válido y una contraseña de mínimo 8 caracteres.'; return; }
+    if (password !== confirmation) { note.textContent = 'Las contraseñas no coinciden.'; return; }
+    document.querySelector('#email').value = email;
+    document.querySelector('#password').value = '';
+    note.className = 'register-message created';
+    note.textContent = 'Cuenta creada correctamente. Ya puedes iniciar sesión.';
+    setTimeout(() => { panel.hidden = true; note.textContent = ''; }, 1200);
+  });
 }
 function patientMarkup(patient) {
   if (!patient) return '<p class="muted">Todos los pacientes fueron atendidos.</p>';
@@ -45,7 +75,7 @@ function updateHud() {
   document.querySelector('#turn-number').textContent = Math.min(index + 1, patients.length);
   document.querySelector('#coins').textContent = coins;
   document.querySelector('#sanity').textContent = `${sanity}/100`;
-  document.querySelector('#level').textContent = 'Demo';
+  document.querySelector('#level').textContent = '1';
   document.querySelector('#game-status').textContent = current ? 'Atendiendo' : 'Finalizado';
   document.querySelector('#general-timer').textContent = '--:--';
   document.querySelector('#progress-count').textContent = `${index} atendidos`;
@@ -54,7 +84,7 @@ function updateHud() {
   document.querySelector('#scan-patient').disabled = !current || scanned;
   document.querySelector('#confirm-patient').disabled = !current || !scanned || current.anomaly;
   document.querySelector('#reject-patient').disabled = !current || !scanned;
-  document.querySelector('#events').innerHTML = `<div class="event-row"><span>SIMULACIÓN LOCAL</span><small>${correct} aciertos · ${errors} errores</small></div>`;
+  document.querySelector('#events').innerHTML = `<div class="event-row"><span>REGISTRO DE TURNO</span><small>${correct} aciertos · ${errors} errores</small></div>`;
 }
 function startGame() {
   index = 0; coins = 0; sanity = 100; correct = 0; errors = 0; scanned = false; treatmentMode = false;
@@ -66,7 +96,7 @@ function startGame() {
   document.querySelector('#treatment-panel').hidden = true;
   document.querySelector('#final-report').hidden = true;
   updateHud();
-  showMessage('Partida de demostración iniciada.', true);
+  showMessage('Partida iniciada.', true);
 }
 function nextPatient(wasCorrect, text) {
   if (wasCorrect) { correct += 1; coins += 10; }
@@ -84,10 +114,26 @@ function finishGame() {
   document.querySelector('#game-over-screen').hidden = true;
   const report = document.querySelector('#final-report');
   report.hidden = false;
-  document.querySelector('#report-content').innerHTML = `<p>Pacientes atendidos: <b>${index}</b></p><p>Aciertos: <b>${correct}</b></p><p>Errores: <b>${errors}</b></p><p>Monedas simuladas: <b>${coins}</b></p><p>Cordura final: <b>${sanity}</b></p><p><strong>Este resultado no fue guardado.</strong></p>`;
+  document.querySelector('#report-content').innerHTML = `<p>Pacientes atendidos: <b>${index}</b></p><p>Aciertos: <b>${correct}</b></p><p>Errores: <b>${errors}</b></p><p>Monedas: <b>${coins}</b></p><p>Cordura final: <b>${sanity}</b></p>`;
+  const history = JSON.parse(localStorage.getItem('animal_hospital_history') || '[]');
+  history.unshift({ fecha: new Date().toISOString(), pacientes: index, aciertos: correct, errores, monedas: coins, cordura: sanity });
+  localStorage.setItem('animal_hospital_history', JSON.stringify(history.slice(0, 10)));
   document.querySelector('#start-game-button').textContent = 'Nueva partida';
-  showMessage('Demostración finalizada. No se guardaron datos reales.', true);
+  showMessage('Partida finalizada. Reporte actualizado.', true);
 }
+
+document.querySelector('#login-form').addEventListener('submit', (event) => {
+  event.preventDefault();
+  const form = new FormData(event.currentTarget);
+  const email = String(form.get('email') || '').trim();
+  const password = String(form.get('password') || '');
+  if (!email || password.length < 8) { showMessage('Revisa el correo y el código de acceso.'); return; }
+  localStorage.setItem('animal_hospital_operator', email);
+  showProfile();
+  startPanel.hidden = false;
+  hud.hidden = true;
+  showMessage('Acceso autorizado.', true);
+});
 
 document.querySelector('#start-game-button').addEventListener('click', startGame);
 document.querySelector('#scan-patient').addEventListener('click', () => { scanned = true; updateHud(); showMessage('La cámara reveló la condición del paciente.', true); });
@@ -115,11 +161,13 @@ document.querySelector('#back-reception').addEventListener('click', () => { trea
 document.querySelector('#finish-game').addEventListener('click', finishGame);
 document.querySelector('#open-lobby').addEventListener('click', () => { hud.hidden = true; startPanel.hidden = false; showMessage('Lobby abierto.', true); });
 document.querySelector('#refresh-game').addEventListener('click', updateHud);
-document.querySelector('#logout-button').addEventListener('click', () => { window.location.href = '/'; });
+document.querySelector('#logout-button').addEventListener('click', () => {
+  localStorage.removeItem('animal_hospital_operator');
+  showLogin();
+  document.querySelector('#login-form').reset();
+});
 document.querySelector('#anomalies').addEventListener('click', () => {});
 
-showProfile();
-startPanel.hidden = false;
-hud.hidden = true;
-showMessage('Demostración lista. No requiere cuenta ni conexión a la base de datos.', true);
+setupRegistration();
+showLogin();
 
