@@ -4,15 +4,8 @@ source, site = map(Path, sys.argv[1:3])
 target = site / "saltenas-intinia"
 target.mkdir(parents=True, exist_ok=True)
 html = (source / "pedidos.html").read_text(encoding="utf-8")
-js = (source / "pedido.js").read_text(encoding="utf-8")
-# Fail closed when the student's structure changes; do not publish a broken demo.
-assert "async function validateSession()" in js
-assert "// Event Listeners" in js
-js = re.sub(r"async function validateSession\(\)\s*\{.*?\n\}\s*\n(?=// Event Listeners)", 'function validateSession() { userEmail.textContent = "Adriana Claros · Demo"; }\n\n', js, flags=re.S)
-js = js.replace("const API_BASE_URL = window.APP_CONFIG.API_BASE_URL;", "")
-js = re.sub(r"async function readResponse\(response\)\s*\{.*?\n\}", "", js, flags=re.S)
-js = js.replace("localStorage.removeItem('authToken');", "").replace("window.location.replace('index.html');", "window.location.assign('/');")
-js = js.replace("lista para registrar en la base de datos.", "simulada. No se guardó ningún pedido ni se realizó un cobro.")
+demo_script = Path(__file__).with_name("adriana-demo.js")
+js = demo_script.read_text(encoding="utf-8")
 assert "fetch(" not in js and "localStorage" not in js and "API_BASE_URL" not in js
 html = html.replace('<script src="config.js"></script>', "")
 html = html.replace("Cerrar sesión", "Volver a Datrio").replace("Registrar venta", "Simular pedido")
