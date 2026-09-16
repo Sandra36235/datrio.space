@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Salteñas Intiña | Pedidos</title>
+
+  <link rel="icon" type="image/png" href="assets/imagotipo.png">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+  <!-- =========================================
+       BANNER SUPERIOR
+  ========================================== -->
+
+  <header class="topbar">
+
+    <!-- Imagen del banner -->
+    <img
+      class="topbar-image"
+      src="assets/banner.png"
+      alt="Banner Salteñería Intiña"
+    />
+
+    <!-- Contenido del banner -->
+    <div class="topbar-content">
+
+      <!-- Botón hamburguesa -->
+      <button
+        id="menu-toggle"
+        class="menu-toggle"
+        type="button"
+        aria-label="Abrir menú"
+        aria-controls="side-menu"
+        aria-expanded="false"
+      >
+        ☰
+      </button>
+
+      <!-- Logo + nombre -->
+      <a
+        class="brand"
+        href="pedidos.html"
+        aria-label="Inicio de Salteñería Intiña"
+      >
+        <img
+          src="assets/imagotipo.png"
+          alt="Logo Intiña"
+          class="brand-logo"
+        />
+
+        <span>INTIÑA</span>
+      </a>
+
+      <!-- Usuario + cerrar sesión -->
+      <div class="user-menu">
+
+        <span
+          id="user-email"
+          class="user-email"
+        ></span>
+
+        <button
+          id="logout-button"
+          class="button-secondary"
+          type="button"
+        >
+          Cerrar sesión
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- =========================================
+       MENÚ LATERAL
+  ========================================== -->
+
+  <aside
+    id="side-menu"
+    class="side-menu"
+    aria-hidden="true"
+  >
+
+    <div class="side-menu-header">
+
+      <button
+        id="menu-close"
+        class="menu-close"
+        type="button"
+        aria-label="Cerrar menú"
+      >
+        ×
+      </button>
+
+      <img
+        src="assets/imagotipo.png"
+        alt="Logo Intiña"
+        class="side-menu-logo"
+      />
+
+      <h2>INTIÑA</h2>
+
+      <p>Salteñería</p>
+
+    </div>
+
+
+    <nav class="side-menu-nav">
+
+      <!-- Página actual -->
+      <a
+        href="pedidos.html"
+        class="menu-item active"
+      >
+        <span class="menu-icon">🛒</span>
+        <span>Pedidos</span>
+      </a>
+
+      <!-- Historial -->
+      <a
+        href="ventas.html"
+        class="menu-item"
+      >
+        <span class="menu-icon">🧾</span>
+        <span>Historial de ventas</span>
+      </a>
+
+      <!-- Dashboard -->
+      <a
+        href="dashboard.html"
+        class="menu-item"
+      >
+        <span class="menu-icon">📊</span>
+        <span>Dashboard</span>
+      </a>
+
+    </nav>
+
+  </aside>
+
+
+  <!-- Fondo detrás del menú -->
+  <div
+    id="menu-overlay"
+    class="menu-overlay"
+  ></div>
+
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="app-shell">
+      <!-- Encabezado de Página -->
+      <section class="page-header">
+        <div>
+          <h1>Registrar pedido</h1>
+          <p class="subtitle">Selecciona los productos para la venta actual.</p>
+        </div>
+        <div class="order-number">
+          <span>Pedido actual:</span>
+          <strong id="order-number">#001</strong>
+        </div>
+      </section>
+
+      <!-- Layout de Ventas -->
+      <section class="sales-layout" aria-label="Registro de pedidos">
+        <!-- Catálogo de Productos -->
+        <section class="panel catalog-panel">
+          <div class="panel-heading">
+            <div>
+              <h2>Productos disponibles</h2>
+              <p>Selecciona tu pedido.</p>
+            </div>
+
+            <label class="search-field" for="product-search">
+              <span aria-hidden="true">⌕</span>
+              <input id="product-search" type="search" placeholder="Buscar producto" />
+            </label>
+          </div>
+
+          <div class="product-filters">
+            <button type="button" class="filter-button active" data-filter="todos">Todos</button>
+            <button type="button" class="filter-button" data-filter="saltenas">Salteñas</button>
+            <button type="button" class="filter-button" data-filter="masas">Masas</button>
+            <button type="button" class="filter-button" data-filter="bebidas">Bebidas</button>
+          </div>
+
+          <div id="product-list" class="product-grid" aria-live="polite"></div>
+        </section>
+
+        <!-- Resumen de Orden -->
+        <aside class="panel order-panel">
+          <div class="panel-heading compact">
+            <div>
+              <h2>Resumen del pedido</h2>
+              <p id="item-count">Sin productos agregados</p>
+            </div>
+            <button id="clear-order" class="icon-button" type="button" title="Vaciar pedido" aria-label="Vaciar pedido">🗑</button>
+          </div>
+
+          <div id="order-items" class="order-items">
+            <p class="empty-state">Aún no agregaste productos al pedido.</p>
+          </div>
+
+          <div class="order-total">
+            <span>Total</span>
+            <strong id="order-total">Bs 0,00</strong>
+          </div>
+
+          <div class="checkout-fields">
+            <label for="payment-method">Método de pago</label>
+            <select id="payment-method">
+              <option value="Efectivo">Efectivo</option>
+              <option value="QR">QR</option>
+              <option value="Tarjeta">Tarjeta</option>
+            </select>
+
+            <details class="invoice-details">
+              <summary>Agregar datos de facturación</summary>
+              <div class="invoice-inputs">
+                <label for="nit">NIT</label>
+                <input id="nit" type="text" maxlength="20" placeholder="Opcional" />
+                
+                <label for="business-name">Razón social</label>
+                <input id="business-name" type="text" maxlength="100" placeholder="Opcional" />
+              </div>
+            </details>
+          </div>
+
+          <button id="complete-order" class="button-primary" type="button">Registrar venta</button>
+          <p id="order-feedback" class="order-feedback" role="status" aria-live="polite"></p>
+        </aside>
+      </section>
+    </main>
+
+    <!-- VENTANA EMERGENTE DE FACTURA -->
+    <div id="invoice-modal" class="invoice-modal" hidden>
+      <div class="invoice-overlay" id="invoice-overlay"></div>
+      <section class="invoice-window" role="dialog" aria-modal="true" aria-labelledby="invoice-title">
+        
+        <div class="invoice-actions">
+          <button id="print-invoice" type="button" class="invoice-print-btn" title="Imprimir">🖨️</button>
+          <button id="close-invoice" class="invoice-close" type="button" aria-label="Cerrar factura">×</button>
+        </div>
+
+        <div class="invoice-header">
+          <img src="assets/imagotipo.png" alt="Intiña" class="invoice-logo" />
+          <div>
+            <h2 id="invoice-title">SALTEÑERÍA INTIÑA</h2>
+            <p class="invoice-subtitle">Comprobante de venta</p>
+          </div>
+        </div>
+        
+        <div class="invoice-divider"></div>
+        
+        <div class="invoice-info">
+          <div>
+            <span class="invoice-label">PEDIDO</span>
+            <strong id="invoice-order-number" class="invoice-value">#001</strong>
+          </div>
+          <div>
+            <span class="invoice-label">FECHA</span>
+            <strong id="invoice-date" class="invoice-value"></strong>
+          </div>
+        </div>
+        
+        <div class="invoice-divider"></div>
+
+        <div class="invoice-table-header">
+          <span>DESCRIPCIÓN</span>
+          <span>CANT.</span>
+          <span>P.UNIT.</span>
+          <span>SUBTOTAL</span>
+        </div>
+        
+        <div id="invoice-items" class="invoice-items"></div>
+        
+        <div class="invoice-total">
+          <span class="invoice-total-label">TOTAL</span>
+          <strong id="invoice-total" class="invoice-total-value">Bs 0,00</strong>
+        </div>
+        
+        <div class="invoice-payment">
+          <div class="invoice-payment-row">
+            <span class="invoice-label">Método de pago</span>
+            <strong id="invoice-payment-method" class="invoice-value">Efectivo</strong>
+          </div>
+          <div class="invoice-payment-row">
+            <span class="invoice-label">NIT / CI</span>
+            <strong id="invoice-nit" class="invoice-value">—</strong>
+          </div>
+          <div class="invoice-payment-row">
+            <span class="invoice-label">Razón social</span>
+            <strong id="invoice-business-name" class="invoice-value">—</strong>
+          </div>
+        </div>
+        
+        <div class="invoice-footer">
+          <p class="invoice-thanks">¡Gracias por su compra!</p>
+          <small class="invoice-brand">Salteñería Intiña</small>
+        </div>
+      </section>
+    </div>
+
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="menu.js"></script>
+    <script src="pedido.js"></script>
+  </body>
+</html>
