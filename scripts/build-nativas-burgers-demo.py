@@ -13,25 +13,37 @@ if target.exists():
     shutil.rmtree(target)
 target.mkdir(parents=True)
 
-for name in ("index.html", "login.css", "pos.html", "styles.css", "pos-theme.css"):
+# Conserva intactos el inicio de sesión, el punto de venta y el programa final
+# de Nataly. La API de demostración sustituye únicamente al servidor remoto.
+for name in ("index.html", "login.css", "login.js", "pos.html", "styles.css", "pos-theme.css", "app.js"):
     path = source / name
     if path.is_symlink() or not path.is_file():
         raise SystemExit(f"Archivo faltante o no permitido: {path}")
     shutil.copy2(path, target / name)
 
-script = Path(__file__).with_name("nativas-burgers-demo.js")
-shutil.copy2(script, target / "app.js")
-login_script = Path(__file__).with_name("nativas-burgers-login.js")
-shutil.copy2(login_script, target / "login.js")
+shutil.copy2(Path(__file__).with_name("nativas-burgers-demo-api.js"), target / "demo-api.js")
 shutil.copytree(source / "assets", target / "assets", dirs_exist_ok=True)
 
-pos_path = target / "pos.html"
-pos_path.write_text(
-    pos_path.read_text(encoding="utf-8").replace('/imagenes/', 'assets/menu/'),
-    encoding="utf-8",
+index_path = target / "index.html"
+index_html = index_path.read_text(encoding="utf-8").replace(
+    '<script src="login.js"></script>',
+    '<script src="demo-api.js"></script><script src="login.js"></script>',
+    1,
 )
+index_path.write_text(index_html, encoding="utf-8")
 
-styles_path = target / "styles.css"
-styles = styles_path.read_text(encoding="utf-8")
-styles += "\n.product small{color:#846f65;font-size:.72rem}.add:disabled{opacity:.4}.ticket .price{float:right}\n"
-styles_path.write_text(styles, encoding="utf-8")
+pos_path = target / "pos.html"
+pos_html = pos_path.read_text(encoding="utf-8")
+pos_html = pos_html.replace('/imagenes/', 'assets/menu/')
+pos_html = pos_html.replace(
+    '<script src="app.js"></script>',
+    '<script src="demo-api.js"></script><script src="app.js"></script>',
+    1,
+)
+pos_path.write_text(pos_html, encoding="utf-8")
+
+for path in target.rglob("*"):
+    if path.is_symlink():
+        raise RuntimeError("Symlinks are not allowed")
+
+print("Nativas Burgers final frontend ready with a browser API")
