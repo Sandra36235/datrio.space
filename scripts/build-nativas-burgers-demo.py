@@ -42,6 +42,12 @@ pos_html = pos_html.replace(
 )
 pos_path.write_text(pos_html, encoding="utf-8")
 
+theme_path = target / "pos-theme.css"
+theme_path.write_text(
+    theme_path.read_text(encoding="utf-8").replace('/imagenes/', 'assets/menu/'),
+    encoding="utf-8",
+)
+
 for path in target.rglob("*"):
     if path.is_symlink():
         raise RuntimeError("Symlinks are not allowed")
