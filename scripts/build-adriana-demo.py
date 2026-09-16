@@ -22,6 +22,14 @@ for path in source.iterdir():
         shutil.copy2(path, target / path.name)
 
 shutil.copytree(source / "assets", target / "assets", dirs_exist_ok=True)
+
+# La entrega final tiene estos dos archivos más recientes que la copia de GitHub
+# de la estudiante. Se guardan aquí para que la publicación sea exactamente la
+# versión recibida por la profesora.
+snapshot = Path(__file__).resolve().parent.parent / "student-snapshots" / "adriana-final"
+for name in ("pedidos.html", "pedido.js"):
+    shutil.copy2(snapshot / name, target / name)
+
 shutil.copy2(Path(__file__).with_name("adriana-demo-api.js"), target / "demo-api.js")
 (target / "config.js").write_text(
     "window.APP_CONFIG = { API_BASE_URL: '/__saltenas_demo__' };\n",
