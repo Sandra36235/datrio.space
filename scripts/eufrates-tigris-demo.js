@@ -1,163 +1,138 @@
-const catalog = {
-  branches: [
-    { id: 1, nombre: 'Karum de Ur', ruta_comercio: 'Ur · Dilmun' },
-    { id: 2, nombre: 'Karum de Nippur', ruta_comercio: 'Nippur · Assur' },
-    { id: 3, nombre: 'Karum de Babilonia', ruta_comercio: 'Babilonia · Mari' }
-  ],
-  products: [
-    { id: 1, categoria: 'Textiles', nombre: 'Lana teñida' },
-    { id: 2, categoria: 'Granos', nombre: 'Cebada' },
-    { id: 3, categoria: 'Metales', nombre: 'Cobre de Dilmun' },
-    { id: 4, categoria: 'Aceites', nombre: 'Aceite de sésamo' },
-    { id: 5, categoria: 'Cerámica', nombre: 'Vasijas selladas' }
-  ]
-};
+(function () {
+  const STORE_KEY = 'datrio_eufrates_final_v3';
+  const DEMO_EMAIL = 'demo.karum.e7786c75@ejemplo.com';
+  const DEMO_PASSWORD = 'KarumDemo2026!';
+  const originalFetch = window.fetch.bind(window);
+  const today = () => new Date().toISOString().slice(0, 10);
 
-const customers = [
-  { id: 1, nombre: 'Nabû-iddin', sello_personal: 'Sello de lapislázuli', direccion: 'Barrio del mercado, Ur' },
-  { id: 2, nombre: 'Amat-Marduk', sello_personal: 'Sello de león alado', direccion: 'Puerta de Ishtar, Babilonia' }
-];
-const items = [];
-const orders = [
-  { id: 1, numero_tablilla: 'TBL-0001', fecha: new Date().toISOString().slice(0, 10), cliente: 'Amat-Marduk', sucursal: 'Karum de Babilonia', tipo_entrega: 'ALMACEN', direccion: 'Puerta de Ishtar, Babilonia', estado: 'REGISTRADO' }
-];
-
-const $ = selector => document.querySelector(selector);
-const notice = (text = '') => { $('#app-message').textContent = text; };
-
-function fill(select, rows, label) {
-  select.innerHTML = '<option value="">Seleccione una opción</option>';
-  rows.forEach(row => {
-    const option = document.createElement('option');
-    option.value = row.id;
-    option.textContent = label(row);
-    select.append(option);
+  const seed = () => ({
+    users: [{ id: 1, email: DEMO_EMAIL, password: DEMO_PASSWORD }],
+    branches: [
+      { id: 1, nombre: 'Karum de Ur', ruta_comercio: 'Ur - Dilmun', direccion: 'Distrito del puerto, Ur' },
+      { id: 2, nombre: 'Karum de Nippur', ruta_comercio: 'Nippur - Assur', direccion: 'Camino de los templos, Nippur' },
+      { id: 3, nombre: 'Karum de Babilonia', ruta_comercio: 'Babilonia - Mari', direccion: 'Puerta de Ishtar, Babilonia' }
+    ],
+    categories: [
+      { id: 1, nombre: 'Textiles' }, { id: 2, nombre: 'Granos' },
+      { id: 3, nombre: 'Metales' }, { id: 4, nombre: 'Aceites' }, { id: 5, nombre: 'Ceramica' }
+    ],
+    products: [
+      { id: 1, categoria: 'Textiles', nombre: 'Lana tenida', sku: 'TEX-001', precio: 45 },
+      { id: 2, categoria: 'Granos', nombre: 'Cebada de Ur', sku: 'GRA-001', precio: 18 },
+      { id: 3, categoria: 'Metales', nombre: 'Cobre de Dilmun', sku: 'MET-001', precio: 120 },
+      { id: 4, categoria: 'Aceites', nombre: 'Aceite de sesamo', sku: 'ACE-001', precio: 32 },
+      { id: 5, categoria: 'Ceramica', nombre: 'Vasija sellada', sku: 'CER-001', precio: 26 }
+    ],
+    customers: [
+      { id: 1, nombre: 'Nabu-iddin', sello_personal: 'Sello de lapislazuli', direccion: 'Barrio del mercado, Ur' },
+      { id: 2, nombre: 'Amat-Marduk', sello_personal: 'Sello de leon alado', direccion: 'Puerta de Ishtar, Babilonia' }
+    ],
+    orders: [
+      { id: 1, numero_tablilla: 'TAB-000001', fecha: today(), cliente: 'Amat-Marduk', sucursal: 'Karum de Babilonia', tipo_entrega: 'ALMACEN', direccion_entrega: 'Puerta de Ishtar, Babilonia', estado: 'REGISTRADO' }
+    ],
+    nextUserId: 2, nextCustomerId: 3, nextOrderId: 2
   });
-}
 
-function renderCustomers() {
-  fill($('#customer-select'), customers, customer => `${customer.nombre} · ${customer.sello_personal}`);
-}
-
-function renderCatalog() {
-  fill($('#branch-select'), catalog.branches, branch => `${branch.nombre} · ${branch.ruta_comercio}`);
-  fill($('#product-select'), catalog.products, product => `${product.categoria}: ${product.nombre}`);
-  renderCustomers();
-}
-
-function renderItems() {
-  $('#order-items').innerHTML = items.length
-    ? items.map((item, index) => `<li><span>${item.nombre}</span><strong>${item.cantidad} unidades</strong><button type="button" data-remove="${index}">Quitar</button></li>`).join('')
-    : '<li class="empty">Todavía no se agregaron productos.</li>';
-}
-
-function renderOrders() {
-  $('#orders-body').innerHTML = orders.length
-    ? orders.map(order => `<tr>
-        <td>${order.numero_tablilla}</td><td>${order.fecha}</td><td>${order.cliente}</td><td>${order.sucursal}</td>
-        <td>${order.tipo_entrega}</td><td><span class="status ${order.estado}">${order.estado}</span></td>
-        <td>${order.estado === 'REGISTRADO' ? `<button data-order="${order.id}" data-action="ship">Enviar</button>` : order.estado === 'ENVIADO' ? `<button data-order="${order.id}" data-action="deliver">Entregar</button>` : 'Entregado'}</td>
-      </tr>`).join('')
-    : '<tr><td colspan="7">No hay tablillas registradas.</td></tr>';
-}
-
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(section => {
-    section.hidden = section.id !== `page-${name}`;
-    section.classList.toggle('active', !section.hidden);
-  });
-  document.querySelectorAll('.nav-button').forEach(button => {
-    button.classList.toggle('active', button.dataset.page === name);
-  });
-  notice();
-  if (name === 'deliveries') renderOrders();
-}
-
-document.querySelectorAll('.nav-button').forEach(button => {
-  button.onclick = () => showPage(button.dataset.page);
-});
-
-$('#customer-form').onsubmit = event => {
-  event.preventDefault();
-  const data = Object.fromEntries(new FormData(event.currentTarget));
-  customers.push({ id: Date.now(), nombre: data.nombre, sello_personal: data.selloPersonal, direccion: data.direccion });
-  event.currentTarget.reset();
-  renderCustomers();
-  showPage('orders');
-  notice('Cliente registrado y disponible para la nueva tablilla.');
-};
-
-$('#customer-select').onchange = event => {
-  const customer = customers.find(row => Number(row.id) === Number(event.target.value));
-  if (customer) $('#delivery-address').value = customer.direccion;
-};
-
-$('#add-item').onclick = () => {
-  const productId = Number($('#product-select').value);
-  const quantity = Number($('#quantity-input').value);
-  const product = catalog.products.find(row => row.id === productId);
-  if (!product || !Number.isInteger(quantity) || quantity < 1) {
-    notice('Seleccione un producto y una cantidad válida.');
-    return;
+  function read() {
+    try {
+      const data = JSON.parse(localStorage.getItem(STORE_KEY));
+      return data && data.branches ? data : seed();
+    } catch (_) { return seed(); }
   }
-  const existing = items.find(item => item.productoId === productId);
-  if (existing) existing.cantidad += quantity;
-  else items.push({ productoId: productId, cantidad: quantity, nombre: product.nombre });
-  notice();
-  renderItems();
-};
-
-$('#order-items').onclick = event => {
-  if (event.target.dataset.remove !== undefined) {
-    items.splice(Number(event.target.dataset.remove), 1);
-    renderItems();
+  function save(data) { localStorage.setItem(STORE_KEY, JSON.stringify(data)); }
+  function response(body, status = 200) {
+    return Promise.resolve(new Response(JSON.stringify(body), {
+      status, headers: { 'Content-Type': 'application/json' }
+    }));
   }
-};
-
-$('#order-form').onsubmit = event => {
-  event.preventDefault();
-  if (!items.length) {
-    notice('Agregue uno o más productos a la tablilla.');
-    return;
+  function fail(error, status = 400) { return response({ error }, status); }
+  function bodyOf(options) {
+    try { return options && options.body ? JSON.parse(options.body) : {}; }
+    catch (_) { return {}; }
   }
-  const data = Object.fromEntries(new FormData(event.currentTarget));
-  const customer = customers.find(row => Number(row.id) === Number(data.clienteId));
-  const branch = catalog.branches.find(row => Number(row.id) === Number(data.sucursalId));
-  if (!customer || !branch) {
-    notice('Seleccione una sucursal y un cliente.');
-    return;
+  function authUser(options, data) {
+    const headers = options && options.headers;
+    const value = headers && (headers.authorization || headers.Authorization);
+    const token = String(value || '').replace(/^Bearer\s+/i, '');
+    if (!token.startsWith('karum-demo:')) return null;
+    const email = decodeURIComponent(token.slice(11));
+    return data.users.find((user) => user.email === email) || null;
   }
-  const tablet = `TBL-${String(orders.length + 1).padStart(4, '0')}`;
-  orders.unshift({
-    id: Date.now(), numero_tablilla: tablet, fecha: data.fecha, cliente: customer.nombre,
-    sucursal: branch.nombre, tipo_entrega: data.tipoEntrega, direccion: data.direccionEntrega, estado: 'REGISTRADO'
-  });
-  event.currentTarget.reset();
-  $('#order-date').value = new Date().toISOString().slice(0, 10);
-  items.length = 0;
-  renderItems();
-  showPage('deliveries');
-  notice(`Tablilla ${tablet} registrada.`);
-};
 
-$('#orders-body').onclick = event => {
-  const id = Number(event.target.dataset.order);
-  const order = orders.find(row => row.id === id);
-  if (!order) return;
-  order.estado = event.target.dataset.action === 'ship' ? 'ENVIADO' : 'ENTREGADO';
-  renderOrders();
-};
+  window.fetch = function (input, options = {}) {
+    let url;
+    try { url = new URL(typeof input === 'string' ? input : input.url, window.location.href); }
+    catch (_) { return originalFetch(input, options); }
+    if (url.hostname !== 'localhost' || url.port !== '3000' || !url.pathname.startsWith('/api/')) {
+      return originalFetch(input, options);
+    }
 
-$('#refresh-orders').textContent = 'Restablecer';
-$('#refresh-orders').onclick = () => location.reload();
-$('#logout-button').textContent = 'Volver a Datrio';
-$('#logout-button').onclick = () => { location.href = '/'; };
-$('#welcome-text').textContent = 'Escriba: Ernesto Ballon · Demo';
-$('#order-date').value = new Date().toISOString().slice(0, 10);
-$('#login-view').hidden = true;
-$('#app-view').hidden = false;
-renderCatalog();
-renderItems();
-renderOrders();
-showPage('clients');
+    const path = url.pathname.slice(4) || '/';
+    const method = String(options.method || 'GET').toUpperCase();
+    const body = bodyOf(options);
+    const data = read();
 
+    if (path === '/auth/register' && method === 'POST') {
+      const email = String(body.email || '').trim().toLowerCase();
+      const password = String(body.password || '');
+      if (!/^\S+@\S+\.\S+$/.test(email)) return fail('El email no tiene un formato valido.');
+      if (password.length < 8) return fail('La contrasena debe tener al menos 8 caracteres.');
+      if (data.users.some((user) => user.email === email)) return fail('Ya existe una cuenta con ese email.', 409);
+      data.users.push({ id: data.nextUserId++, email, password });
+      save(data);
+      return response({ user: { id: data.nextUserId - 1, email } }, 201);
+    }
+    if (path === '/auth/login' && method === 'POST') {
+      const email = String(body.email || '').trim().toLowerCase();
+      const user = data.users.find((item) => item.email === email && item.password === String(body.password || ''));
+      if (!user) return fail('Email o contrasena incorrectos.', 401);
+      return response({ token: 'karum-demo:' + encodeURIComponent(email), tokenType: 'Bearer', expiresIn: 'demo' });
+    }
+
+    const user = authUser(options, data);
+    if (!user) return fail('Sesion no valida. Ingrese nuevamente.', 401);
+    if (path === '/auth/me') return response({ user: { id: user.id, email: user.email, created_at: today() } });
+    if (path === '/catalog' && method === 'GET') {
+      return response({ branches: data.branches, categories: data.categories, products: data.products });
+    }
+    if (path === '/catalog/customers' && method === 'GET') return response({ customers: data.customers });
+    if (path === '/catalog/customers' && method === 'POST') {
+      const nombre = String(body.nombre || '').trim();
+      const sello = String(body.selloPersonal || '').trim();
+      const direccion = String(body.direccion || '').trim();
+      if (!nombre || !sello || !direccion) return fail('Nombre, sello personal y direccion son obligatorios.');
+      const customer = { id: data.nextCustomerId++, nombre, sello_personal: sello, direccion };
+      data.customers.push(customer);
+      save(data);
+      return response({ customer }, 201);
+    }
+    if (path === '/orders' && method === 'GET') return response({ orders: data.orders });
+    if (path === '/orders' && method === 'POST') {
+      const branch = data.branches.find((item) => item.id === Number(body.sucursalId));
+      const customer = data.customers.find((item) => item.id === Number(body.clienteId));
+      if (!branch || !customer || !body.fecha || !body.direccionEntrega ||
+          !['ALMACEN', 'DOMICILIO'].includes(body.tipoEntrega) || !Array.isArray(body.items) || !body.items.length) {
+        return fail('Complete la tablilla, el destino y las mercancias.');
+      }
+      const id = data.nextOrderId++;
+      const order = {
+        id, numero_tablilla: 'TAB-' + String(id).padStart(6, '0'), fecha: body.fecha,
+        cliente: customer.nombre, sucursal: branch.nombre, tipo_entrega: body.tipoEntrega,
+        direccion_entrega: body.direccionEntrega, estado: 'REGISTRADO', items: body.items
+      };
+      data.orders.unshift(order);
+      save(data);
+      return response({ order: { id, numeroTablilla: order.numero_tablilla, estado: order.estado } }, 201);
+    }
+
+    const action = path.match(/^\/orders\/(\d+)\/(ship|deliver)$/);
+    if (action && method === 'POST') {
+      const order = data.orders.find((item) => item.id === Number(action[1]));
+      if (!order) return fail('Pedido no encontrado.', 404);
+      order.estado = action[2] === 'ship' ? 'ENVIADO' : 'ENTREGADO';
+      save(data);
+      return response({ status: order.estado });
+    }
+    return fail('Ruta no disponible en esta demostracion.', 404);
+  };
+})();
