@@ -1,15 +1,19 @@
 name: Publicar Datrio y demos de estudiantes
+
 on:
   push:
     branches: [main]
   workflow_dispatch:
   schedule:
     - cron: '17 * * * *'
+
 permissions:
   contents: read
+
 concurrency:
   group: datrio-pages
   cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -45,17 +49,11 @@ jobs:
           persist-credentials: false
       - uses: actions/checkout@v4
         with:
-          repository: ernestoballon1/EmperadorErnesto
-          ref: main
-          path: ernesto
-          persist-credentials: false
-      - uses: actions/checkout@v4
-        with:
           repository: vegafernandezariana1-del/Cineuphoria
           ref: main
           path: ariana
           persist-credentials: false
-      - name: Preparar sitio y demostración
+      - name: Preparar sitio y demostracion
         run: |
           mkdir public
           rsync -a --exclude='.git' --exclude='.github' --exclude='scripts' datrio/ public/
@@ -67,7 +65,10 @@ jobs:
             wget --quiet --recursive --level=2 --page-requisites --convert-links --adjust-extension --no-parent --no-host-directories --directory-prefix=public https://datrio.space/animal-hospital-anomaly/
           fi
           python3 datrio/scripts/build-nativas-burgers-demo.py nataly/frontend public
-          python3 datrio/scripts/build-eufrates-tigris-demo.py ernesto/frontend public
+          cat datrio/eufrates-final.zip.* > /tmp/eufrates-final.zip
+          mkdir /tmp/eufrates-final
+          unzip -q /tmp/eufrates-final.zip -d /tmp/eufrates-final
+          python3 datrio/scripts/build-eufrates-tigris-demo.py /tmp/eufrates-final public
           python3 datrio/scripts/build-cineuphoria-demo.py ariana/frontend public
           touch public/.nojekyll
       - uses: actions/upload-pages-artifact@v3
