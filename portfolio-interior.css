@@ -109,3 +109,17 @@ body.datrio-interior .board-content p { color: #e3ece5; }
 body.datrio-interior .frame { color: #263149; }
 body.datrio-interior .placeholder { background: rgba(255,255,255,.06); }
 body.datrio-interior .number { color: rgba(247,251,255,.68); }
+
+@media (max-width: 700px) {
+  html, body.datrio-interior { max-width: 100%; overflow-x: clip; }
+  body.datrio-interior { min-height: 100dvh; background-attachment: scroll; }
+  body.datrio-interior main { padding-bottom: 55px; }
+  body.datrio-interior .hero h1,
+  body.datrio-interior h1 { font-size: clamp(40px, 11vw, 56px); overflow-wrap: anywhere; }
+  body.datrio-interior .card,
+  body.datrio-interior .step,
+  body.datrio-interior .contact-card { min-width: 0; }
+  body.datrio-interior .back { min-height: 44px; display: inline-flex; align-items: center; }
+  body.datrio-interior .board-tabs { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 16px; }
+  body.datrio-interior .board-tabs button { flex: none; min-height: 44px; }
+}
