@@ -1,7 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700&family=Fredoka:wght@400;500;600&display=swap');
+
 :root {
   --glass-edge: #ffffff80;
-  --glass-shadow: 0 8px 22px #27436b12, inset 0 1px 0 #ffffff9c;
-  --glass-blur: blur(20px) saturate(1.35);
+  --glass-shadow: 0 8px 22px #27436b10, inset 0 1px 0 #ffffff7a;
+  --glass-blur: blur(22px) saturate(1.3);
+}
+
+.topbar nav button,
+.about-link,
+.cta,
+.view-controls button,
+.world-card,
+.object-shortcuts button,
+.walk-hud button,
+.detail-action,
+.back,
+#close-dialog,
+.project-item,
+.pin {
+  font-family: 'Fredoka', 'DM Sans', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Bricolage Grotesque', 'Space Grotesk', sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.logo-mark {
+  width: 35px;
+  height: 35px;
+  flex: 0 0 auto;
+  filter: drop-shadow(0 3px 5px #284a9d24);
+}
+
+.logo .logo-word {
+  margin: 0;
+  color: var(--ink);
+  font: inherit;
+  vertical-align: baseline;
+}
+
+.story h1,
+.worldbar-heading,
+#detail-content h2,
+#detail-content h3,
+#library-transition strong {
+  font-family: 'Bricolage Grotesque', 'Space Grotesk', sans-serif;
+  letter-spacing: 0;
+}
+
+.story h1 {
+  font-weight: 600;
+  line-height: 1.04;
 }
 
 .topbar nav {
@@ -9,7 +66,7 @@
   padding: 4px;
   border: 1px solid #ffffff80;
   border-radius: 999px;
-  background: #e9eef226;
+  background: #e9eef21a;
   box-shadow: var(--glass-shadow);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
@@ -25,20 +82,20 @@
 
 .topbar nav button:hover {
   color: var(--blue);
-  background: #ffffff2e;
+  background: #ffffff1f;
 }
 
 .topbar nav button.selected {
   border-color: var(--glass-edge);
   color: var(--blue);
-  background: linear-gradient(180deg, #ffffff66, #eaf0fb38);
-  box-shadow: 0 3px 9px #29466b12, inset 0 1px 0 #ffffffa6;
+  background: linear-gradient(180deg, #ffffff4d, #eaf0fb24);
+  box-shadow: 0 3px 9px #29466b0d, inset 0 1px 0 #ffffff80;
 }
 
 .about-link {
   border: 1px solid #ffffff8a;
   border-radius: 999px;
-  background: linear-gradient(155deg, #ffffff70 0%, #f5f8ff45 46%, #dfe9ff38 100%);
+  background: linear-gradient(155deg, #ffffff54 0%, #f5f8ff38 46%, #dfe9ff29 100%);
   box-shadow: var(--glass-shadow);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
@@ -58,10 +115,10 @@
 .project-link {
   border: 1px solid #ffffffa8;
   border-radius: 999px;
-  background: linear-gradient(155deg, #7894ff99 0%, #365fe180 38%, #2349bd75 100%);
-  box-shadow: 0 8px 18px #234bbd24, inset 0 1px 0 #ffffff88, inset 0 -2px 4px #18368a30;
-  backdrop-filter: blur(18px) saturate(1.4);
-  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  background: linear-gradient(155deg, #7894ff80 0%, #365fe166 38%, #2349bd5c 100%);
+  box-shadow: 0 8px 18px #234bbd1c, inset 0 1px 0 #ffffff70, inset 0 -2px 4px #18368a26;
+  backdrop-filter: blur(22px) saturate(1.35);
+  -webkit-backdrop-filter: blur(22px) saturate(1.35);
   transition: transform .2s, box-shadow .2s, filter .2s;
 }
 
@@ -79,7 +136,7 @@
   padding: 5px;
   border: 1px solid #ffffffbd;
   border-radius: 999px;
-  background: #f7f9f833;
+  background: #f7f9f820;
   box-shadow: var(--glass-shadow);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
@@ -87,8 +144,8 @@
 
 .view-controls button {
   border: 1px solid #ffffff96;
-  background: linear-gradient(155deg, #ffffff70, #e8eef545);
-  box-shadow: 0 3px 8px #33486212, inset 0 1px 0 #ffffffb0;
+  background: linear-gradient(155deg, #ffffff54, #e8eef52e);
+  box-shadow: 0 3px 8px #3348620d, inset 0 1px 0 #ffffff8a;
   transition: transform .18s, box-shadow .18s, background .18s;
 }
 
@@ -101,23 +158,23 @@
   margin: 4px;
   border: 1px solid #ffffff80;
   border-radius: 16px;
-  background: #ffffff29;
-  box-shadow: 0 5px 16px #2c45630c, inset 0 1px 0 #ffffff8a;
-  backdrop-filter: blur(14px) saturate(1.35);
-  -webkit-backdrop-filter: blur(14px) saturate(1.35);
+  background: #ffffff1f;
+  box-shadow: 0 5px 16px #2c456309, inset 0 1px 0 #ffffff70;
+  backdrop-filter: blur(18px) saturate(1.3);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
   transition: transform .2s, background .2s, box-shadow .2s;
 }
 
 .world-card:hover {
   transform: translateY(-2px);
-  background: #ffffff59;
+  background: #ffffff40;
   box-shadow: 0 9px 20px #2c45631c, inset 0 1px 0 #fff;
 }
 
 .world-card.selected {
   border-color: #ffffffa6;
-  background: linear-gradient(155deg, #ffffff70, #e9efff40);
-  box-shadow: 0 7px 18px #2a53d612, inset 0 1px 0 #ffffffa6;
+  background: linear-gradient(155deg, #ffffff52, #e9efff2e);
+  box-shadow: 0 7px 18px #2a53d60d, inset 0 1px 0 #ffffff7a;
 }
 
 .world-card.selected:before {
@@ -136,10 +193,10 @@
 .back,
 #close-dialog {
   border: 1px solid #ffffff96;
-  background: linear-gradient(155deg, #ffffff5c, #edf2f63b);
-  box-shadow: 0 4px 12px #29466b10, inset 0 1px 0 #ffffff9c;
-  backdrop-filter: blur(12px) saturate(1.3);
-  -webkit-backdrop-filter: blur(12px) saturate(1.3);
+  background: linear-gradient(155deg, #ffffff45, #edf2f629);
+  box-shadow: 0 4px 12px #29466b0c, inset 0 1px 0 #ffffff78;
+  backdrop-filter: blur(16px) saturate(1.25);
+  -webkit-backdrop-filter: blur(16px) saturate(1.25);
   transition: transform .2s, background .2s, box-shadow .2s;
 }
 
@@ -147,13 +204,13 @@
 .project-item:hover,
 .back:hover {
   transform: translateY(-2px);
-  background: linear-gradient(155deg, #ffffff99, #e6edff5c);
+  background: linear-gradient(155deg, #ffffff75, #e6edff40);
   box-shadow: 0 8px 18px #29466b21, inset 0 1px 0 #fff;
 }
 
 .pin {
   border: 1px solid #ffffffa6;
-  background: linear-gradient(155deg, #ffffff70, #dce8f845);
+  background: linear-gradient(155deg, #ffffff54, #dce8f82e);
   color: #284a9d;
   box-shadow: 0 5px 15px #29466b29, inset 0 1px 0 #fff;
   backdrop-filter: blur(12px) saturate(1.35);
@@ -162,7 +219,7 @@
 
 .pin:hover,
 .pin:focus-visible {
-  background: linear-gradient(155deg, #ffffffa3, #e1eaff70);
+  background: linear-gradient(155deg, #ffffff85, #e1eaff52);
   box-shadow: 0 8px 19px #29466b38, inset 0 1px 0 #fff;
 }
 
@@ -190,13 +247,33 @@
 }
 
 @media (max-width: 700px) {
+  .topbar {
+    height: auto;
+    min-height: 0;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px 0 8px;
+  }
+
+  .logo {
+    order: 1;
+    font-size: 27px;
+  }
+
+  .about-link {
+    order: 2;
+  }
+
   .topbar nav {
-    gap: 1px;
+    order: 3;
+    flex: 0 0 100%;
+    justify-content: center;
+    gap: 3px;
     padding: 3px;
   }
 
   .topbar nav button {
-    padding: 9px 10px;
+    padding: 8px 13px;
   }
 
   .about-link {
@@ -218,4 +295,292 @@
   .back {
     transition: none;
   }
+}
+
+/* A clearer, more reflective glass finish for the whole control family. */
+:root {
+  --glass-edge: #ffffffa1;
+  --glass-blur: blur(28px) saturate(1.55);
+  --glass-shadow: 0 9px 26px #304b7614, inset 0 1px 0 #ffffffc2, inset 0 -1px 0 #ffffff30;
+}
+
+.topbar nav,
+.view-controls {
+  border-color: #ffffffad;
+  background: linear-gradient(145deg, #f8fbff30, #dce8f518 52%, #d9e3f322);
+  box-shadow: 0 14px 34px #304b7616, inset 0 1px 0 #ffffffbd, inset 0 -1px 0 #6279961c, inset 0 0 0 1px #ffffff38;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+}
+
+.topbar nav button.selected,
+.view-controls button,
+.world-card,
+.object-shortcuts button,
+.project-item,
+.back,
+#close-dialog,
+.pin {
+  border-color: #ffffffed;
+  background: linear-gradient(155deg, #faffff45 0%, #e8f0fb20 42%, #cfdef22b 100%);
+  box-shadow: 0 11px 26px #52647a20, 0 3px 6px #52647a12, inset 0 2px 2px #ffffff, inset 0 -2px 4px #7186a52b, inset 0 0 0 1px #ffffff61;
+  backdrop-filter: blur(24px) saturate(1.5);
+  -webkit-backdrop-filter: blur(24px) saturate(1.5);
+}
+
+.about-link {
+  border-color: #ffffffed;
+  background: linear-gradient(155deg, #faffff4d 0%, #edf3fb26 48%, #dfe9ff30 100%);
+  box-shadow: 0 11px 26px #52647a22, 0 3px 6px #52647a12, inset 0 2px 2px #ffffff, inset 0 -2px 4px #7186a52b, inset 0 0 0 1px #ffffff61;
+}
+
+.cta,
+.walk-hud button,
+.detail-action,
+.project-link {
+  border-color: #ffffffeb;
+  background: linear-gradient(180deg, #8491a46e 0%, #7c899c85 52%, #65738aa8 100%);
+  color: #fff;
+  text-shadow: 0 1px 3px #34425780;
+  box-shadow: 0 22px 34px #5c6a7b45, 0 7px 12px #4352682e, inset 0 2px 3px #ffffffed, inset 0 -3px 7px #53617570, inset 0 0 0 1px #ffffff75;
+  backdrop-filter: blur(30px) saturate(1.65);
+  -webkit-backdrop-filter: blur(30px) saturate(1.65);
+}
+
+.topbar nav button:hover,
+.view-controls button:hover,
+.world-card:hover,
+.object-shortcuts button:hover,
+.project-item:hover,
+.back:hover,
+.pin:hover,
+.pin:focus-visible {
+  background: linear-gradient(155deg, #ffffff68 0%, #f5f8ff35 48%, #dce8fa40 100%);
+  box-shadow: 0 8px 22px #28466d1a, inset 0 1px 0 #ffffffd1, inset 0 -1px 0 #ffffff3d;
+}
+
+.cta:hover,
+.walk-hud button:hover,
+.detail-action:hover,
+.project-link:hover {
+  background: linear-gradient(155deg, #a9b9ff85 0%, #6f8cf178 42%, #4569dc64 100%);
+  box-shadow: 0 11px 26px #234bbd29, inset 0 1px 0 #ffffffd1, inset 0 -1px 0 #18368a30;
+}
+
+.topbar nav button.selected,
+.world-card.selected {
+  background: linear-gradient(155deg, #faffff68 0%, #eef3ff3a 46%, #dce8fb45 100%);
+  box-shadow: 0 9px 22px #52647a20, inset 0 2px 2px #ffffff, inset 0 -2px 3px #7186a526, inset 0 0 0 1px #ffffff61;
+}
+
+.pin:after {
+  border-color: #ffffffa6;
+  background: #ffffff58;
+  box-shadow: 0 7px 20px #29466b18, inset 0 1px 0 #ffffffbb;
+  backdrop-filter: blur(22px) saturate(1.4);
+  -webkit-backdrop-filter: blur(22px) saturate(1.4);
+}
+
+/* A narrow specular reflection makes the controls read as glass, not fog. */
+.topbar nav button,
+.about-link,
+.cta,
+.view-controls button,
+.object-shortcuts button,
+.walk-hud button,
+.detail-action,
+.back,
+#close-dialog,
+.project-item,
+.pin {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-color: #ffffffed;
+  box-shadow: 0 12px 28px #52647a24, 0 3px 7px #52647a12, inset 0 2px 3px #ffffff, inset 0 -2px 4px #7186a52b, inset 0 0 0 1px #ffffff70;
+}
+
+.topbar nav button::before,
+.about-link::before,
+.cta::before,
+.view-controls button::before,
+.object-shortcuts button::before,
+.walk-hud button::before,
+.detail-action::before,
+.back::before,
+#close-dialog::before,
+.project-item::before,
+.pin::before,
+.world-card::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 1px;
+  left: 3%;
+  right: 3%;
+  height: 58%;
+  border-top: 1px solid #ffffff;
+  border-radius: 999px 999px 70% 70%;
+  background: radial-gradient(ellipse at 50% 0%, #ffffffde 0%, #ffffff8a 15%, #ffffff35 48%, transparent 78%);
+  opacity: .95;
+  pointer-events: none;
+}
+
+.cta::before,
+.walk-hud button::before,
+.detail-action::before {
+  background: radial-gradient(ellipse at 50% 0%, #ffffff 0%, #ffffffa8 15%, #ffffff45 48%, transparent 78%);
+}
+
+.world-card {
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow: 0 10px 25px #28466d1a, inset 0 2px 2px #ffffffeb, inset 0 -2px 3px #7186a51c, inset 0 0 0 1px #ffffff4a;
+}
+
+.world-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.world-card::after {
+  left: 7%;
+  right: 7%;
+  height: 38%;
+}
+
+.topbar nav button > *,
+.about-link > *,
+.cta > *,
+.view-controls button > *,
+.object-shortcuts button > *,
+.walk-hud button > *,
+.detail-action > *,
+.back > *,
+#close-dialog > *,
+.project-item > *,
+.pin > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Liquid-glass finish: transparent body, optical rim, broad specular arc. */
+:root {
+  --glass-blur: blur(30px) saturate(1.7);
+}
+
+.topbar nav,
+.view-controls {
+  border: 1px solid #ffffffc7;
+  background: linear-gradient(145deg, #f8fbff1b, #dce8f50c 52%, #d9e3f313);
+  box-shadow: 0 16px 38px #304b7620, inset 0 2px 3px #ffffffd6, inset 0 -2px 4px #6279962b, inset 0 0 0 1px #ffffff45;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+}
+
+.topbar nav button.selected,
+.view-controls button,
+.world-card,
+.object-shortcuts button,
+.project-item,
+.back,
+#close-dialog,
+.pin {
+  border: 1px solid #ffffffed;
+  background: linear-gradient(155deg, #ffffff20 0%, #e8f0fb0b 42%, #cfdef216 100%);
+  box-shadow: 0 12px 28px #52647a24, 0 3px 7px #52647a16, inset 0 2px 3px #ffffffed, inset 0 -2px 4px #7186a541, inset 0 0 0 1px #ffffff70;
+  backdrop-filter: blur(28px) saturate(1.65);
+  -webkit-backdrop-filter: blur(28px) saturate(1.65);
+}
+
+.about-link {
+  border: 1px solid #ffffffed;
+  background: linear-gradient(155deg, #ffffff28 0%, #f5f8ff12 48%, #dfe9ff1c 100%);
+  box-shadow: 0 12px 28px #52647a24, 0 3px 7px #52647a16, inset 0 2px 3px #ffffffed, inset 0 -2px 4px #7186a541, inset 0 0 0 1px #ffffff70;
+}
+
+.cta,
+.walk-hud button,
+.detail-action,
+.project-link {
+  min-height: 56px;
+  border: 1px solid #ffffff;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #aeb9ca68 0%, #8492a78c 52%, #64738ba8 100%);
+  color: #fff;
+  text-shadow: 0 1px 3px #263449b8;
+  box-shadow: 0 24px 36px #596a804d, 0 7px 12px #43526838, inset 0 2px 3px #ffffff, inset 0 -3px 8px #46566e8a, inset 0 0 0 1px #ffffff82;
+  backdrop-filter: blur(32px) saturate(1.75);
+  -webkit-backdrop-filter: blur(32px) saturate(1.75);
+}
+
+.topbar nav button.selected,
+.world-card.selected {
+  background: linear-gradient(155deg, #ffffff38 0%, #eef3ff15 46%, #dce8fb20 100%);
+  box-shadow: 0 10px 24px #2a53d61a, inset 0 2px 3px #ffffff, inset 0 -2px 4px #7186a536, inset 0 0 0 1px #ffffff70;
+}
+
+.topbar nav button,
+.about-link,
+.cta,
+.view-controls button,
+.object-shortcuts button,
+.walk-hud button,
+.detail-action,
+.back,
+#close-dialog,
+.project-item,
+.pin,
+.world-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.topbar nav button::before,
+.about-link::before,
+.cta::before,
+.view-controls button::before,
+.object-shortcuts button::before,
+.walk-hud button::before,
+.detail-action::before,
+.back::before,
+#close-dialog::before,
+.project-item::before,
+.pin::before,
+.world-card::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 1px;
+  left: 3%;
+  right: 3%;
+  height: 55%;
+  border-top: 1px solid #ffffff;
+  border-radius: 999px 999px 72% 72%;
+  background: radial-gradient(ellipse at 50% -8%, #ffffffed 0%, #ffffffa8 10%, #ffffff58 29%, #ffffff16 56%, transparent 82%);
+  opacity: .98;
+  pointer-events: none;
+}
+
+.cta::before,
+.walk-hud button::before,
+.detail-action::before {
+  background: radial-gradient(ellipse at 50% -8%, #fff 0%, #ffffffd1 10%, #ffffff80 30%, #ffffff24 58%, transparent 82%);
+}
+
+.topbar nav button > *,
+.about-link > *,
+.cta > *,
+.view-controls button > *,
+.object-shortcuts button > *,
+.walk-hud button > *,
+.detail-action > *,
+.back > *,
+#close-dialog > *,
+.project-item > *,
+.pin > *,
+.world-card > * {
+  position: relative;
+  z-index: 1;
 }

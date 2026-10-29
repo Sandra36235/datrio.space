@@ -1,0 +1,499 @@
+:root {
+  --glass-blur: 9px;
+  --glass-radius: 999px;
+  --glass-edge: rgba(255,255,255,.8);
+  --glass-glow: rgba(158,207,255,.24);
+  --glass-fill: linear-gradient(155deg, rgba(255,255,255,.14), rgba(255,255,255,.025) 48%, rgba(255,255,255,.11));
+  --glass-shadow: 0 14px 28px rgba(73,92,124,.16), 0 12px 26px var(--glass-glow),
+    inset 0 3px 2px rgba(255,255,255,.92), inset 0 -4px 5px rgba(255,255,255,.62),
+    inset 0 0 0 2px rgba(255,255,255,.23);
+}
+
+/* Keep the center clear. The rim, backdrop and highlight form the glass. */
+.topbar nav,
+.topbar nav button.selected,
+.about-link,
+.cta,
+.view-controls,
+.view-controls button,
+.world-card,
+.object-shortcuts button,
+.walk-hud button,
+.detail-action,
+.pin {
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.45);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.45);
+  background: var(--glass-fill);
+  border: 1px solid var(--glass-edge);
+  box-shadow: var(--glass-shadow);
+}
+
+.topbar nav,
+.about-link,
+.cta,
+.view-controls,
+.view-controls button,
+.object-shortcuts button,
+.walk-hud button,
+.detail-action,
+.pin,
+.topbar nav button.selected { border-radius: var(--glass-radius); }
+
+.topbar nav,
+.view-controls { padding: 5px; gap: 4px; }
+.topbar nav button {
+  position: relative;
+  background: transparent;
+  border: 1px solid transparent;
+  box-shadow: none;
+  color: #263e6a;
+  padding: 10px 15px;
+  font-weight: 600;
+  transition: transform .3s cubic-bezier(.2,.8,.2,1), background .3s, box-shadow .3s;
+}
+.topbar nav button.selected { color: #263e6a; }
+.topbar nav button:not(.selected):hover { background: rgba(255,255,255,.18); }
+
+.about-link,
+.cta,
+.view-controls button,
+.object-shortcuts button,
+.walk-hud button,
+.detail-action,
+.pin {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  color: #263e6a;
+  text-shadow: 0 1px 0 rgba(255,255,255,.8);
+  transition: transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease;
+}
+.cta,
+.walk-hud button,
+.detail-action { min-height: 48px; font-weight: 700; }
+.cta { padding: 15px 20px; }
+.about-link { padding: 12px 18px; }
+.view-controls button { width: 33px; height: 33px; }
+.object-shortcuts button { padding: 8px 12px; }
+
+/* Curved specular highlight, as in the standalone demo. */
+.topbar nav button.selected::before,
+.about-link::before,
+.cta::before,
+.view-controls button::before,
+.object-shortcuts button::before,
+.walk-hud button::before,
+.detail-action::before,
+.pin::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 4px 7px auto;
+  height: 46%;
+  border-radius: 999px 999px 55% 55%;
+  border-top: 1px solid rgba(255,255,255,.9);
+  background: linear-gradient(180deg, rgba(255,255,255,.36), transparent);
+  pointer-events: none;
+}
+
+.topbar nav button.selected::after,
+.about-link::after,
+.cta::after,
+.view-controls button::after,
+.object-shortcuts button::after,
+.walk-hud button::after,
+.detail-action::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px solid rgba(255,255,255,.42);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.world-card { border-radius: 16px; margin: 5px; transition: transform .3s, box-shadow .3s; }
+.world-card.selected { background: linear-gradient(155deg, rgba(255,255,255,.25), rgba(175,207,247,.13) 55%, rgba(255,255,255,.17)); }
+.world-card.selected::before { background: linear-gradient(90deg, transparent, #4f75ed, transparent); }
+.pin { width: 28px; height: 28px; font-size: 16px; }
+.pin::after {
+  left: 34px;
+  background: rgba(255,255,255,.72);
+  border: 1px solid var(--glass-edge);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+}
+
+.about-link:hover,
+.cta:hover,
+.view-controls button:hover,
+.object-shortcuts button:hover,
+.walk-hud button:hover,
+.detail-action:hover,
+.world-card:hover { transform: translateY(-3px) scale(1.025); box-shadow: 0 20px 35px rgba(73,92,124,.2), 0 16px 30px var(--glass-glow), inset 0 3px 2px #fff, inset 0 -4px 5px rgba(255,255,255,.65); }
+.topbar nav button:hover { transform: translateY(-2px); }
+.pin:hover { transform: translate(-50%,-50%) scale(1.1); }
+.about-link:active,
+.cta:active,
+.view-controls button:active,
+.object-shortcuts button:active,
+.walk-hud button:active,
+.detail-action:active,
+.world-card:active { transform: translateY(1px) scale(.985); }
+.topbar nav button:focus-visible,
+.about-link:focus-visible,
+.cta:focus-visible,
+.view-controls button:focus-visible,
+.object-shortcuts button:focus-visible,
+.walk-hud button:focus-visible,
+.detail-action:focus-visible,
+.world-card:focus-visible,
+.pin:focus-visible { outline: 3px solid #295db5; outline-offset: 4px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .topbar nav button,.about-link,.cta,.view-controls button,.object-shortcuts button,
+  .walk-hud button,.detail-action,.world-card,.pin { transition: none; }
+}
+
+/* The large Explore button is the source of truth for the primary controls. */
+.topbar nav,
+.view-controls {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.topbar nav { gap: 7px; padding: 0; }
+.topbar nav button,
+.about-link,
+.cta,
+.walk-hud button,
+.detail-action {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 43px;
+  padding: 9px 17px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.78);
+  border-radius: 999px;
+  background: linear-gradient(160deg, rgba(164,176,184,.31) 0%, rgba(77,91,101,.38) 52%, rgba(171,184,192,.27) 100%);
+  -webkit-backdrop-filter: blur(9px) saturate(1.45);
+  backdrop-filter: blur(9px) saturate(1.45);
+  box-shadow: 0 17px 29px rgba(55,65,73,.17), 0 12px 23px rgba(208,219,224,.28),
+    inset 0 3px 2px rgba(255,255,255,.92), inset 0 -4px 5px rgba(255,255,255,.62),
+    inset 0 0 0 2px rgba(255,255,255,.23);
+  color: #fff;
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -.025em;
+  text-shadow: 0 1px 2px rgba(40,55,78,.55);
+  transition: transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease;
+}
+.topbar nav button.selected,
+.topbar nav button:not(.selected):hover {
+  color: #fff;
+  background: linear-gradient(160deg, rgba(164,176,184,.31) 0%, rgba(77,91,101,.38) 52%, rgba(171,184,192,.27) 100%);
+  border-color: rgba(255,255,255,.78);
+  box-shadow: 0 17px 29px rgba(55,65,73,.17), 0 12px 23px rgba(208,219,224,.28),
+    inset 0 3px 2px rgba(255,255,255,.92), inset 0 -4px 5px rgba(255,255,255,.62),
+    inset 0 0 0 2px rgba(255,255,255,.23);
+  text-shadow: 0 1px 2px rgba(40,55,78,.55);
+}
+.topbar nav button::before,
+.topbar nav button.selected::before,
+.about-link::before,
+.cta::before,
+.walk-hud button::before,
+.detail-action::before {
+  content: '';
+  position: absolute;
+  inset: 4px 7px auto;
+  z-index: -1;
+  height: 47%;
+  border-radius: 999px 999px 55% 55%;
+  border-top: 1px solid rgba(255,255,255,.9);
+  background: linear-gradient(180deg, rgba(255,255,255,.36), transparent);
+  opacity: 1;
+  pointer-events: none;
+}
+.topbar nav button::after,
+.topbar nav button.selected::after,
+.about-link::after,
+.cta::after,
+.walk-hud button::after,
+.detail-action::after { content: none; }
+.topbar nav button:hover,
+.about-link:hover,
+.cta:hover,
+.walk-hud button:hover,
+.detail-action:hover {
+  transform: translateY(-5px) scale(1.035);
+  box-shadow: 0 25px 39px rgba(55,65,73,.22), 0 17px 31px rgba(208,219,224,.35),
+    inset 0 3px 2px #fff, inset 0 -4px 5px rgba(255,255,255,.65);
+}
+.topbar nav button:active,
+.about-link:active,
+.cta:active,
+.walk-hud button:active,
+.detail-action:active { transform: translateY(2px) scale(.985); }
+.cta { min-height: 54px; min-width: 0; padding: 12px 20px; font-size: 13px; gap: 16px; }
+.cta span { font-size: 18px; }
+.about-link { min-height: 43px; }
+@media (max-width: 720px) {
+  .topbar nav { gap: 4px; }
+  .topbar nav button { min-height: 35px; padding: 7px 10px; font-size: 9px; }
+  .about-link { min-height: 34px; padding: 6px 10px; }
+  .cta { position: static; min-width: 0; min-height: 45px; padding: 9px 15px; font-size: 11px; }
+}
+
+/* Smoky, translucent atmosphere for the whole portfolio. */
+body {
+  color: #f8fbfd;
+  background:
+    radial-gradient(ellipse at 68% 18%, rgba(218,230,236,.23), transparent 38%),
+    radial-gradient(ellipse at 16% 78%, rgba(182,203,215,.19), transparent 43%),
+    linear-gradient(145deg, #56636b 0%, #7d898e 49%, #46535d 100%);
+  background-attachment: fixed;
+}
+.topbar { border-bottom-color: rgba(255,255,255,.22); }
+.topbar .logo, .topbar .logo .logo-word, .topbar .logo span { color: #f8fbfd; }
+.story h1 { color: #fff; text-shadow: 0 2px 20px rgba(25,38,48,.15); }
+.story h1 em { color: #bbd8ff; }
+.eyebrow, .story > p, .personal-note { color: rgba(247,251,255,.79); }
+.identity span { color: #f6faff; border-color: rgba(255,255,255,.36); background: rgba(255,255,255,.08); }
+.stage {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+#universe, #webgl-fallback, #loading { background: transparent; }
+.stage-caption { color: #f7fbff; text-shadow: 0 1px 4px rgba(30,45,56,.75); }
+.walk-status { color: #314352; background: rgba(255,255,255,.83); }
+.hint { color: #52616e; }
+.worldbar {
+  background: rgba(255,255,255,.11);
+  border-color: rgba(255,255,255,.32);
+  -webkit-backdrop-filter: blur(15px) saturate(1.25);
+  backdrop-filter: blur(15px) saturate(1.25);
+  box-shadow: 0 18px 38px rgba(27,39,47,.13), inset 0 1px 0 rgba(255,255,255,.34);
+}
+.world-card, .world-card.selected {
+  color: #fff;
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.2);
+}
+.world-number, .world-card small, .worldbar-heading, .worldbar-heading b,
+.object-shortcuts, .object-shortcuts > span, footer { color: rgba(250,252,255,.78); }
+.world-card b { color: #fff; }
+.world-symbol.blue { color: #c5d9ff; }
+.object-shortcuts button {
+  color: #f9fcff;
+  background: rgba(255,255,255,.13);
+  border-color: rgba(255,255,255,.4);
+}
+footer { border-top-color: rgba(255,255,255,.25); }
+
+/* On the smoky page, one fine highlight is enough for each glass control. */
+.topbar nav button,
+.topbar nav button.selected,
+.topbar nav button:not(.selected):hover,
+.about-link,
+.cta,
+.walk-hud button,
+.detail-action {
+  border-color: rgba(255,255,255,.78);
+  background: linear-gradient(155deg, rgba(239,246,250,.18), rgba(83,101,112,.19) 53%, rgba(227,238,244,.13));
+  box-shadow: 0 11px 20px rgba(24,37,47,.15), 0 4px 12px rgba(221,239,249,.19),
+    inset 0 2px 1px rgba(255,255,255,.94), inset 0 -3px 3px rgba(233,245,251,.50);
+}
+.topbar nav button::before,
+.topbar nav button.selected::before,
+.about-link::before,
+.cta::before,
+.walk-hud button::before,
+.detail-action::before {
+  inset: 2px 6px auto;
+  height: 43%;
+  border-top-color: rgba(255,255,255,.91);
+  background: linear-gradient(180deg, rgba(255,255,255,.34), transparent);
+}
+.topbar nav button.selected {
+  background: linear-gradient(155deg, rgba(245,250,253,.27), rgba(118,140,153,.26) 55%, rgba(230,241,248,.20));
+}
+.topbar nav button:hover,
+.about-link:hover,
+.cta:hover,
+.walk-hud button:hover,
+.detail-action:hover {
+  transform: translateY(-2px) scale(1.015);
+  box-shadow: 0 15px 24px rgba(24,37,47,.20), 0 6px 16px rgba(221,239,249,.28),
+    inset 0 2px 1px #fff, inset 0 -3px 3px rgba(233,245,251,.60);
+}
+.view-controls button,
+.object-shortcuts button,
+.pin {
+  border-color: rgba(255,255,255,.53);
+  background: rgba(222,234,241,.24);
+  box-shadow: 0 6px 13px rgba(30,45,55,.15), inset 0 1px 0 rgba(255,255,255,.68);
+}
+.world-card, .world-card.selected {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.27);
+}
+
+/* Little floating objects give the lower navigation its own 3D language. */
+.world-card {
+  overflow: visible;
+  min-height: 88px;
+  transform-style: preserve-3d;
+  border: 1px solid rgba(255,255,255,.30);
+  background: linear-gradient(145deg, rgba(247,252,255,.17), rgba(113,134,148,.12));
+  box-shadow: 0 13px 25px rgba(28,42,51,.15), inset 0 1px 0 rgba(255,255,255,.56);
+}
+.world-card.selected {
+  background: linear-gradient(145deg, rgba(248,252,255,.23), rgba(134,157,175,.17));
+  box-shadow: 0 17px 30px rgba(28,42,51,.18), inset 0 1px 0 rgba(255,255,255,.67);
+}
+.world-card::after { content: none; }
+.world-card:hover { transform: translateY(-5px) rotateX(3deg); }
+.world-symbol {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 52px;
+  height: 52px;
+  border: 1px solid rgba(255,255,255,.85);
+  border-radius: 19px;
+  color: #fff;
+  font-size: 27px;
+  text-shadow: 0 2px 4px rgba(31,47,61,.32);
+  background: radial-gradient(circle at 28% 18%, rgba(255,255,255,.95), rgba(179,206,238,.63) 20%, rgba(76,123,189,.76) 62%, rgba(36,70,133,.82));
+  box-shadow: inset 2px 2px 3px rgba(255,255,255,.83), inset -4px -6px 7px rgba(32,56,94,.42),
+    0 9px 12px rgba(26,41,54,.25);
+  transform: translateZ(12px) rotate(-8deg);
+  animation: float-object 3.8s ease-in-out infinite;
+}
+.world-symbol.orange {
+  background: radial-gradient(circle at 28% 18%, #fff7e9, #f6b774 25%, #df7e43 65%, #a54f31);
+  box-shadow: inset 2px 2px 3px #fff6e4, inset -4px -6px 7px #89432b9e, 0 9px 12px #26323e40;
+  animation-delay: -.9s;
+}
+.world-symbol.yellow {
+  background: radial-gradient(circle at 28% 18%, #fffdeb, #f8d978 25%, #dda94e 65%, #9c6b30);
+  box-shadow: inset 2px 2px 3px #fffde9, inset -4px -6px 7px #86602f9e, 0 9px 12px #26323e40;
+  animation-delay: -1.8s;
+}
+.object-shortcuts button {
+  --orb-light: #f3faff;
+  --orb-mid: #a8bfdb;
+  --orb-dark: #526d91;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 5px 11px 5px 5px;
+  overflow: visible;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 10px;
+  background: rgba(225,238,245,.14);
+  box-shadow: 0 7px 14px rgba(25,39,48,.14), inset 0 1px 0 rgba(255,255,255,.52);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.object-shortcuts button::before {
+  content: var(--icon);
+  position: relative;
+  z-index: 1;
+  inset: auto;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  flex: none;
+  border: 1px solid rgba(255,255,255,.8);
+  border-radius: 50%;
+  color: #fff;
+  font-size: 14px;
+  line-height: 1;
+  opacity: 1;
+  background: radial-gradient(circle at 30% 20%, var(--orb-light), var(--orb-mid) 43%, var(--orb-dark));
+  box-shadow: inset 1px 1px 2px #ffffffd9, inset -3px -3px 4px #263e6a55, 0 4px 7px #20313f55;
+  text-shadow: 0 1px 2px #23384e99;
+  animation: float-orb 3.3s ease-in-out infinite;
+}
+.object-shortcuts button:nth-child(1) { --icon: '☕'; --orb-mid: #c99768; --orb-dark: #745244; }
+.object-shortcuts button:nth-child(2) { --icon: '▣'; --orb-mid: #e5b864; --orb-dark: #9c6b3b; }
+.object-shortcuts button:nth-child(3) { --icon: '✧'; --orb-mid: #91c3bb; --orb-dark: #487f82; }
+.object-shortcuts button:nth-child(4) { --icon: '⌘'; --orb-mid: #efacd7; --orb-dark: #ac6497; }
+.object-shortcuts button:nth-child(5) { --icon: '✦'; --orb-mid: #d4c5f0; --orb-dark: #806da8; }
+.object-shortcuts button:nth-child(6) { --icon: '♫'; --orb-mid: #f4c879; --orb-dark: #ad734d; }
+.object-shortcuts button:nth-child(7) { --icon: '▥'; --orb-mid: #a7c6ef; --orb-dark: #587eb6; }
+.object-shortcuts button:nth-child(8) { --icon: '♣'; --orb-mid: #ede4ca; --orb-dark: #a89579; }
+.object-shortcuts button:nth-child(2n)::before { animation-delay: -1.2s; }
+.object-shortcuts button:nth-child(3n)::before { animation-delay: -2.1s; }
+.object-shortcuts button:hover { transform: translateY(-3px); box-shadow: 0 11px 20px rgba(25,39,48,.21); }
+
+@keyframes float-object {
+  0%, 100% { transform: translate3d(0,0,12px) rotate(-8deg); }
+  50% { transform: translate3d(0,-7px,18px) rotate(-3deg); }
+}
+@keyframes float-orb {
+  0%, 100% { transform: translateY(0) rotate(-7deg); }
+  50% { transform: translateY(-3px) rotate(5deg); }
+}
+@media (max-width: 720px) {
+  .world-card { min-height: 105px; }
+  .world-symbol { width: 36px; height: 36px; font-size: 19px; border-radius: 13px; }
+  .object-shortcuts button { min-height: 35px; padding: 4px 8px 4px 4px; font-size: 8px; gap: 5px; }
+  .object-shortcuts button::before { width: 23px; height: 23px; font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .world-symbol, .object-shortcuts button::before { animation: none; }
+}
+
+/* No enclosing panel; the three destinations stand on their own. */
+.worldbar {
+  gap: 12px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.world-card { margin: 0; }
+.worldbar-heading { padding-left: 0; }
+
+/* Keep these as buttons for their existing actions, but show simple text links. */
+.object-shortcuts { align-items: baseline; gap: 17px; }
+.object-shortcuts > div { gap: 5px 20px; }
+.object-shortcuts button,
+.object-shortcuts button:hover {
+  min-height: 0;
+  padding: 3px 0 5px;
+  overflow: visible;
+  border: 0;
+  border-bottom: 1px solid rgba(255,255,255,.36);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  color: rgba(255,255,255,.88);
+  font-size: 11px;
+  font-weight: 500;
+  text-shadow: none;
+  transform: none;
+}
+.object-shortcuts button::before { content: none; animation: none; }
+.object-shortcuts button:hover { color: #fff; border-bottom-color: #fff; }
+.object-shortcuts button:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+@media (max-width: 720px) {
+  .worldbar { gap: 8px; }
+  .object-shortcuts { gap: 11px; }
+  .object-shortcuts > div { gap: 5px 12px; }
+  .object-shortcuts button, .object-shortcuts button:hover { font-size: 9px; padding: 4px 0; }
+}

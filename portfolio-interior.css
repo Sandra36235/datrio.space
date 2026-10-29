@@ -1,0 +1,111 @@
+/* Shared atmosphere for Datrio's interior pages. Their individual artwork stays intact. */
+body.datrio-interior {
+  --interior-text: #f7fbff;
+  --interior-soft: rgba(247,251,255,.78);
+  --interior-line: rgba(255,255,255,.24);
+  --interior-blue: #c5dcff;
+  --interior-glass: linear-gradient(150deg, rgba(248,252,255,.16), rgba(121,143,155,.12) 62%, rgba(235,245,250,.08));
+  color: var(--interior-text);
+  background:
+    radial-gradient(ellipse at 68% 18%, rgba(218,230,236,.23), transparent 38%),
+    radial-gradient(ellipse at 16% 78%, rgba(182,203,215,.19), transparent 43%),
+    linear-gradient(145deg, #56636b 0%, #7d898e 49%, #46535d 100%);
+  background-attachment: fixed;
+}
+body.datrio-interior header,
+body.datrio-interior footer,
+body.datrio-interior .hero,
+body.datrio-interior .intro,
+body.datrio-interior .teaching,
+body.datrio-interior .contact { border-color: var(--interior-line); }
+body.datrio-interior .logo,
+body.datrio-interior .brand,
+body.datrio-interior h1,
+body.datrio-interior h2,
+body.datrio-interior h3,
+body.datrio-interior .card strong,
+body.datrio-interior .contact-card strong { color: var(--interior-text); }
+body.datrio-interior .logo span,
+body.datrio-interior .brand span,
+body.datrio-interior .hero h1 em { color: var(--interior-blue); }
+body.datrio-interior .eyebrow,
+body.datrio-interior .section-tag,
+body.datrio-interior .card-num,
+body.datrio-interior .card-top,
+body.datrio-interior .num,
+body.datrio-interior .step span,
+body.datrio-interior .tag { color: #d4e4ff; }
+body.datrio-interior .hero p,
+body.datrio-interior p.intro,
+body.datrio-interior .intro p,
+body.datrio-interior .section-head p,
+body.datrio-interior .teaching-heading p,
+body.datrio-interior .contact > p,
+body.datrio-interior .card p,
+body.datrio-interior .step p,
+body.datrio-interior .empty p,
+body.datrio-interior .continue p,
+body.datrio-interior .note,
+body.datrio-interior .section-description,
+body.datrio-interior footer { color: var(--interior-soft); }
+
+/* The same restrained liquid-glass return button as the universe. */
+body.datrio-interior .back {
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.78);
+  border-radius: 999px;
+  background: linear-gradient(155deg, rgba(239,246,250,.18), rgba(83,101,112,.19) 53%, rgba(227,238,244,.13));
+  -webkit-backdrop-filter: blur(9px) saturate(1.45);
+  backdrop-filter: blur(9px) saturate(1.45);
+  box-shadow: 0 11px 20px rgba(24,37,47,.15), inset 0 2px 1px rgba(255,255,255,.94),
+    inset 0 -3px 3px rgba(233,245,251,.5);
+  text-shadow: 0 1px 2px rgba(40,55,78,.55);
+}
+body.datrio-interior .back:hover { transform: translateY(-2px); border-color: #fff; }
+
+/* Content floats independently, with no enclosing rectangle. */
+body.datrio-interior .card,
+body.datrio-interior .step,
+body.datrio-interior .contact-card,
+body.datrio-interior .empty,
+body.datrio-interior .skills,
+body.datrio-interior .continue {
+  color: var(--interior-text);
+  background: var(--interior-glass);
+  border: 1px solid rgba(255,255,255,.30);
+  border-radius: 18px;
+  box-shadow: 0 13px 25px rgba(28,42,51,.13), inset 0 1px 0 rgba(255,255,255,.5);
+  -webkit-backdrop-filter: blur(12px) saturate(1.25);
+  backdrop-filter: blur(12px) saturate(1.25);
+}
+body.datrio-interior .card:hover,
+body.datrio-interior .contact-card:hover {
+  border-color: rgba(255,255,255,.66);
+  box-shadow: 0 17px 29px rgba(28,42,51,.19), inset 0 1px 0 rgba(255,255,255,.65);
+}
+body.datrio-interior .card small,
+body.datrio-interior .card a,
+body.datrio-interior .contact-card span,
+body.datrio-interior .continue a,
+body.datrio-interior .origin,
+body.datrio-interior .arrow { color: #d1e4ff; }
+body.datrio-interior .chips span,
+body.datrio-interior .skill-groups span {
+  color: #f8fbff;
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.27);
+}
+body.datrio-interior .empty { border-style: dashed; }
+body.datrio-interior .empty .symbol { color: #ffbe8d; }
+body.datrio-interior .skills b { color: #fff; }
+body.datrio-interior .skills h2,
+body.datrio-interior .continue strong { color: #fff; }
+body.datrio-interior a:focus-visible,
+body.datrio-interior button:focus-visible { outline: 3px solid #d5e9ff; outline-offset: 4px; }
+
+/* Preserve the teaching chalkboard and the illustrated objects as focal points. */
+body.datrio-interior .chalkboard h3 { color: #f9f7e9; }
+body.datrio-interior .board-content p { color: #e3ece5; }
+body.datrio-interior .frame { color: #263149; }
+body.datrio-interior .placeholder { background: rgba(255,255,255,.06); }
+body.datrio-interior .number { color: rgba(247,251,255,.68); }
