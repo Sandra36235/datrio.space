@@ -468,28 +468,28 @@ footer { border-top-color: rgba(255,255,255,.25); }
 .worldbar-heading { padding-left: 0; }
 
 /* Keep these as buttons for their existing actions, but show simple text links. */
-.object-shortcuts { align-items: baseline; gap: 17px; }
-.object-shortcuts > div { gap: 5px 20px; }
+.object-shortcuts { align-items: baseline; gap: 22px; }
+.object-shortcuts > div { gap: 10px 24px; }
 .object-shortcuts button,
 .object-shortcuts button:hover {
   min-height: 0;
-  padding: 3px 0 5px;
+  padding: 4px 0;
   overflow: visible;
   border: 0;
-  border-bottom: 1px solid rgba(255,255,255,.36);
   border-radius: 0;
   background: transparent;
   box-shadow: none;
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
   color: rgba(255,255,255,.88);
-  font-size: 11px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 550;
   text-shadow: none;
   transform: none;
 }
-.object-shortcuts button::before { content: none; animation: none; }
-.object-shortcuts button:hover { color: #fff; border-bottom-color: #fff; }
+.object-shortcuts button::before,
+.object-shortcuts button::after { content: none; display: none; animation: none; }
+.object-shortcuts button:hover { color: #fff; text-decoration: underline; text-underline-offset: 5px; }
 .object-shortcuts button:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
 @media (max-width: 720px) {
   .worldbar { gap: 8px; }
