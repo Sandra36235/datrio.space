@@ -115,81 +115,198 @@ export function createPoodle3D(){
  const tongue=oval(head,'tongue',new T.MeshStandardMaterial({color:'#d8908e',roughness:.7}),0,-.079,.54,.028,.016,.058);
  tongue.visible=false;
  const eyes=[];head.traverse(o=>{if(o.name==='eye'||o.name==='eye-glint')eyes.push({mesh:o,height:o.scale.y})});
- root.userData.rig={torso,hips,head,ears,legs,knees,tail,tongue,eyes,sit:0,lick:0,pawTarget:new T.Vector3()};
+ // Yaw is applied after the swing so a paw can reach sideways toward the mouth or chin.
+ legs.forEach(leg=>leg.rotation.order='YXZ');
+ const paws=knees.map(knee=>knee.getObjectByName('paw'));
+ root.userData.rig={torso,hips,head,ears,legs,knees,paws,tail,tongue,eyes,body,ruff:neckFur,sit:0,lick:0,
+  // Set by activities.js: crouch/air drive jumps, press/beat/page sync paws with props.
+  crouch:0,air:0,hopping:false,press:0,beat:0,page:0,pawTarget:new T.Vector3()};
  return root;
 }
 
+const clamp=(v,lo=-1,hi=1)=>Math.min(hi,Math.max(lo,v));
+const clamp01=v=>clamp(v,0,1);
+const ease=v=>{v=clamp01(v);return v*v*(3-2*v);};
+const lerp=(a,b,t)=>a+(b-a)*t;
+// Layered sines with unrelated frequencies read as organic, non-repeating motion.
+const wave=(t,seed=0)=>Math.sin(t+seed)*.5+Math.sin(t*2.31+seed*1.7+1.3)*.3+Math.sin(t*4.17+seed*.6+.7)*.2;
+// Damped spring, sub-stepped so large frames stay stable.
+function spring(s,target,omega,zeta,dt){
+ const steps=Math.max(1,Math.ceil(dt*120)),h=dt/steps;
+ for(let i=0;i<steps;i++){s.v+=(omega*omega*(target-s.x)-2*zeta*omega*s.v)*h;s.x+=s.v*h;}
+ return s.x;
+}
+const UPPER=.27,LOWER=Math.hypot(.315,.035),LOWER_OFFSET=-Math.atan2(.035,.315);
+const REST={y:-.585,z:.035};
+// Two-bone solve in the leg's swing plane. bend=+1 folds the joint backward
+// (front legs), -1 pushes it forward (the hind stifle).
+function solveLeg(ty,tz,bend){
+ const length=clamp(Math.hypot(ty,tz),.06,UPPER+LOWER-.002);
+ const aim=Math.atan2(-tz,-ty);
+ const atHip=Math.acos(clamp((UPPER*UPPER+length*length-LOWER*LOWER)/(2*UPPER*length)));
+ const knee=Math.PI-Math.acos(clamp((UPPER*UPPER+LOWER*LOWER-length*length)/(2*UPPER*LOWER)));
+ return {hip:aim+bend*atHip,knee:-bend*knee-LOWER_OFFSET,yaw:0};
+}
+function reach(target,bend){const s=solveLeg(target.y,Math.hypot(target.x,target.z),bend);s.yaw=Math.atan2(target.x,target.z);return s;}
+function mix(pose,goal,w){if(w<=0)return;pose.hip=lerp(pose.hip,goal.hip,w);pose.knee=lerp(pose.knee,goal.knee,w);pose.yaw=lerp(pose.yaw,goal.yaw??0,w);}
+const ACTIVITIES=['lick','brew','chess','music','read'];
+const SEATED=['sit','lick','chess','music','read'];
+
+function createState(){
+ const s=()=>({x:0,v:0});
+ return {pace:0,phase:0,sit:s(),weights:Object.fromEntries(ACTIVITIES.map(a=>[a,s()])),
+  look:{yaw:s(),pitch:s(),tilt:s(),target:{yaw:0,pitch:0,tilt:0},next:1.5},
+  ears:[s(),s()],earsX:[s(),s()],twitch:3,tail:{amp:s(),phase:0,until:0,next:4},
+  blink:{next:1.2,t:9},yaw:null,yawRate:0,lastHipsY:.78,lastPace:0};
+}
+
 export function posePoodle3D(root,time,moving,reduced=false,action='stand',dt=1/60){
- const rig=root.userData.rig,{torso,hips,head,ears,legs,knees,tail,tongue,eyes}=rig;
- const blend=reduced?1:1-Math.exp(-dt*6);
- rig.sit+=((['sit','lick','chess','music','read'].includes(action)?1:0)-rig.sit)*blend;
- rig.lick+=((action==='lick'?1:0)-rig.lick)*blend;
- const sit=rig.sit,lick=rig.lick,gait=moving?Math.sin(time*11.5):0;
- const breath=reduced?0:Math.sin(time*1.8)*.008;
- hips.position.y=.78-.43*sit+(moving?Math.abs(gait)*.026:breath);
- hips.rotation.x=-.7*sit;
- torso.rotation.z=moving?Math.sin(time*5.75)*.025:0;
- legs.forEach((leg,i)=>{
-  const phase=i===0||i===3?1:-1,back=i>1;
-  leg.rotation.set((moving?.46*Math.sin(time*11.5+phase*Math.PI/2):0)+(back?-1.4*sit:0),0,back?(i===2?-.09:.09)*sit:0);
-  knees[i].rotation.x=back?1.55*sit:0;
-  leg.position.y=.67-(back?.25:0)*sit+(moving?Math.max(0,phase*gait)*.035:0);
-  leg.position.z=back?-.4+.06*sit:.34;
+ const rig=root.userData.rig,{torso,hips,head,ears,legs,knees,paws,tail,tongue,eyes,body,ruff}=rig;
+ dt=clamp(dt||0,0,.1);
+ const st=rig.state??=createState();
+ const still=reduced||dt===0;
+ const settle=(s,target,omega,zeta)=>still?(s.x=target,s.v=0,target):spring(s,target,omega,zeta,dt);
+
+ // Pace ramps up and down so the trot grows from a standstill instead of snapping on.
+ const speed=reduced?0:clamp01(Number(moving)||0);
+ st.pace=still?speed:lerp(st.pace,speed,1-Math.exp(-dt*(speed>st.pace?7:10)));
+ const pace=st.pace,stride=ease(pace*1.4);
+ const paceAccel=dt?(pace-st.lastPace)/dt:0;st.lastPace=pace;
+ if(pace>.01)st.phase+=Math.PI*2*(1.1+.75*pace)*dt;
+ const phase=st.phase;
+
+ // Turning: lean into the curve and lead with the head.
+ const yaw=root.parent?root.parent.rotation.y:0;
+ if(st.yaw===null)st.yaw=yaw;
+ const turn=dt?Math.atan2(Math.sin(yaw-st.yaw),Math.cos(yaw-st.yaw))/dt:0;st.yaw=yaw;
+ st.yawRate=lerp(st.yawRate,clamp(turn,-6,6),still?1:1-Math.exp(-dt*8));
+ const turning=st.yawRate*Math.max(pace,.25);
+
+ // Sitting is a spring with a little settle; the rump drops before the chest lifts.
+ const sitGoal=SEATED.includes(action)&&!rig.hopping?1:0;
+ const sit=clamp01(settle(st.sit,sitGoal,7.5,.72));
+ const drop=ease(sit*1.25),pitch=ease((sit-.12)/.88);
+ rig.sit=sit;
+ const w={};for(const a of ACTIVITIES)w[a]=clamp01(settle(st.weights[a],action===a?1:0,6.5,1));
+ rig.lick=w.lick;
+ const busy=Math.min(1,w.brew+w.chess+w.music+w.read+w.lick);
+ const crouch=clamp01(rig.crouch||0),air=clamp01(rig.air||0);
+
+ // Breathing moves the chest, not the whole dog.
+ const breath=still?0:Math.sin(time*1.7+.4*wave(time*.3));
+ body.scale.set(.255*(1+.016*breath),.255*(1+.011*breath),.55);
+ ruff.scale.set(.215*(1+.012*breath),.255,.19);
+
+ // Hips: sit drop, trot bob (lowest at mid-stance), crouch before jumps.
+ const bob=-stride*.022*Math.cos(phase*2);
+ hips.position.y=.78-.43*drop+bob-.11*crouch+.004*breath;
+ hips.rotation.x=-.7*pitch+stride*.022*Math.sin(phase*2+.5)-clamp(paceAccel,-4,4)*.012+.06*w.brew+.12*crouch-.1*air;
+ torso.rotation.z=stride*.028*Math.sin(phase)-clamp(turning,-3,3)*.035;
+ const hipsVy=dt?(hips.position.y-st.lastHipsY)/dt:0;st.lastHipsY=hips.position.y;
+
+ // Legs: build each pose in layers, then write it once.
+ const poses=legs.map((leg,i)=>{
+  const front=i<2,diagonal=i===0||i===3;
+  const f=phase+(diagonal?0:Math.PI)+(front?0:.18);
+  const swing=Math.max(0,-Math.cos(f));
+  const pose={hip:stride*(front?.42:.36)*Math.sin(f),knee:stride*swing*(front?.95:.75),yaw:0,lift:stride*swing*.022,ground:(1-air)*(1-swing*stride)};
+  // Planted paws: lower the joint with the body and let IK fold the leg.
+  const origin={y:.67-(front?0:.36*drop)-.1*crouch,z:front?.34-.1*pitch:-.4+.05*pitch};
+  const plantZ=(front?.34-.07*pitch:-.4+.09*pitch)+REST.z;
+  const planted=solveLeg(.085-origin.y,plantZ-origin.z,front?1:-1);
+  mix(pose,planted,clamp01(Math.max(sit*4,crouch*4))*(1-stride));
+  // Mid-air tuck: front paws forward, hind legs trailing.
+  mix(pose,front?{hip:-.65,knee:1.05}:{hip:.55,knee:.5},air);
+  pose.origin=origin;return pose;
  });
- // The left paw rises toward the muzzle during grooming, then returns smoothly.
- head.rotation.set(.7*sit+.63*lick+(reduced?0:Math.sin(time*2)*.025),reduced?0:Math.sin(time*.55)*.075*(1-lick),-.17*lick);
- head.position.set(-.065*lick,1.12-.18*lick,.46+.06*lick);
- const licking=reduced?0:Math.max(0,Math.sin(time*9));
- tongue.visible=lick>.6&&!reduced;tongue.scale.z=.058*(.5+licking*.8);tongue.position.z=.55+licking*.025;
- // Two-bone reach brings the paw to the mouth without stretching the limb.
- if(lick>.001){
-  root.updateWorldMatrix(true,true);tongue.getWorldPosition(rig.pawTarget);root.worldToLocal(rig.pawTarget);
-  rig.pawTarget.y-=.06;rig.pawTarget.sub(legs[0].position);
-  const {x,y,z}=rig.pawTarget,horizontal=Math.hypot(x,z),a=.27,b=Math.hypot(.315,.035);
-  const distance=Math.min(a+b-.015,Math.hypot(y,horizontal));
-  const bend=-Math.acos(T.MathUtils.clamp((distance*distance-a*a-b*b)/(2*a*b),-1,1));
-  const shoulder=Math.atan2(-horizontal,-y)-Math.atan2(b*Math.sin(bend),a+b*Math.cos(bend));
-  legs[0].rotation.order='YXZ';legs[0].rotation.x=shoulder*lick;legs[0].rotation.y=Math.atan2(x,z)*lick;
-  knees[0].rotation.x=(bend+Math.atan2(.035,.315))*lick;
+
+ // Head: idle glances at random moments; level during sitting; looks into turns.
+ const look=st.look;
+ if(!still&&time>look.next){
+  const r=Math.random;look.next=time+1.6+r()*3.8;
+  look.target={yaw:(r()-.5)*.95,pitch:(r()-.45)*.28,tilt:r()<.3?(r()<.5?-1:1)*(.12+r()*.1):0};
  }
- // Each activity has its own readable gesture, layered over the normal gait.
- if(action==='brew'){
-  legs[0].rotation.x=-.5+(reduced?0:Math.sin(time*3)*.08);
-  knees[0].rotation.x=-.2;
-  head.rotation.x=.05;
+ const idle=(1-busy)*(1-stride);
+ const lookYaw=settle(look.yaw,look.target.yaw*idle+clamp(turning*.14,-.4,.4),4.5,.85);
+ const lookPitch=settle(look.pitch,look.target.pitch*idle,4.5,.9);
+ const lookTilt=settle(look.tilt,look.target.tilt*idle,3.5,.8);
+ const drift=still?0:wave(time*.7,2)*.025;
+
+ // Grooming comes in bursts of licks with pauses, not a metronome.
+ const burst=still?1:ease((wave(time*.55,3)+.15)*3);
+ const lickBeat=still?.5:Math.pow(Math.max(0,Math.sin(time*8.5)),1.5)*burst;
+ // Activities layer their own head gestures.
+ const beat=rig.beat||0,strum=beat<.14?ease(beat/.14):1-ease((beat-.14)/.86);
+ const read=rig.page||0,scan=(read*4.4)%1,line=scan<.85?scan/.85:1-(scan-.85)/.15;
+ head.rotation.set(
+  .7*pitch+lookPitch+drift+stride*.035*Math.sin(phase*2-.6)+w.lick*(.63+.06*lickBeat)+w.chess*(.15+.04*wave(time*.5,5))
+   +w.read*.36+w.music*(.05+.05*(1-strum))+w.brew*.14+.18*crouch-.12*air,
+  lookYaw*(1-w.lick)+w.chess*(.1+.08*wave(time*.35,7))+w.read*(line-.5)*.16,
+  lookTilt-.17*w.lick+w.chess*.12*wave(time*.4,9)+w.music*(still?0:Math.sin(time*1.6)*.09));
+ head.position.set(-.065*w.lick,1.12-.18*w.lick,.46+.06*w.lick);
+ tongue.visible=w.lick>.6&&!reduced&&lickBeat>.08;
+ tongue.scale.z=.058*(.5+lickBeat*.8);tongue.position.z=.55+lickBeat*.025;
+
+ // Activity poses, eased in by their own weights.
+ if(w.brew>.001){
+  const press=rig.press||0;
+  mix(poses[0],{hip:-.78+.32*press,knee:-.35+.2*press},w.brew);poses[0].ground*=1-w.brew;
  }
- if(action==='chess'){
-  head.rotation.x+=.15;head.rotation.y+=.1;
-  // Reach to the underside of the muzzle: the paw stays on the chin while he thinks.
+ if(w.music>.001){
+  mix(poses[0],{hip:-.9+.03*(still?0:Math.sin(time*1.6)),knee:-.42},w.music);
+  mix(poses[1],{hip:-.72+.24*strum,knee:-.28-.16*strum},w.music);poses[0].ground*=1-w.music;poses[1].ground*=1-w.music;
+ }
+ if(w.read>.001){
+  const flick=read>.9?Math.sin((read-.9)/.1*Math.PI):0;
+  mix(poses[0],{hip:-.65,knee:-.25},w.read);
+  mix(poses[1],{hip:-.65-.25*flick,knee:-.25-.2*flick},w.read);poses[0].ground*=1-w.read;poses[1].ground*=1-w.read;
+ }
+ if(w.lick>.001||w.chess>.001){
   root.updateWorldMatrix(true,true);
-  head.getObjectByName('lower-jaw').getWorldPosition(rig.pawTarget);
-  root.worldToLocal(rig.pawTarget);
-  rig.pawTarget.y-=.045;
-  rig.pawTarget.x+=.025;
-  rig.pawTarget.sub(legs[1].position);
-  const {x,y,z}=rig.pawTarget,horizontal=Math.hypot(x,z),a=.27,b=Math.hypot(.315,.035);
-  const distance=Math.min(a+b-.015,Math.hypot(y,horizontal));
-  const bend=-Math.acos(T.MathUtils.clamp((distance*distance-a*a-b*b)/(2*a*b),-1,1));
-  const shoulder=Math.atan2(-horizontal,-y)-Math.atan2(b*Math.sin(bend),a+b*Math.cos(bend));
-  legs[1].rotation.order='YXZ';legs[1].rotation.x=shoulder;legs[1].rotation.y=Math.atan2(x,z);
-  knees[1].rotation.x=bend+Math.atan2(.035,.315);
+  if(w.lick>.001){
+   tongue.getWorldPosition(rig.pawTarget);root.worldToLocal(rig.pawTarget);
+   rig.pawTarget.y-=.06+.035*(1-lickBeat);rig.pawTarget.sub(legs[0].position);
+   mix(poses[0],reach(rig.pawTarget,1),w.lick);poses[0].ground*=1-w.lick;
+  }
+  if(w.chess>.001){
+   head.getObjectByName('lower-jaw').getWorldPosition(rig.pawTarget);root.worldToLocal(rig.pawTarget);
+   rig.pawTarget.y-=.045;rig.pawTarget.x+=.025;rig.pawTarget.sub(legs[1].position);
+   mix(poses[1],reach(rig.pawTarget,1),w.chess);poses[1].ground*=1-w.chess;
+  }
  }
- if(action==='music'){
-  const strum=reduced?.5:Math.sin(time*8);
-  legs[0].rotation.x=-.82+strum*.25;knees[0].rotation.x=-.45;
-  legs[1].rotation.x=-.7-strum*.18;knees[1].rotation.x=-.3;
-  head.rotation.z+=(reduced?0:Math.sin(time*2)*.1);
- }
- if(action==='read'){
-  legs[0].rotation.x=-.65;legs[1].rotation.x=-.65;
-  knees[0].rotation.x=-.25;knees[1].rotation.x=-.25;
-  head.rotation.x+=.36;
- }
- ears.forEach((ear,i)=>ear.rotation.z=(i?1:-1)*((moving?Math.sin(time*11.5+i)*.07:Math.sin(time*2+i)*.018)+(action==='music'&&!reduced?Math.sin(time*4)*.11:0)));
- tail.position.y=.94-.6*sit;tail.position.z=-.55+.07*sit;
- tail.rotation.y=reduced?0:Math.sin(time*(moving?8:3.8))*.25;
- tail.rotation.x=.2*sit;
- const blink=reduced?1:1-.96*Math.pow(Math.max(0,Math.cos((time%4.7)*Math.PI*2/4.7)),64);
- eyes.forEach(({mesh,height})=>mesh.scale.y=height*blink);
+ poses.forEach((pose,i)=>{
+  const back=i>1,leg=legs[i];
+  leg.position.set(leg.position.x,pose.origin.y+pose.lift,pose.origin.z);
+  leg.rotation.set(pose.hip,pose.yaw,back?(i===2?-.09:.09)*sit:0);
+  knees[i].rotation.x=pose.knee;
+  // Weight-bearing paws stay flat on the floor instead of tilting with the leg.
+  paws[i].rotation.x=-(pose.hip+pose.knee)*pose.ground;
+ });
+
+ // Ears are loose flaps on springs: they lag behind bounces and turns, and twitch now and then.
+ if(!still&&time>st.twitch){st.twitch=time+2.5+Math.random()*5;st.ears[Math.random()<.5?0:1].v+=3+Math.random()*2;}
+ ears.forEach((ear,i)=>{
+  const side=i?1:-1;
+  const flare=settle(st.ears[i],clamp(-hipsVy*1.4,-.25,.3)+side*clamp(st.yawRate*.03,-.12,.12)+w.music*.06*(1-strum),15,.28);
+  const swingX=settle(st.earsX[i],clamp(-paceAccel*.06,-.2,.2)+stride*.05,12,.35);
+  ear.rotation.set(swingX,0,side*(.02+flare));
+ });
+
+ // Tail: a calm sway most of the time, happy bursts now and then, upright while trotting.
+ const tailState=st.tail;
+ if(!still&&time>tailState.next){tailState.until=time+1.2+Math.random()*2;tailState.next=tailState.until+3+Math.random()*7;}
+ const happy=time<tailState.until||w.music>.5?1:0;
+ const amp=settle(tailState.amp,still?0:.07+.22*stride+.28*happy,5,1);
+ tailState.phase+=dt*(2.6+5*Math.max(stride,happy));
+ tail.position.y=.94-.6*drop-.11*crouch;tail.position.z=-.55+.07*pitch;
+ tail.rotation.set(.2*pitch+.18*stride+.25*air,amp*Math.sin(tailState.phase),0);
+
+ // Blinks at irregular intervals, sometimes twice.
+ const blink=st.blink;
+ if(!still&&time>blink.next){blink.t=0;blink.next=time+(Math.random()<.2?.28:2+Math.random()*4.5);}
+ blink.t+=dt;
+ const closed=still||blink.t>.15?0:Math.sin(blink.t/.15*Math.PI);
+ eyes.forEach(({mesh,height})=>mesh.scale.y=height*(1-.94*closed));
  root.userData.action=action;
 }
+

@@ -1,0 +1,14 @@
+<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Revisión de Puyol</title>
+<style>body{margin:0;background:#e7e1d6;font:16px system-ui}canvas{display:block;width:100vw;height:90vh}nav{position:absolute;top:20px;left:20px;right:20px;display:flex;flex-wrap:wrap;gap:10px}button{padding:12px 20px;border:1px solid #fff;border-radius:25px;background:#ffffffb0}output{position:absolute;bottom:16px;left:20px}</style>
+<nav><button data-action="stand">De pie</button><button data-action="sit">Sentado</button><button data-action="lick">Limpiando la pata</button><button data-action="walk">Caminando</button><button data-action="brew">Café</button><button data-action="chess">Ajedrez</button><button data-action="music">Ukulele</button><button data-action="read">Kindle</button><button data-action="hop">Saltar</button></nav><canvas></canvas><output></output>
+<script type="module">
+import * as T from '../vendor/three.module.js';
+import {createPoodle3D,posePoodle3D} from '../poodle3d.js?v=natural-1';
+const scene=new T.Scene(),canvas=document.querySelector('canvas'),renderer=new T.WebGLRenderer({canvas,antialias:true});renderer.setSize(innerWidth,innerHeight*.9);renderer.setPixelRatio(1);renderer.setClearColor('#e7e1d6');renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;renderer.outputColorSpace=T.SRGBColorSpace;
+const camera=new T.PerspectiveCamera(35,innerWidth/(innerHeight*.9),.1,100);camera.position.set(2.6,1.9,3.9);camera.lookAt(0,.8,0);
+scene.add(new T.HemisphereLight('#fff7e8','#b9bec5',2));const sun=new T.DirectionalLight('#fff8ee',2);sun.position.set(-3,5,4);sun.castShadow=true;scene.add(sun);
+const ground=new T.Mesh(new T.PlaneGeometry(100,100),new T.MeshStandardMaterial({color:'#e7e1d6',roughness:1}));ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
+const dog=createPoodle3D();scene.add(dog);let action='stand',last=0,time=0;
+let hopAt=-9;document.querySelectorAll('button').forEach(b=>b.onclick=()=>{action=b.dataset.action;if(action==='hop'){hopAt=time;action='stand';}});
+function frame(now){const dt=Math.min((now-last)/1000||.016,.06);last=now;time+=dt;const rig=dog.userData.rig,h=Math.min(1,Math.max(0,(time-hopAt)/.95));rig.crouch=h<=0||h>=1?0:h<.26?h/.26:h<.34?1-(h-.26)/.08:h>.74?Math.sin((h-.74)/.26*Math.PI)*.75:0;rig.air=h>.26&&h<.74?Math.sin((h-.26)/.48*Math.PI):0;dog.position.y=h>.26&&h<.74?Math.sin((h-.26)/.48*Math.PI)*.35:0;rig.beat=(time%.78)/.78;rig.page=(time%4)/4;rig.press=(time*.68)%1;posePoodle3D(dog,time,action==='walk',false,action,dt);renderer.render(scene,camera);document.querySelector('output').textContent=action+' · '+renderer.info.render.triangles+' triángulos';requestAnimationFrame(frame)}requestAnimationFrame(frame);
+</script></html>

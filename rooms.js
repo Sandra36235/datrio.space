@@ -1,6 +1,6 @@
 import * as T from './vendor/three.module.js';
-import {createPoodle3D} from './poodle3d.js?v=activities-1';
-import {botanical,pillow,addRoomLife} from './room-life.js?v=activities-1';
+import {createPoodle3D} from './poodle3d.js?v=natural-1';
+import {botanical,pillow,addRoomLife} from './room-life.js?v=natural-1';
 const materialCache=new Map();
 export function mat(color){if(!materialCache.has(color))materialCache.set(color,new T.MeshStandardMaterial({color,roughness:.78}));return materialCache.get(color)}
 const C={white:'#fffaf1',blue:'#1c5ccc',sky:'#7bc0eb',yellow:'#f6bf25',orange:'#f18a29',oak:'#c49663',oakLight:'#ddb58b',dark:'#29323e',cream:'#ece4d8',leaf:'#4b7643',gold:'#bd8c40'};
