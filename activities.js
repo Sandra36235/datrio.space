@@ -179,14 +179,14 @@ export function createActivities(room,player,dog){
    // Hop up onto the sofa, turn along the seat and lie down with the Kindle
    // between the front paws; a paw taps the corner to turn each page.
    const h=reduced?hop(1):hop(time,1);
-   player.position.x=readApproach.x+(1.7-readApproach.x)*h.travel;
+   player.position.x=readApproach.x+(1.55-readApproach.x)*h.travel;
    player.position.z=readApproach.z+(-.6-readApproach.z)*h.travel;
    dog.position.y=SOFA*h.travel+Math.sin(h.travel*Math.PI)*.16;
    Object.assign(rig,{crouch:h.crouch,air:h.air,hopping:!h.done});
-   focus=h.done?null:{x:1.7,z:-3};
+   focus=h.done?null:{x:1.55,z:-3};
    const page=reduced?0:(time%4)/4;rig.page=page;
    if(h.done){
-    hold(kindle,[0,0,0],[0,.03,1.08],[0,Math.PI,0],1.35,dt,reduced);
+    hold(kindle,[0,0,0],[0,.03,.98],[0,Math.PI,0],1.35,dt,reduced);
     if(screen){screen.visible=true;screen.material.map=pages[Math.floor(time/4)%2];}
     room.updateMatrixWorld(true);
     goal(0,kindle.localToWorld(point.set(.1,.06,.09)),page>.86?Math.sin((page-.86)/.14*Math.PI):0);

@@ -3,9 +3,9 @@
 <nav><button data-action="stand">De pie</button><button data-action="sit">Sentado</button><button data-action="lick">Limpiando la pata</button><button data-action="walk">Caminando</button><button data-action="brew">Café</button><button data-action="chess">Ajedrez</button><button data-action="music">Ukulele</button><button data-action="read">Kindle</button><button data-action="hop">Saltar</button></nav><canvas></canvas><output></output>
 <script type="module">
 import * as T from '../vendor/three.module.js';
-import {createPoodle3D,posePoodle3D} from '../poodle3d.js?v=natural-1';
+import {createPoodle3D,posePoodle3D} from '../poodle3d.js?v=photo';
 const scene=new T.Scene(),canvas=document.querySelector('canvas'),renderer=new T.WebGLRenderer({canvas,antialias:true});renderer.setSize(innerWidth,innerHeight*.9);renderer.setPixelRatio(1);renderer.setClearColor('#e7e1d6');renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;renderer.outputColorSpace=T.SRGBColorSpace;
-const camera=new T.PerspectiveCamera(35,innerWidth/(innerHeight*.9),.1,100);camera.position.set(2.6,1.9,3.9);camera.lookAt(0,.8,0);
+const camera=new T.PerspectiveCamera(35,innerWidth/(innerHeight*.9),.1,100);const cam=new URLSearchParams(location.search).get('cam');camera.position.set(...(cam==='front'?[0,1.3,3.6]:cam==='side'?[4.2,1.2,0]:cam==='face'?[.5,1.35,1.9]:[2.6,1.9,3.9]));camera.lookAt(0,cam==='face'?1.3:.8,cam==='face'?.5:0);
 scene.add(new T.HemisphereLight('#fff7e8','#b9bec5',2));const sun=new T.DirectionalLight('#fff8ee',2);sun.position.set(-3,5,4);sun.castShadow=true;scene.add(sun);
 const ground=new T.Mesh(new T.PlaneGeometry(100,100),new T.MeshStandardMaterial({color:'#e7e1d6',roughness:1}));ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
 const dog=createPoodle3D();scene.add(dog);let action='stand',last=0,time=0;

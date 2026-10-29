@@ -1,124 +1,168 @@
 import * as T from './vendor/three.module.js';
 
-// Puyol is a sculpted, articulated toy poodle. All visible parts have volume;
-// the four legs, ears, head and tail keep their own joints for animation.
+// Puyol is a white toy poodle: a clean, slender face with a defined stop,
+// a tall curly topknot, long curly ears and a coat built from real curls.
+// The joints (hips, torso, head, ears, legs, tail) are the animation rig.
+
+// Deterministic random numbers, so Puyol's curls look the same on every load.
+function random(seed){return()=>{seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+let curlUnit=null;
+// Scatters small curls over an ellipsoid and merges them into one geometry,
+// so each fluffy part costs a single draw call. Curls sit half-buried in the
+// coat, so the surface reads as dense curly fur rather than separate balls.
+function curlGeometry({rx,ry,rz,count,size,seed=1,keep=()=>true}){
+ curlUnit??=new T.IcosahedronGeometry(1,0);
+ const r=random(seed),base=curlUnit.attributes.position,position=[],normal=[],uv=[];
+ const golden=Math.PI*(3-Math.sqrt(5)),n=new T.Vector3();
+ for(let i=0;i<count;i++){
+  const y=1-2*(i+.5)/count,ring=Math.sqrt(Math.max(0,1-y*y)),a=i*golden+r()*.6;
+  const px=Math.cos(a)*ring*rx,py=y*ry,pz=Math.sin(a)*ring*rz;
+  if(!keep(px,py,pz))continue;
+  n.set(px/(rx*rx),py/(ry*ry),pz/(rz*rz)).normalize();
+  const s=size*(.7+r()*.6),sink=size*(.35+r()*.3),spin=r()*6.28,squash=.7+r()*.25;
+  const cx=px-n.x*sink,cy=py-n.y*sink,cz=pz-n.z*sink,c=Math.cos(spin),sn=Math.sin(spin);
+  for(let v=0;v<base.count;v++){
+   const bx=base.getX(v),by=base.getY(v),bz=base.getZ(v),rx2=bx*c-bz*sn,rz2=bx*sn+bz*c;
+   position.push(cx+rx2*s,cy+by*s*squash,cz+rz2*s);
+   // Spherical normals make each low-poly curl shade smoothly.
+   const length=Math.hypot(rx2,by/squash,rz2);normal.push(rx2/length,by/squash/length,rz2/length);
+   uv.push(.5+rx2*.18+i%7*.11,.5+by*.18+i%5*.13);
+  }
+ }
+ const geometry=new T.BufferGeometry();
+ geometry.setAttribute('position',new T.Float32BufferAttribute(position,3));
+ geometry.setAttribute('normal',new T.Float32BufferAttribute(normal,3));
+ geometry.setAttribute('uv',new T.Float32BufferAttribute(uv,2));
+ return geometry;
+}
+
 export function createPoodle3D(){
  const root=new T.Group();root.name='poodle-3d';
- const furTexture=(()=>{
-  const canvas=document.createElement('canvas');canvas.width=canvas.height=256;
-  const ctx=canvas.getContext('2d');ctx.fillStyle='#f7f4ed';ctx.fillRect(0,0,256,256);
-  for(let i=0;i<900;i++){
-   const x=(i*97)%256,y=(i*151)%256;
-   ctx.strokeStyle=i%3?'#e5ddcf':'#ffffff';ctx.lineWidth=.6;
-   ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x+2,y+2,x+1,y+5);ctx.stroke();
-  }
-  const texture=new T.CanvasTexture(canvas);texture.colorSpace=T.SRGBColorSpace;
+ const canvasTexture=(size,draw)=>{
+  const canvas=document.createElement('canvas');canvas.width=canvas.height=size;
+  draw(canvas.getContext('2d'),size);
+  const texture=new T.CanvasTexture(canvas);texture.colorSpace=T.SRGBColorSpace;texture.wrapS=texture.wrapT=T.RepeatWrapping;
   return texture;
- })();
- const coat=new T.MeshStandardMaterial({color:'#e9d1b2',map:furTexture,bumpMap:furTexture,bumpScale:.018,roughness:.96});
- const earCoat=new T.MeshStandardMaterial({color:'#ddb992',map:furTexture,bumpMap:furTexture,bumpScale:.022,roughness:.97});
- const cream=new T.MeshStandardMaterial({color:'#f0ddc5',map:furTexture,roughness:.96});
- const muzzleMat=new T.MeshStandardMaterial({color:'#eed6b7',map:furTexture,bumpMap:furTexture,bumpScale:.007,roughness:.96});
- const noseMat=new T.MeshStandardMaterial({color:'#28201c',roughness:.28});
- const eyeMat=new T.MeshPhysicalMaterial({color:'#281d19',roughness:.13,clearcoat:.8});
- const shine=new T.MeshBasicMaterial({color:'#fffaf1'});
- const teal=new T.MeshStandardMaterial({color:'#387f83',roughness:.42});
- const brass=new T.MeshStandardMaterial({color:'#d9aa59',metalness:.65,roughness:.3});
- const sphereGeo=new T.SphereGeometry(1,32,24);
- const fluffGeo=new T.SphereGeometry(1,48,36);
- const curls=fluffGeo.attributes.position;
- for(let i=0;i<curls.count;i++){
-  const x=curls.getX(i),y=curls.getY(i),z=curls.getZ(i);
-  const ripple=1+.045*Math.sin(17*x+6*z)*Math.sin(16*y-4*x)*Math.sin(15*z+3*y);
-  curls.setXYZ(i,x*ripple,y*ripple,z*ripple);
- }
- fluffGeo.computeVertexNormals();
+ };
+ // Tight spirals give each curl a little texture under the light.
+ const curlTexture=canvasTexture(256,(ctx,n)=>{
+  ctx.fillStyle='#f6f3ee';ctx.fillRect(0,0,n,n);
+  for(let i=0;i<260;i++){
+   const x=(i*97)%n,y=(i*151+i*i)%n,radius=3+(i%4);
+   ctx.strokeStyle=i%3?'#e3ddd3':'#ffffff';ctx.lineWidth=1;
+   ctx.beginPath();ctx.arc(x,y,radius,i,i+4.6);ctx.stroke();
+  }
+ });
+ const shortFur=canvasTexture(128,(ctx,n)=>{
+  ctx.fillStyle='#f7f3ee';ctx.fillRect(0,0,n,n);
+  for(let i=0;i<700;i++){ctx.fillStyle=i%2?'#ede7df':'#ffffff';ctx.fillRect((i*37)%n,(i*71)%n,1,2);}
+ });
+ const coat=new T.MeshStandardMaterial({color:'#ffffff',map:curlTexture,bumpMap:curlTexture,bumpScale:.006,roughness:.95});
+ // The core under the curls is a little darker, so the gaps read as depth.
+ const undercoat=new T.MeshStandardMaterial({color:'#f1ede7',roughness:1});
+ const face=new T.MeshStandardMaterial({color:'#f8f3ee',map:shortFur,bumpMap:shortFur,bumpScale:.004,roughness:.86});
+ const lips=new T.MeshStandardMaterial({color:'#e7cfcb',roughness:.7});
+ const noseMat=new T.MeshPhysicalMaterial({color:'#1d1716',roughness:.35,clearcoat:.5});
+ const eyeMat=new T.MeshPhysicalMaterial({color:'#2a1710',roughness:.1,clearcoat:1});
+ const rimMat=new T.MeshStandardMaterial({color:'#3a2a26',roughness:.6});
+ const shine=new T.MeshBasicMaterial({color:'#fffaf3'});
+ const bowMat=new T.MeshStandardMaterial({color:'#6b1f2c',roughness:.62,map:canvasTexture(128,(ctx,n)=>{
+  ctx.fillStyle='#6b1f2c';ctx.fillRect(0,0,n,n);
+  for(let i=0;i<40;i++){const x=(i*53)%n,y=(i*29+i*7)%n;ctx.fillStyle=i%3?'#e9b9c2':'#f4ead8';ctx.beginPath();ctx.arc(x,y,3,0,7);ctx.fill();}
+ })});
+ const sphereGeo=new T.SphereGeometry(1,28,20),coreGeo=new T.SphereGeometry(1,16,12);
  const add=(parent,name,geometry,material,x=0,y=0,z=0)=>{
   const mesh=new T.Mesh(geometry,material);mesh.name=name;mesh.position.set(x,y,z);
   mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;
  };
- const oval=(parent,name,material,x,y,z,sx,sy,sz)=>{
-  const mesh=add(parent,name,sphereGeo,material,x,y,z);mesh.scale.set(sx,sy,sz);return mesh;
+ const oval=(parent,name,material,x,y,z,sx,sy,sz)=>{const mesh=add(parent,name,sphereGeo,material,x,y,z);mesh.scale.set(sx,sy,sz);return mesh;};
+ // A fluffy part: a soft core plus a shell of curls, grouped under one name.
+ const fluffy=(parent,name,x,y,z,rx,ry,rz,options={})=>{
+  const group=new T.Group();group.name=name;group.position.set(x,y,z);parent.add(group);
+  const size=options.size??.03;
+  const core=add(group,name+'-core',coreGeo,undercoat);core.scale.set(rx-size*.45,ry-size*.45,rz-size*.45);
+  const area=4*Math.PI*(rx*ry+ry*rz+rx*rz)/3;
+  const curls=add(group,name+'-curls',curlGeometry({rx,ry,rz,count:Math.round(area/(size*size)*.62),size,seed:options.seed??name.length*31,keep:options.keep}),coat);
+  // Curls cast soft shadows but do not darken each other into grey.
+  curls.receiveShadow=false;
+  return group;
  };
- const fluffyOval=(parent,name,material,x,y,z,sx,sy,sz)=>{
-  const mesh=add(parent,name,fluffGeo,material,x,y,z);mesh.scale.set(sx,sy,sz);return mesh;
- };
- const curve=(parent,name,points,r,material)=>add(parent,name,new T.TubeGeometry(new T.CatmullRomCurve3(points.map(p=>new T.Vector3(...p))),24,r,8,false),material);
 
  const torso=new T.Group();torso.name='poodle-torso';root.add(torso);
- // One continuous torso instead of overlapping chest, rump and barrel spheres.
- const bodyGeo=new T.SphereGeometry(1,48,32);const v=bodyGeo.attributes.position;
- for(let i=0;i<v.count;i++){
-  const z=v.getZ(i),x=v.getX(i),y=v.getY(i);
-  const chest=1+.11*Math.max(0,z),waist=1-.065*Math.max(0,-z);
-  v.setXYZ(i,x*chest*waist,y*(1+.06*Math.max(0,z)),z);
- }
- bodyGeo.computeVertexNormals();
- const body=add(torso,'body',bodyGeo,coat,0,.81,-.04);body.scale.set(.255,.255,.55);
- // Poodle's neck grows out of the chest; the small ruff hides its join.
- const neckFur=oval(torso,'chest-ruff',cream,0,.87,.36,.215,.255,.19);neckFur.rotation.x=-.12;
- const neck=oval(torso,'neck',coat,0,1.09,.43,.17,.24,.17);neck.rotation.x=-.14;
+ // Slim, square body: deep chest, tucked waist, curls all over.
+ const body=new T.Group();body.name='body';body.position.set(0,.83,-.04);torso.add(body);
+ fluffy(body,'coat-rump',0,0,-.3,.19,.2,.22,{size:.034,seed:3});
+ fluffy(body,'coat-waist',0,.01,0,.17,.18,.25,{size:.032,seed:5,keep:(x,y)=>y>-.12});
+ const ruff=fluffy(torso,'chest-ruff',0,.88,.27,.2,.24,.18,{size:.034,seed:7});
+ // A long, upright neck carries the head high.
+ const neck=fluffy(torso,'neck',0,1.08,.42,.12,.2,.12,{size:.028,seed:9});neck.rotation.x=-.38;
 
- const head=new T.Group();head.name='head-joint';head.position.set(0,1.12,.46);head.scale.set(1.08,1.08,1.05);torso.add(head);
- // The crown grows from the same mesh as the cheeks, so there is no cap seam.
- const headGeo=fluffGeo.clone(),hv=headGeo.attributes.position;
- for(let i=0;i<hv.count;i++){
-  const x=hv.getX(i),y=hv.getY(i),z=hv.getZ(i),crown=Math.max(0,y);
-  hv.setXYZ(i,x*(1+.1*crown),y*(1+.08*crown),z*(1+.06*crown));
- }
- headGeo.computeVertexNormals();
- const skull=add(head,'skull',headGeo,coat,0,.18,0);skull.scale.set(.27,.285,.25);
- // A short, soft bridge leaves the eyes visible and joins the nose naturally.
- const muzzleGeo=new T.SphereGeometry(1,40,28),mv=muzzleGeo.attributes.position;
+ const head=new T.Group();head.name='head-joint';head.position.set(0,1.24,.5);torso.add(head);
+ // Skull and long, clean muzzle with a clear stop between the eyes.
+ oval(head,'skull',face,0,.11,.0,.15,.15,.17);
+ oval(head,'cheeks',face,0,.04,.08,.13,.1,.13);
+ for(const side of [-1,1])oval(head,'brow',face,side*.066,.168,.115,.045,.028,.045);
+ const muzzleGeo=new T.SphereGeometry(1,36,24),mv=muzzleGeo.attributes.position;
  for(let i=0;i<mv.count;i++){
-  const z=mv.getZ(i),t=1-.24*Math.max(0,z);
-  mv.setXYZ(i,mv.getX(i)*t,mv.getY(i)*t,z);
+  const z=mv.getZ(i),taper=1-.17*Math.max(0,z);
+  mv.setXYZ(i,mv.getX(i)*taper,mv.getY(i)*taper*(1-.12*Math.max(0,-mv.getY(i))),z);
  }
  muzzleGeo.computeVertexNormals();
- const muzzle=add(head,'muzzle',muzzleGeo,muzzleMat,0,.018,.315);muzzle.scale.set(.145,.115,.24);
- oval(head,'lower-jaw',muzzleMat,0,-.045,.385,.105,.052,.145);
- const nose=oval(head,'nose',noseMat,0,.07,.55,.067,.043,.045);nose.rotation.x=.1;
- oval(head,'nose-shine',shine,-.018,.089,.59,.011,.007,.005);
- curve(head,'smile',[[-.062,-.048,.505],[0,-.06,.53],[.062,-.048,.505]],.005,noseMat);
+ const muzzle=add(head,'muzzle',muzzleGeo,face,0,.03,.27);muzzle.scale.set(.088,.08,.19);muzzle.rotation.x=.1;
+ oval(head,'lower-jaw',lips,0,-.025,.3,.058,.032,.14);
+ const nose=oval(head,'nose',noseMat,0,.04,.46,.042,.032,.03);nose.rotation.x=.15;
+ for(const side of [-1,1])oval(head,'nostril',rimMat,side*.016,.033,.488,.009,.006,.004);
+ oval(head,'nose-shine',shine,-.012,.056,.483,.009,.005,.004);
+ const smileCurve=side=>new T.TubeGeometry(new T.CatmullRomCurve3([[0,-.005,.44],[side*.03,-.012,.41],[side*.06,.0,.33]].map(p=>new T.Vector3(...p))),12,.004,6,false);
+ for(const side of [-1,1])add(head,'smile',smileCurve(side),rimMat);
+ // Almond eyes, set forward and close, with a dark rim.
  for(const side of [-1,1]){
-  oval(head,'eye-socket',muzzleMat,side*.13,.23,.228,.047,.05,.018);
-  oval(head,'eye',eyeMat,side*.13,.23,.248,.039,.047,.023);
-  oval(head,'eye-glint',shine,side*.117,.247,.269,.01,.012,.005);
+  const rim=oval(head,'eye-rim',rimMat,side*.07,.123,.148,.036,.031,.018);rim.rotation.z=side*-.18;
+  const eye=oval(head,'eye',eyeMat,side*.07,.123,.156,.031,.027,.019);eye.rotation.z=side*-.18;
+  oval(head,'eye-glint',shine,side*.062,.134,.173,.008,.009,.004);
  }
+ // Tall, round topknot that starts above the eyes and sweeps back.
+ fluffy(head,'topknot',0,.29,-.02,.2,.17,.2,{size:.032,seed:11,keep:(x,y,z)=>y>-.05||z<-.02});
  const ears=[];
  for(const side of [-1,1]){
-  const ear=new T.Group();ear.name='ear-joint';ear.position.set(side*.255,.18,.015);head.add(ear);ears.push(ear);
-  const flap=fluffyOval(ear,'ear',earCoat,side*.025,-.18,.02,.142,.28,.125);flap.rotation.z=side*.1;
+  const ear=new T.Group();ear.name='ear-joint';ear.position.set(side*.15,.17,-.03);head.add(ear);ears.push(ear);
+  // Long curly ears hang below the jaw, wider at the bottom.
+  const flap=fluffy(ear,'ear',side*.035,-.17,.01,.075,.25,.075,{size:.03,seed:side>0?13:17});
+  flap.rotation.z=side*.06;
+  fluffy(ear,'ear-tip',side*.045,-.36,.01,.085,.08,.075,{size:.03,seed:side>0?19:23});
  }
- const collar=add(torso,'collar',new T.TorusGeometry(.177,.025,8,32),teal,0,1.06,.42);collar.rotation.x=Math.PI/2;
- const tag=add(torso,'collar-tag',new T.SphereGeometry(.047,20,12),brass,0,.93,.595);tag.scale.set(1,1.15,.35);
+ // Burgundy bow tie with a small floral print.
+ const bow=new T.Group();bow.name='bow-tie';bow.position.set(0,1.0,.55);bow.rotation.x=-.35;torso.add(bow);
+ for(const side of [-1,1]){
+  const lobe=add(bow,'bow-lobe',new T.ConeGeometry(.07,.13,16),bowMat,side*.068,0,0);
+  lobe.rotation.z=side*Math.PI/2;lobe.scale.set(1,1,.45);
+ }
+ oval(bow,'bow-knot',bowMat,0,0,.008,.025,.03,.02);
 
  const legs=[],knees=[];
  for(const z of [.34,-.4])for(const side of [-1,1]){
-  const leg=new T.Group();leg.name=z>0?'front-leg':'hind-leg';leg.position.set(side*.185,.67,z);leg.userData.x=side*.185;root.add(leg);legs.push(leg);
-  oval(leg,'upper-leg',coat,0,-.11,0,z>0?.082:.105,.19,z>0?.08:.115);
+  const front=z>0;
+  const leg=new T.Group();leg.name=front?'front-leg':'hind-leg';leg.position.set(side*.185,.67,z);leg.userData.x=side*.185;root.add(leg);legs.push(leg);
+  // Fluffy "trousers": fuller thighs behind, slimmer forelegs.
+  fluffy(leg,'upper-leg',0,-.11,0,front?.068:.09,.17,front?.068:.1,{size:.027,seed:29+legs.length});
   const knee=new T.Group();knee.position.y=-.27;leg.add(knee);knees.push(knee);
-  oval(knee,'lower-leg',coat,0,-.13,0,.064,.18,.065);
-  oval(knee,'paw',cream,0,-.315,.035,.09,.072,.12);
+  fluffy(knee,'lower-leg',0,-.13,0,.058,.17,.06,{size:.025,seed:37+legs.length});
+  fluffy(knee,'paw',0,-.338,.03,.062,.045,.08,{size:.02,seed:43+legs.length});
  }
- // A short cotton-ball tail sits directly on the rump; no long stem is visible.
+ // Cotton-ball tail on the rump.
  const tail=new T.Group();tail.name='tail-joint';tail.position.set(0,.94,-.55);root.add(tail);
- fluffyOval(tail,'tail-pom',cream,0,.04,-.12,.165,.165,.165);
- const smallCurlGeo=new T.SphereGeometry(1,12,10);
- for(let i=0;i<12;i++){
-  const angle=i*2.39996,level=1-2*(i+.5)/12,ring=Math.sqrt(1-level*level);
-  const curl=add(tail,'tail-curl',smallCurlGeo,cream,ring*Math.cos(angle)*.13,.04+level*.13,-.12+ring*Math.sin(angle)*.13);curl.scale.setScalar(.057);
- }
+ fluffy(tail,'tail-pom',0,.05,-.12,.12,.13,.12,{size:.03,seed:47});
  // A hip pivot lets the body sit back while the front paws remain grounded.
  const hips=new T.Group();hips.position.set(0,.78,-.38);root.add(hips);
  hips.add(torso);torso.position.set(0,-.78,.38);
- const tongue=oval(head,'tongue',new T.MeshStandardMaterial({color:'#d8908e',roughness:.7}),0,-.079,.54,.028,.016,.058);
+ const tongue=oval(head,'tongue',new T.MeshStandardMaterial({color:'#d98f92',roughness:.6}),0,-.04,.42,.026,.012,.05);
  tongue.visible=false;
- const eyes=[];head.traverse(o=>{if(o.name==='eye'||o.name==='eye-glint')eyes.push({mesh:o,height:o.scale.y})});
+ const eyes=[];head.traverse(o=>{if(o.name==='eye'||o.name==='eye-glint'||o.name==='eye-rim')eyes.push({mesh:o,height:o.scale.y})});
  // Yaw is applied after the swing so a paw can reach sideways toward the mouth or chin.
  legs.forEach(leg=>leg.rotation.order='YXZ');
  const paws=knees.map(knee=>knee.getObjectByName('paw'));
- root.userData.rig={torso,hips,head,ears,legs,knees,paws,tail,tongue,eyes,body,ruff:neckFur,sit:0,lick:0,
+ root.userData.rig={torso,hips,head,ears,legs,knees,paws,tail,tongue,eyes,body,ruff,sit:0,lick:0,
+  headRest:head.position.clone(),tongueRest:tongue.position.clone(),
   // Set by activities.js: crouch/air drive jumps, press/beat/page sync paws with props.
   crouch:0,air:0,hopping:false,press:0,beat:0,page:0,goals:[null,null],pawTarget:new T.Vector3()};
  return root;
@@ -198,8 +242,8 @@ export function posePoodle3D(root,time,moving,reduced=false,action='stand',dt=1/
 
  // Breathing moves the chest, not the whole dog.
  const breath=still?0:Math.sin(time*1.7+.4*wave(time*.3));
- body.scale.set(.255*(1+.016*breath),.255*(1+.011*breath),.55);
- ruff.scale.set(.215*(1+.012*breath),.255,.19);
+ body.scale.set(1+.016*breath,1+.011*breath,1);
+ ruff.scale.set(1+.012*breath,1,1);
 
  // Hips: sit drop, rearing up, lying down, trot bob (lowest at mid-stance), crouch before jumps.
  const bob=-stride*.022*Math.cos(phase*2);
@@ -247,12 +291,13 @@ export function posePoodle3D(root,time,moving,reduced=false,action='stand',dt=1/
  const read=rig.page||0,scan=(read*4.4)%1,line=scan<.85?scan/.85:1-(scan-.85)/.15;
  head.rotation.set(
   bodyPitch+lookPitch+drift+stride*.035*Math.sin(phase*2-.6)+w.lick*(.63+.06*lickBeat)+w.chess*(.15+.04*wave(time*.5,5))
-   +lie*(.32+.03*Math.sin(line*Math.PI))+w.music*(.22+.06*(1-strum))+rear*.3+.18*crouch-.12*air,
+   +lie*(.48+.03*Math.sin(line*Math.PI))+w.music*(.22+.06*(1-strum))+rear*.3+.18*crouch-.12*air,
   lookYaw*(1-w.lick)+w.chess*(.1+.08*wave(time*.35,7))+lie*(line-.5)*.2+w.music*.12,
   lookTilt-.17*w.lick+w.chess*.12*wave(time*.4,9)+w.music*(still?0:Math.sin(time*1.6)*.09));
- head.position.set(-.065*w.lick,1.12-.18*w.lick,.46+.06*w.lick);
+ // Lying down, the neck lowers so Puyol looks down at the Kindle between his paws.
+ const rest=rig.headRest;head.position.set(-.065*w.lick,rest.y-.24*w.lick-.2*lie,rest.z+.06*w.lick+.05*lie);
  tongue.visible=w.lick>.6&&!reduced&&lickBeat>.08;
- tongue.scale.z=.058*(.5+lickBeat*.8);tongue.position.z=.55+lickBeat*.025;
+ tongue.scale.z=.058*(.5+lickBeat*.8);tongue.position.z=rig.tongueRest.z+lickBeat*.025;
 
  // Paws reach for things: props placed by activities.js, the mouth, or the chin.
  const props=Math.max(w.brew,w.music,w.read);
