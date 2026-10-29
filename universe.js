@@ -1,4 +1,4 @@
-﻿import {createWalk} from './play.js';
+﻿import {createWalk} from './play.js?v=tail-pom-1';
 import * as T from './vendor/three.module.js';
 import {makeSalon,makeStudio,addAvatar,applySalonArt} from './rooms.js';
 const $=s=>document.querySelector(s),stage=$('.stage'),canvas=$('#universe'),dialog=$('#details');

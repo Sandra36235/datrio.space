@@ -1,6 +1,6 @@
 import * as T from './vendor/three.module.js';
 import {route,walkable} from './walk.js';
-import {createPoodle3D,posePoodle3D} from './poodle3d.js';
+import {createPoodle3D,posePoodle3D} from './poodle3d.js?v=tail-pom-1';
 export function createWalk(room,canvas,onCoffee,wake,reduced){
  const player=new T.Group(),dog=createPoodle3D();room.add(player);player.add(dog);player.position.set(2.6,.04,2);
  const shadow=new T.Mesh(new T.CircleGeometry(.42,32),new T.MeshBasicMaterial({color:'#65554a',transparent:true,opacity:.16,depthWrite:false}));shadow.rotation.x=-Math.PI/2;shadow.position.y=.015;shadow.scale.y=1.35;player.add(shadow);

@@ -101,9 +101,13 @@ export function createPoodle3D(){
   add(leg,'sculpted-leg',legGeo,coat);
   oval(leg,'paw',cream,0,-.585,.08,.095,.072,.145);
  }
- const tail=new T.Group();tail.name='tail-joint';tail.position.set(0,.99,-.54);root.add(tail);
- curve(tail,'tail-stem',[[0,0,0],[0,.12,-.08],[0,.25,-.16],[0,.31,-.22]],.047,coat);
- oval(tail,'tail-pom',cream,0,.32,-.23,.12,.13,.13);
+ // A short cotton-ball tail sits directly on the rump; no long stem is visible.
+ const tail=new T.Group();tail.name='tail-joint';tail.position.set(0,.94,-.55);root.add(tail);
+ fluffyOval(tail,'tail-pom',cream,0,.04,-.12,.165,.165,.165);
+ for(let i=0;i<12;i++){
+  const angle=i*2.39996,level=1-2*(i+.5)/12,ring=Math.sqrt(1-level*level);
+  fluffyOval(tail,'tail-curl',cream,ring*Math.cos(angle)*.13,.04+level*.13,-.12+ring*Math.sin(angle)*.13,.057,.057,.057);
+ }
  root.userData.rig={torso,head,ears,legs,tail};
  return root;
 }
