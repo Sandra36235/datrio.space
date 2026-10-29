@@ -159,9 +159,20 @@ export function posePoodle3D(root,time,moving,reduced=false,action='stand',dt=1/
   head.rotation.x=.05;
  }
  if(action==='chess'){
-  const move=reduced?.5:(1+Math.sin(time*2.8))*.5;
-  legs[1].rotation.x=-.9-move*.45;knees[1].rotation.x=-.55;
   head.rotation.x+=.15;head.rotation.y+=.1;
+  // Reach to the underside of the muzzle: the paw stays on the chin while he thinks.
+  root.updateWorldMatrix(true,true);
+  head.getObjectByName('lower-jaw').getWorldPosition(rig.pawTarget);
+  root.worldToLocal(rig.pawTarget);
+  rig.pawTarget.y-=.045;
+  rig.pawTarget.x+=.025;
+  rig.pawTarget.sub(legs[1].position);
+  const {x,y,z}=rig.pawTarget,horizontal=Math.hypot(x,z),a=.27,b=Math.hypot(.315,.035);
+  const distance=Math.min(a+b-.015,Math.hypot(y,horizontal));
+  const bend=-Math.acos(T.MathUtils.clamp((distance*distance-a*a-b*b)/(2*a*b),-1,1));
+  const shoulder=Math.atan2(-horizontal,-y)-Math.atan2(b*Math.sin(bend),a+b*Math.cos(bend));
+  legs[1].rotation.order='YXZ';legs[1].rotation.x=shoulder;legs[1].rotation.y=Math.atan2(x,z);
+  knees[1].rotation.x=bend+Math.atan2(.035,.315);
  }
  if(action==='music'){
   const strum=reduced?.5:Math.sin(time*8);
