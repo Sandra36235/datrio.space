@@ -1,0 +1,221 @@
+:root {
+  --glass-edge: #ffffffb8;
+  --glass-shadow: 0 8px 22px #27436b18, inset 0 1px 0 #ffffffeb;
+  --glass-blur: blur(16px) saturate(1.45);
+}
+
+.topbar nav {
+  gap: 3px;
+  padding: 4px;
+  border: 1px solid #ffffffc9;
+  border-radius: 999px;
+  background: #e9eef274;
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+}
+
+.topbar nav button {
+  position: relative;
+  padding: 10px 15px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  transition: color .2s, background .2s, box-shadow .2s, transform .2s;
+}
+
+.topbar nav button:hover {
+  color: var(--blue);
+  background: #ffffff75;
+}
+
+.topbar nav button.selected {
+  border-color: var(--glass-edge);
+  color: var(--blue);
+  background: linear-gradient(180deg, #ffffffed, #eaf0fbba);
+  box-shadow: 0 3px 9px #29466b1c, inset 0 1px 0 #fff;
+}
+
+.about-link {
+  border: 1px solid #ffffffc9;
+  border-radius: 999px;
+  background: linear-gradient(155deg, #ffffffd9 0%, #f5f8ffad 46%, #dfe9ff9c 100%);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  transition: transform .2s, box-shadow .2s;
+}
+
+.about-link:hover,
+.cta:hover,
+.walk-hud button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 11px 24px #24436e29, inset 0 1px 0 #ffffffed;
+}
+
+.cta,
+.walk-hud button,
+.detail-action,
+.project-link {
+  border: 1px solid #ffffffa8;
+  border-radius: 999px;
+  background: linear-gradient(155deg, #7894ff 0%, #365fe1 38%, #2349bd 100%);
+  box-shadow: 0 8px 18px #234bbd35, inset 0 1px 0 #ffffffb8, inset 0 -2px 4px #18368a45;
+  backdrop-filter: blur(12px) saturate(1.3);
+  -webkit-backdrop-filter: blur(12px) saturate(1.3);
+  transition: transform .2s, box-shadow .2s, filter .2s;
+}
+
+.cta:active,
+.about-link:active,
+.walk-hud button:active,
+.detail-action:active,
+.project-link:active {
+  transform: translateY(1px) scale(.98);
+  filter: brightness(.97);
+}
+
+.view-controls {
+  gap: 6px;
+  padding: 5px;
+  border: 1px solid #ffffffbd;
+  border-radius: 999px;
+  background: #f7f9f8a6;
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+}
+
+.view-controls button {
+  border: 1px solid #ffffffd9;
+  background: linear-gradient(155deg, #ffffffef, #e8eef5b8);
+  box-shadow: 0 3px 8px #3348621b, inset 0 1px 0 #fff;
+  transition: transform .18s, box-shadow .18s, background .18s;
+}
+
+.view-controls button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px #33486229, inset 0 1px 0 #fff;
+}
+
+.world-card {
+  margin: 4px;
+  border: 1px solid #ffffffc2;
+  border-radius: 16px;
+  background: #ffffff72;
+  box-shadow: 0 5px 16px #2c456312, inset 0 1px 0 #fff;
+  backdrop-filter: blur(14px) saturate(1.35);
+  -webkit-backdrop-filter: blur(14px) saturate(1.35);
+  transition: transform .2s, background .2s, box-shadow .2s;
+}
+
+.world-card:hover {
+  transform: translateY(-2px);
+  background: #ffffffb5;
+  box-shadow: 0 9px 20px #2c45631c, inset 0 1px 0 #fff;
+}
+
+.world-card.selected {
+  border-color: #ffffffed;
+  background: linear-gradient(155deg, #ffffffed, #e9efffbf);
+  box-shadow: 0 7px 18px #2a53d61c, inset 0 1px 0 #fff;
+}
+
+.world-card.selected:before {
+  left: 18px;
+  right: 18px;
+  top: auto;
+  bottom: 0;
+  width: auto;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, #5276ee, transparent);
+}
+
+.object-shortcuts button,
+.project-item,
+.back,
+#close-dialog {
+  border: 1px solid #ffffffd1;
+  background: linear-gradient(155deg, #ffffffdf, #edf2f6aa);
+  box-shadow: 0 4px 12px #29466b16, inset 0 1px 0 #fff;
+  backdrop-filter: blur(12px) saturate(1.3);
+  -webkit-backdrop-filter: blur(12px) saturate(1.3);
+  transition: transform .2s, background .2s, box-shadow .2s;
+}
+
+.object-shortcuts button:hover,
+.project-item:hover,
+.back:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(155deg, #fff, #e6edffcc);
+  box-shadow: 0 8px 18px #29466b21, inset 0 1px 0 #fff;
+}
+
+.pin {
+  border: 1px solid #ffffffdc;
+  background: linear-gradient(155deg, #ffffffd9, #dce8f8a8);
+  color: #284a9d;
+  box-shadow: 0 5px 15px #29466b29, inset 0 1px 0 #fff;
+  backdrop-filter: blur(12px) saturate(1.35);
+  -webkit-backdrop-filter: blur(12px) saturate(1.35);
+}
+
+.pin:hover,
+.pin:focus-visible {
+  background: linear-gradient(155deg, #fff, #e1eaffed);
+  box-shadow: 0 8px 19px #29466b38, inset 0 1px 0 #fff;
+}
+
+.pin:after {
+  border: 1px solid #ffffffd1;
+  background: #ffffffd9;
+  box-shadow: 0 6px 18px #29466b1c, inset 0 1px 0 #fff;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.topbar nav button:focus-visible,
+.about-link:focus-visible,
+.cta:focus-visible,
+.view-controls button:focus-visible,
+.world-card:focus-visible,
+.object-shortcuts button:focus-visible,
+.walk-hud button:focus-visible,
+.detail-action:focus-visible,
+.back:focus-visible,
+#close-dialog:focus-visible,
+.project-item:focus-visible {
+  outline: 3px solid #315ee9;
+  outline-offset: 3px;
+}
+
+@media (max-width: 700px) {
+  .topbar nav {
+    gap: 1px;
+    padding: 3px;
+  }
+
+  .topbar nav button {
+    padding: 9px 10px;
+  }
+
+  .about-link {
+    border: 1px solid #ffffffc9;
+    padding: 7px;
+    border-radius: 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topbar nav button,
+  .about-link,
+  .cta,
+  .walk-hud button,
+  .view-controls button,
+  .world-card,
+  .object-shortcuts button,
+  .project-item,
+  .back {
+    transition: none;
+  }
+}
