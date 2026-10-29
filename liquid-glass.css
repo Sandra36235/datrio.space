@@ -115,6 +115,7 @@
 .world-card.selected { background: linear-gradient(155deg, rgba(255,255,255,.25), rgba(175,207,247,.13) 55%, rgba(255,255,255,.17)); }
 .world-card.selected::before { background: linear-gradient(90deg, transparent, #4f75ed, transparent); }
 .pin { width: 28px; height: 28px; font-size: 16px; }
+.pin { position: absolute; }
 .pin::after {
   left: 34px;
   background: rgba(255,255,255,.72);
