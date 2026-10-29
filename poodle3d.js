@@ -93,34 +93,70 @@ export function createPoodle3D(){
  const collar=add(torso,'collar',new T.TorusGeometry(.177,.025,8,32),teal,0,1.06,.42);collar.rotation.x=Math.PI/2;
  const tag=add(torso,'collar-tag',new T.SphereGeometry(.047,20,12),brass,0,.93,.595);tag.scale.set(1,1.15,.35);
 
- const legs=[];
- const legProfile=[[-.66,0],[-.625,.075],[-.57,.083],[-.48,.062],[-.31,.067],[-.12,.093],[.035,.105],[.07,0]];
- const legGeo=new T.LatheGeometry(legProfile.map(([y,r])=>new T.Vector2(r,y)),24);
+ const legs=[],knees=[];
  for(const z of [.34,-.4])for(const side of [-1,1]){
   const leg=new T.Group();leg.name=z>0?'front-leg':'hind-leg';leg.position.set(side*.185,.67,z);root.add(leg);legs.push(leg);
-  add(leg,'sculpted-leg',legGeo,coat);
-  oval(leg,'paw',cream,0,-.585,.08,.095,.072,.145);
+  oval(leg,'upper-leg',coat,0,-.11,0,z>0?.082:.105,.19,z>0?.08:.115);
+  const knee=new T.Group();knee.position.y=-.27;leg.add(knee);knees.push(knee);
+  oval(knee,'lower-leg',coat,0,-.13,0,.064,.18,.065);
+  oval(knee,'paw',cream,0,-.315,.035,.09,.072,.12);
  }
  // A short cotton-ball tail sits directly on the rump; no long stem is visible.
  const tail=new T.Group();tail.name='tail-joint';tail.position.set(0,.94,-.55);root.add(tail);
  fluffyOval(tail,'tail-pom',cream,0,.04,-.12,.165,.165,.165);
+ const smallCurlGeo=new T.SphereGeometry(1,12,10);
  for(let i=0;i<12;i++){
   const angle=i*2.39996,level=1-2*(i+.5)/12,ring=Math.sqrt(1-level*level);
-  fluffyOval(tail,'tail-curl',cream,ring*Math.cos(angle)*.13,.04+level*.13,-.12+ring*Math.sin(angle)*.13,.057,.057,.057);
+  const curl=add(tail,'tail-curl',smallCurlGeo,cream,ring*Math.cos(angle)*.13,.04+level*.13,-.12+ring*Math.sin(angle)*.13);curl.scale.setScalar(.057);
  }
- root.userData.rig={torso,head,ears,legs,tail};
+ // A hip pivot lets the body sit back while the front paws remain grounded.
+ const hips=new T.Group();hips.position.set(0,.78,-.38);root.add(hips);
+ hips.add(torso);torso.position.set(0,-.78,.38);
+ const tongue=oval(head,'tongue',new T.MeshStandardMaterial({color:'#d8908e',roughness:.7}),0,-.079,.54,.028,.016,.058);
+ tongue.visible=false;
+ const eyes=[];head.traverse(o=>{if(o.name==='eye'||o.name==='eye-glint')eyes.push({mesh:o,height:o.scale.y})});
+ root.userData.rig={torso,hips,head,ears,legs,knees,tail,tongue,eyes,sit:0,lick:0,pawTarget:new T.Vector3()};
  return root;
 }
 
-export function posePoodle3D(root,time,moving,reduced=false){
- const {torso,head,ears,legs,tail}=root.userData.rig;
- const gait=moving&&!reduced?Math.sin(time*1.28):0;
- const swing=moving&&!reduced?.48:0;
- legs.forEach((leg,i)=>{const phase=i===0||i===3?1:-1;leg.rotation.x=swing*Math.sin(time*1.28+phase*Math.PI/2);leg.position.y=.67+(moving&&!reduced?Math.max(0,phase*gait)*.035:0)});
- torso.position.y=moving&&!reduced?Math.abs(gait)*.026:Math.sin(time*.2)*.008;
- torso.rotation.z=moving&&!reduced?Math.sin(time*.64)*.028:0;
- head.rotation.x=moving&&!reduced?Math.sin(time*1.28+.6)*.045:Math.sin(time*.19)*.025;
- ears.forEach((ear,i)=>{ear.rotation.z=(i?1:-1)*(moving&&!reduced?Math.sin(time*1.28+i)*.075:.025*Math.sin(time*.3+i))});
- tail.rotation.y=reduced?0:Math.sin(time*(moving?.9:.43))*.32;
- tail.rotation.x=reduced?0:Math.sin(time*.37)*.06;
+export function posePoodle3D(root,time,moving,reduced=false,action='stand',dt=1/60){
+ const rig=root.userData.rig,{torso,hips,head,ears,legs,knees,tail,tongue,eyes}=rig;
+ const blend=reduced?1:1-Math.exp(-dt*6);
+ rig.sit+=((action==='sit'||action==='lick'?1:0)-rig.sit)*blend;
+ rig.lick+=((action==='lick'?1:0)-rig.lick)*blend;
+ const sit=rig.sit,lick=rig.lick,gait=moving?Math.sin(time*11.5):0;
+ const breath=reduced?0:Math.sin(time*1.8)*.008;
+ hips.position.y=.78-.43*sit+(moving?Math.abs(gait)*.026:breath);
+ hips.rotation.x=-.7*sit;
+ torso.rotation.z=moving?Math.sin(time*5.75)*.025:0;
+ legs.forEach((leg,i)=>{
+  const phase=i===0||i===3?1:-1,back=i>1;
+  leg.rotation.set((moving?.46*Math.sin(time*11.5+phase*Math.PI/2):0)+(back?-1.4*sit:0),0,back?(i===2?-.09:.09)*sit:0);
+  knees[i].rotation.x=back?1.55*sit:0;
+  leg.position.y=.67-(back?.25:0)*sit+(moving?Math.max(0,phase*gait)*.035:0);
+  leg.position.z=back?-.4+.06*sit:.34;
+ });
+ // The left paw rises toward the muzzle during grooming, then returns smoothly.
+ head.rotation.set(.7*sit+.63*lick+(reduced?0:Math.sin(time*2)*.025),reduced?0:Math.sin(time*.55)*.075*(1-lick),-.17*lick);
+ head.position.set(-.065*lick,1.12-.18*lick,.46+.06*lick);
+ const licking=reduced?0:Math.max(0,Math.sin(time*9));
+ tongue.visible=lick>.6&&!reduced;tongue.scale.z=.058*(.5+licking*.8);tongue.position.z=.55+licking*.025;
+ // Two-bone reach brings the paw to the mouth without stretching the limb.
+ if(lick>.001){
+  root.updateWorldMatrix(true,true);tongue.getWorldPosition(rig.pawTarget);root.worldToLocal(rig.pawTarget);
+  rig.pawTarget.y-=.06;rig.pawTarget.sub(legs[0].position);
+  const {x,y,z}=rig.pawTarget,horizontal=Math.hypot(x,z),a=.27,b=Math.hypot(.315,.035);
+  const distance=Math.min(a+b-.015,Math.hypot(y,horizontal));
+  const bend=-Math.acos(T.MathUtils.clamp((distance*distance-a*a-b*b)/(2*a*b),-1,1));
+  const shoulder=Math.atan2(-horizontal,-y)-Math.atan2(b*Math.sin(bend),a+b*Math.cos(bend));
+  legs[0].rotation.order='YXZ';legs[0].rotation.x=shoulder*lick;legs[0].rotation.y=Math.atan2(x,z)*lick;
+  knees[0].rotation.x=(bend+Math.atan2(.035,.315))*lick;
+ }
+ ears.forEach((ear,i)=>ear.rotation.z=(i?1:-1)*(moving?Math.sin(time*11.5+i)*.07:Math.sin(time*2+i)*.018));
+ tail.position.y=.94-.6*sit;tail.position.z=-.55+.07*sit;
+ tail.rotation.y=reduced?0:Math.sin(time*(moving?8:3.8))*.25;
+ tail.rotation.x=.2*sit;
+ const blink=reduced?1:1-.96*Math.pow(Math.max(0,Math.cos((time%4.7)*Math.PI*2/4.7)),64);
+ eyes.forEach(({mesh,height})=>mesh.scale.y=height*blink);
+ root.userData.action=action;
 }
