@@ -1,7 +1,7 @@
 import * as T from './vendor/three.module.js';
 import {route,walkable} from './walk.js?v=living-room-1';
-import {createPoodle3D,posePoodle3D} from './poodle3d.js?v=activities-3';
-import {activities,createActivities} from './activities.js?v=activities-3';
+import {createPoodle3D,posePoodle3D} from './poodle3d.js?v=activities-6';
+import {activities,createActivities} from './activities.js?v=activities-6';
 
 export function createWalk(room,canvas,onCoffee,wake,reduced){
  const player=new T.Group(),dog=createPoodle3D();room.add(player);player.add(dog);player.position.set(2.6,.04,2);
@@ -50,7 +50,8 @@ export function createWalk(room,canvas,onCoffee,wake,reduced){
    const cycle=idle%24,action=scenes.ready?(scenes.current==='coffee'?'brew':scenes.current):intent?'stand':forced||(reduced?'stand':cycle>9&&cycle<14?'lick':cycle>4&&cycle<18?'sit':'stand');
    posePoodle3D(dog,elapsed,moving,reduced,action,dt);
    scenes.update(dt,reduced);
-   near=Math.hypot(player.position.x+5.2,player.position.z+2.2)<.65;interact.hidden=!near;go.hidden=near;
+   shadow.visible=!(scenes.ready&&(scenes.current==='coffee'||scenes.current==='read'));
+   near=Math.hypot(player.position.x+5.6,player.position.z+.7)<.65;interact.hidden=!near;go.hidden=near;
    const message=scenes.ready?`${activities[scenes.current].label} con Puyol · Elige otra actividad cuando quieras.`:pending?`Puyol va hacia ${activities[pending].label.toLowerCase()}.`:near?'Aquí empiezan las buenas pausas.':action==='lick'?'Puyol se está limpiando la patita.':action==='sit'?'Puyol se toma un descansito.':'Guía a Puyol con flechas o WASD · Arrastra para girar';
    if(status.textContent!==message)status.textContent=message;
    menu.querySelectorAll('[data-activity]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.activity===action||button.dataset.activity===scenes.current)));

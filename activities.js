@@ -1,7 +1,7 @@
 import * as T from './vendor/three.module.js';
 
 export const activities={
- coffee:{label:'Preparar café',destination:{x:-5.2,z:-2.2},focus:{x:-4.55,z:-2.2}},
+ coffee:{label:'Preparar café',destination:{x:-5.6,z:-.7},focus:{x:-4.55,z:-.7}},
  chess:{label:'Jugar ajedrez',destination:{x:-1.4,z:2},focus:{x:.1,z:1.8}},
  music:{label:'Tocar ukulele',destination:{x:4.5,z:-2.8},focus:{x:4.2,z:.5}},
  read:{label:'Leer Kindle',destination:{x:2.15,z:.55},focus:{x:2.3,z:1.7}}
@@ -11,20 +11,30 @@ const mat=(color,metalness=0)=>new T.MeshStandardMaterial({color,roughness:metal
 function part(parent,geo,material,x=0,y=0,z=0){const m=new T.Mesh(geo,material);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m;}
 function line(parent,points,r,material){return part(parent,new T.TubeGeometry(new T.CatmullRomCurve3(points.map(p=>new T.Vector3(...p))),18,r,6,false),material);}
 function stool(room){
- const g=new T.Group();g.name='puyol-coffee-stool';g.position.set(-5.2,0,-2.2);g.visible=false;room.add(g);
+ const g=new T.Group();g.name='puyol-coffee-stool';g.position.set(-5.6,0,-.7);g.rotation.y=Math.PI/2;g.visible=false;room.add(g);
  const oak=mat('#b68558'),brass=mat('#bb965b',.55),cloth=new T.MeshPhysicalMaterial({color:'#69a3a0',roughness:.86,sheen:.55,sheenColor:'#d6f5ed'});
- for(const x of [-.24,.24])for(const z of [-.24,.24]){
+ for(const x of [-.3,.3])for(const z of [-.48,.48]){
   const leg=part(g,new T.CylinderGeometry(.04,.055,.37,12),oak,x,.2,z);leg.rotation.z=x*.12;
   part(g,new T.CylinderGeometry(.055,.055,.018,12),brass,x,.018,z);
  }
- for(const z of [-.24,.24])part(g,new T.BoxGeometry(.5,.035,.035),oak,0,.14,z);
- const seat=part(g,new T.CylinderGeometry(.38,.35,.08,32),oak,0,.42,0);
- part(g,new T.CylinderGeometry(.34,.34,.07,32),cloth,0,.48,0);
- const pip=part(g,new T.TorusGeometry(.34,.012,8,48),mat('#498985'),0,.515,0);pip.rotation.x=Math.PI/2;
+ for(const z of [-.48,.48])part(g,new T.BoxGeometry(.65,.035,.035),oak,0,.14,z);
+ for(const x of [-.29,.29])part(g,new T.BoxGeometry(.045,.28,1.08),oak,x,.21,0);
+ part(g,new T.BoxGeometry(.76,.08,1.18),oak,0,.42,0);
+ part(g,new T.BoxGeometry(.7,.06,1.12),cloth,0,.49,0);
+ const contact=part(g,new T.CircleGeometry(.34,32),new T.MeshBasicMaterial({color:'#4e615c',transparent:true,opacity:.18,depthWrite:false}),0,.532,0);
+ contact.rotation.x=-Math.PI/2;contact.scale.y=1.4;
+ return g;
+}
+function musicPad(room){
+ const g=new T.Group();g.name='puyol-music-pad';g.position.set(4.5,0,-2.05);g.visible=false;room.add(g);
+ const wood=mat('#ba8855'),felt=mat('#d7c8ad');
+ for(const x of [-.34,.34])for(const z of [-.43,.43])part(g,new T.CylinderGeometry(.035,.045,.19,10),wood,x,.1,z);
+ part(g,new T.BoxGeometry(.86,.065,1.08),wood,0,.22,0);
+ part(g,new T.BoxGeometry(.78,.025,1),felt,0,.267,0);
  return g;
 }
 function aeroPress(room){
- const g=new T.Group();g.name='puyol-aeropress';g.visible=false;g.position.set(-4.82,1.245,-2.13);room.add(g);
+ const g=new T.Group();g.name='puyol-aeropress';g.visible=false;g.position.set(-4.82,1.245,-.92);room.add(g);
  const black=mat('#242b30'),rubber=mat('#111a1c'),metal=mat('#b9bec0',.45),coffee=mat('#8b5938');
  const glass=new T.MeshPhysicalMaterial({color:'#b8d4d4',transparent:true,opacity:.55,roughness:.12,metalness:.04,depthWrite:false});
  part(g,new T.CylinderGeometry(.21,.21,.018,32),mat('#e7d7bb'),0,.006,0);
@@ -55,7 +65,7 @@ function snapshot(group){return {position:group.position.clone(),rotation:group.
 function restore(group,state){if(!group||!state)return;group.position.copy(state.position);group.rotation.copy(state.rotation);group.scale.copy(state.scale);}
 
 export function createActivities(room,player,dog){
- const bench=stool(room),press=aeroPress(room),pawn=room.getObjectByName('interactive-chess-pawn');
+ const bench=stool(room),pad=musicPad(room),press=aeroPress(room),pawn=room.getObjectByName('interactive-chess-pawn');
  const uke=room.getObjectByName('ukulele'),kindle=room.getObjectByName('kindle');
  const ukeHome=uke&&snapshot(uke),kindleHome=kindle&&snapshot(kindle),pawnHome=pawn&&snapshot(pawn);
  const pages=[pageTexture(1),pageTexture(2)];
@@ -63,7 +73,7 @@ export function createActivities(room,player,dog){
  if(screen){screen.rotation.x=-Math.PI/2;screen.visible=false;}
  const place=new T.Vector3();let current=null,ready=false,time=0,audio=null,lastNote=-1,readApproach=null;
  function reset(){
-  bench.visible=false;bench.scale.set(1,0,1);press.g.visible=false;press.plunger.position.y=0;press.drip.visible=false;
+  bench.visible=false;bench.scale.set(1,0,1);pad.visible=false;press.g.visible=false;press.plunger.position.y=0;press.drip.visible=false;
   restore(uke,ukeHome);restore(kindle,kindleHome);restore(pawn,pawnHome);
   if(screen)screen.visible=false;dog.position.y=0;dog.rotation.x=0;
   if(readApproach){player.position.copy(readApproach);readApproach=null;}
@@ -93,7 +103,7 @@ export function createActivities(room,player,dog){
   if(!current||!ready)return false;time+=dt;
   if(current==='coffee'){
    bench.visible=true;const rise=reduced?1:smooth(Math.min(1,time/1.1));bench.scale.set(1,rise,1);
-   dog.position.y=.47*rise;
+   dog.position.y=.42*rise;
    press.g.visible=true;
    const cycle=reduced?.68:(time*.68)%1;
    press.plunger.position.y=-.22*smooth(cycle);
@@ -105,7 +115,15 @@ export function createActivities(room,player,dog){
    pawn.position.y=pawnHome.position.y+(reduced?0:Math.sin(turn*Math.PI)*.08);
   }
   if(current==='music'){
-   bring(uke,ukeHome,[0,.62,.43],.52,[-.18,.1,.18],dt);
+   pad.visible=true;
+   if(uke){
+    place.set(4.5,.3,-1.63);uke.parent.worldToLocal(place);
+    const blend=1-Math.exp(-dt*5);
+    uke.position.lerp(place,blend);uke.scale.lerp(place.setScalar(.48),blend);
+    uke.rotation.x+=(-Math.PI/2-uke.rotation.x)*blend;
+    uke.rotation.y+=(0-uke.rotation.y)*blend;
+    uke.rotation.z+=(0-uke.rotation.z)*blend;
+   }
    const note=Math.floor(time/.78);if(!reduced&&note!==lastNote){lastNote=note;pluck();}
   }
   if(current==='read'){

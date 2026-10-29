@@ -154,8 +154,8 @@ export function posePoodle3D(root,time,moving,reduced=false,action='stand',dt=1/
  }
  // Each activity has its own readable gesture, layered over the normal gait.
  if(action==='brew'){
-  legs[0].rotation.x=-1.05+(reduced?0:Math.sin(time*3)*.12);
-  knees[0].rotation.x=-.35;
+  legs[0].rotation.x=-.5+(reduced?0:Math.sin(time*3)*.08);
+  knees[0].rotation.x=-.2;
   head.rotation.x=.05;
  }
  if(action==='chess'){

@@ -1,7 +1,7 @@
-﻿import {createWalk} from './play.js?v=activities-3';
+﻿import {createWalk} from './play.js?v=activities-6';
 import * as T from './vendor/three.module.js';
-import {makeSalon,makeStudio,addAvatar,applySalonArt} from './rooms.js?v=activities-3';
-import {animateRoom} from './room-life.js?v=activities-3';
+import {makeSalon,makeStudio,addAvatar,applySalonArt} from './rooms.js?v=activities-6';
+import {animateRoom} from './room-life.js?v=activities-6';
 let stageVisible=true,lastShadow=0;
 const $=s=>document.querySelector(s),stage=$('.stage'),canvas=$('#universe'),dialog=$('#details');
 const asset=name=>`art/${name}.png`;
