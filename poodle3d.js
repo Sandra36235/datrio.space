@@ -95,7 +95,7 @@ export function createPoodle3D(){
 
  const legs=[],knees=[];
  for(const z of [.34,-.4])for(const side of [-1,1]){
-  const leg=new T.Group();leg.name=z>0?'front-leg':'hind-leg';leg.position.set(side*.185,.67,z);root.add(leg);legs.push(leg);
+  const leg=new T.Group();leg.name=z>0?'front-leg':'hind-leg';leg.position.set(side*.185,.67,z);leg.userData.x=side*.185;root.add(leg);legs.push(leg);
   oval(leg,'upper-leg',coat,0,-.11,0,z>0?.082:.105,.19,z>0?.08:.115);
   const knee=new T.Group();knee.position.y=-.27;leg.add(knee);knees.push(knee);
   oval(knee,'lower-leg',coat,0,-.13,0,.064,.18,.065);
@@ -120,7 +120,7 @@ export function createPoodle3D(){
  const paws=knees.map(knee=>knee.getObjectByName('paw'));
  root.userData.rig={torso,hips,head,ears,legs,knees,paws,tail,tongue,eyes,body,ruff:neckFur,sit:0,lick:0,
   // Set by activities.js: crouch/air drive jumps, press/beat/page sync paws with props.
-  crouch:0,air:0,hopping:false,press:0,beat:0,page:0,pawTarget:new T.Vector3()};
+  crouch:0,air:0,hopping:false,press:0,beat:0,page:0,goals:[null,null],pawTarget:new T.Vector3()};
  return root;
 }
 
@@ -137,7 +137,8 @@ function spring(s,target,omega,zeta,dt){
  return s.x;
 }
 const UPPER=.27,LOWER=Math.hypot(.315,.035),LOWER_OFFSET=-Math.atan2(.035,.315);
-const REST={y:-.585,z:.035};
+const REST={y:-.585,z:.035},SIT_DROP=.45,SIT_PITCH=.64,REAR=.62,LIE=.47;
+const reachVector=new T.Vector3();
 // Two-bone solve in the leg's swing plane. bend=+1 folds the joint backward
 // (front legs), -1 pushes it forward (the hind stifle).
 function solveLeg(ty,tz,bend){
@@ -150,7 +151,8 @@ function solveLeg(ty,tz,bend){
 function reach(target,bend){const s=solveLeg(target.y,Math.hypot(target.x,target.z),bend);s.yaw=Math.atan2(target.x,target.z);return s;}
 function mix(pose,goal,w){if(w<=0)return;pose.hip=lerp(pose.hip,goal.hip,w);pose.knee=lerp(pose.knee,goal.knee,w);pose.yaw=lerp(pose.yaw,goal.yaw??0,w);}
 const ACTIVITIES=['lick','brew','chess','music','read'];
-const SEATED=['sit','lick','chess','music','read'];
+// Reading is done lying down, so it is not a seated pose.
+const SEATED=['sit','lick','chess','music'];
 
 function createState(){
  const s=()=>({x:0,v:0});
@@ -187,8 +189,10 @@ export function posePoodle3D(root,time,moving,reduced=false,action='stand',dt=1/
  const sit=clamp01(settle(st.sit,sitGoal,7.5,.72));
  const drop=ease(sit*1.25),pitch=ease((sit-.12)/.88);
  rig.sit=sit;
- const w={};for(const a of ACTIVITIES)w[a]=clamp01(settle(st.weights[a],action===a?1:0,6.5,1));
+ // Activity poses wait until Puyol has landed on the furniture.
+ const w={};for(const a of ACTIVITIES)w[a]=clamp01(settle(st.weights[a],action===a&&!rig.hopping?1:0,6.5,1));
  rig.lick=w.lick;
+ const lie=w.read,rear=w.brew;
  const busy=Math.min(1,w.brew+w.chess+w.music+w.read+w.lick);
  const crouch=clamp01(rig.crouch||0),air=clamp01(rig.air||0);
 
@@ -197,12 +201,15 @@ export function posePoodle3D(root,time,moving,reduced=false,action='stand',dt=1/
  body.scale.set(.255*(1+.016*breath),.255*(1+.011*breath),.55);
  ruff.scale.set(.215*(1+.012*breath),.255,.19);
 
- // Hips: sit drop, trot bob (lowest at mid-stance), crouch before jumps.
+ // Hips: sit drop, rearing up, lying down, trot bob (lowest at mid-stance), crouch before jumps.
  const bob=-stride*.022*Math.cos(phase*2);
- hips.position.y=.78-.43*drop+bob-.11*crouch+.004*breath;
- hips.rotation.x=-.7*pitch+stride*.022*Math.sin(phase*2+.5)-clamp(paceAccel,-4,4)*.012+.06*w.brew+.12*crouch-.1*air;
+ hips.position.y=.78-SIT_DROP*drop-LIE*lie+bob-.11*crouch+.004*breath;
+ hips.rotation.x=-SIT_PITCH*pitch-REAR*rear+stride*.022*Math.sin(phase*2+.5)-clamp(paceAccel,-4,4)*.012+.12*crouch-.1*air;
  torso.rotation.z=stride*.028*Math.sin(phase)-clamp(turning,-3,3)*.035;
  const hipsVy=dt?(hips.position.y-st.lastHipsY)/dt:0;st.lastHipsY=hips.position.y;
+ const bodyPitch=SIT_PITCH*pitch+REAR*rear;
+ // Shoulders, hips and tail ride on the body, so they follow it when it tilts.
+ const attach=(x,y,z,out)=>out.set(x,y,z).applyEuler(torso.rotation).add(torso.position).applyEuler(hips.rotation).add(hips.position);
 
  // Legs: build each pose in layers, then write it once.
  const poses=legs.map((leg,i)=>{
@@ -210,17 +217,17 @@ export function posePoodle3D(root,time,moving,reduced=false,action='stand',dt=1/
   const f=phase+(diagonal?0:Math.PI)+(front?0:.18);
   const swing=Math.max(0,-Math.cos(f));
   const pose={hip:stride*(front?.42:.36)*Math.sin(f),knee:stride*swing*(front?.95:.75),yaw:0,lift:stride*swing*.022,ground:(1-air)*(1-swing*stride)};
-  // Planted paws: lower the joint with the body and let IK fold the leg.
-  const origin={y:.67-(front?0:.36*drop)-.1*crouch,z:front?.34-.1*pitch:-.4+.05*pitch};
-  const plantZ=(front?.34-.07*pitch:-.4+.09*pitch)+REST.z;
-  const planted=solveLeg(.085-origin.y,plantZ-origin.z,front?1:-1);
-  mix(pose,planted,clamp01(Math.max(sit*4,crouch*4))*(1-stride));
+  // The trot bob compresses the legs instead of lifting the paws off the floor.
+  const joint=attach(leg.userData.x,.67,front?.34:-.4,new T.Vector3());joint.y=lerp(joint.y-bob-.004*breath,.67,stride);
+  // Where each paw rests while sitting, crouching, rearing or lying; IK folds the leg to it.
+  const plantZ=front?.375-.07*pitch+.5*lie:-.365+.15*pitch+.3*lie;
+  mix(pose,solveLeg(.085-joint.y,plantZ-joint.z,front?1:-1),clamp01(Math.max(sit,crouch,rear,lie)*4)*(1-stride));
   // Mid-air tuck: front paws forward, hind legs trailing.
   mix(pose,front?{hip:-.65,knee:1.05}:{hip:.55,knee:.5},air);
-  pose.origin=origin;return pose;
+  pose.joint=joint;return pose;
  });
 
- // Head: idle glances at random moments; level during sitting; looks into turns.
+ // Head: idle glances at random moments; level while the body tilts; looks into turns.
  const look=st.look;
  if(!still&&time>look.next){
   const r=Math.random;look.next=time+1.6+r()*3.8;
@@ -239,45 +246,35 @@ export function posePoodle3D(root,time,moving,reduced=false,action='stand',dt=1/
  const beat=rig.beat||0,strum=beat<.14?ease(beat/.14):1-ease((beat-.14)/.86);
  const read=rig.page||0,scan=(read*4.4)%1,line=scan<.85?scan/.85:1-(scan-.85)/.15;
  head.rotation.set(
-  .7*pitch+lookPitch+drift+stride*.035*Math.sin(phase*2-.6)+w.lick*(.63+.06*lickBeat)+w.chess*(.15+.04*wave(time*.5,5))
-   +w.read*.36+w.music*(.05+.05*(1-strum))+w.brew*.14+.18*crouch-.12*air,
-  lookYaw*(1-w.lick)+w.chess*(.1+.08*wave(time*.35,7))+w.read*(line-.5)*.16,
+  bodyPitch+lookPitch+drift+stride*.035*Math.sin(phase*2-.6)+w.lick*(.63+.06*lickBeat)+w.chess*(.15+.04*wave(time*.5,5))
+   +lie*(.32+.03*Math.sin(line*Math.PI))+w.music*(.22+.06*(1-strum))+rear*.3+.18*crouch-.12*air,
+  lookYaw*(1-w.lick)+w.chess*(.1+.08*wave(time*.35,7))+lie*(line-.5)*.2+w.music*.12,
   lookTilt-.17*w.lick+w.chess*.12*wave(time*.4,9)+w.music*(still?0:Math.sin(time*1.6)*.09));
  head.position.set(-.065*w.lick,1.12-.18*w.lick,.46+.06*w.lick);
  tongue.visible=w.lick>.6&&!reduced&&lickBeat>.08;
  tongue.scale.z=.058*(.5+lickBeat*.8);tongue.position.z=.55+lickBeat*.025;
 
- // Activity poses, eased in by their own weights.
- if(w.brew>.001){
-  const press=rig.press||0;
-  mix(poses[0],{hip:-.78+.32*press,knee:-.35+.2*press},w.brew);poses[0].ground*=1-w.brew;
+ // Paws reach for things: props placed by activities.js, the mouth, or the chin.
+ const props=Math.max(w.brew,w.music,w.read);
+ if(props>.001||w.lick>.001||w.chess>.001)root.updateWorldMatrix(true,true);
+ if(props>.001)(rig.goals||[]).forEach((goal,i)=>{
+  const k=goal?clamp01(goal.w)*props:0;if(k<=.001)return;
+  mix(poses[i],reach(reachVector.copy(goal.p).sub(poses[i].joint),1),k);poses[i].ground*=1-k;
+ });
+ if(w.lick>.001){
+  tongue.getWorldPosition(rig.pawTarget);root.worldToLocal(rig.pawTarget);
+  rig.pawTarget.y-=.06+.035*(1-lickBeat);rig.pawTarget.sub(poses[0].joint);
+  mix(poses[0],reach(rig.pawTarget,1),w.lick);poses[0].ground*=1-w.lick;
  }
- if(w.music>.001){
-  mix(poses[0],{hip:-.9+.03*(still?0:Math.sin(time*1.6)),knee:-.42},w.music);
-  mix(poses[1],{hip:-.72+.24*strum,knee:-.28-.16*strum},w.music);poses[0].ground*=1-w.music;poses[1].ground*=1-w.music;
- }
- if(w.read>.001){
-  const flick=read>.9?Math.sin((read-.9)/.1*Math.PI):0;
-  mix(poses[0],{hip:-.65,knee:-.25},w.read);
-  mix(poses[1],{hip:-.65-.25*flick,knee:-.25-.2*flick},w.read);poses[0].ground*=1-w.read;poses[1].ground*=1-w.read;
- }
- if(w.lick>.001||w.chess>.001){
-  root.updateWorldMatrix(true,true);
-  if(w.lick>.001){
-   tongue.getWorldPosition(rig.pawTarget);root.worldToLocal(rig.pawTarget);
-   rig.pawTarget.y-=.06+.035*(1-lickBeat);rig.pawTarget.sub(legs[0].position);
-   mix(poses[0],reach(rig.pawTarget,1),w.lick);poses[0].ground*=1-w.lick;
-  }
-  if(w.chess>.001){
-   head.getObjectByName('lower-jaw').getWorldPosition(rig.pawTarget);root.worldToLocal(rig.pawTarget);
-   rig.pawTarget.y-=.045;rig.pawTarget.x+=.025;rig.pawTarget.sub(legs[1].position);
-   mix(poses[1],reach(rig.pawTarget,1),w.chess);poses[1].ground*=1-w.chess;
-  }
+ if(w.chess>.001){
+  head.getObjectByName('lower-jaw').getWorldPosition(rig.pawTarget);root.worldToLocal(rig.pawTarget);
+  rig.pawTarget.y-=.045;rig.pawTarget.x+=.025;rig.pawTarget.sub(poses[1].joint);
+  mix(poses[1],reach(rig.pawTarget,1),w.chess);poses[1].ground*=1-w.chess;
  }
  poses.forEach((pose,i)=>{
   const back=i>1,leg=legs[i];
-  leg.position.set(leg.position.x,pose.origin.y+pose.lift,pose.origin.z);
-  leg.rotation.set(pose.hip,pose.yaw,back?(i===2?-.09:.09)*sit:0);
+  leg.position.set(pose.joint.x,pose.joint.y+pose.lift,pose.joint.z);
+  leg.rotation.set(pose.hip,pose.yaw,back?(i===2?-1:1)*(.09*sit+.1*lie):0);
   knees[i].rotation.x=pose.knee;
   // Weight-bearing paws stay flat on the floor instead of tilting with the leg.
   paws[i].rotation.x=-(pose.hip+pose.knee)*pose.ground;
@@ -298,7 +295,7 @@ export function posePoodle3D(root,time,moving,reduced=false,action='stand',dt=1/
  const happy=time<tailState.until||w.music>.5?1:0;
  const amp=settle(tailState.amp,still?0:.07+.22*stride+.28*happy,5,1);
  tailState.phase+=dt*(2.6+5*Math.max(stride,happy));
- tail.position.y=.94-.6*drop-.11*crouch;tail.position.z=-.55+.07*pitch;
+ attach(0,.94,-.55,tail.position);
  tail.rotation.set(.2*pitch+.18*stride+.25*air,amp*Math.sin(tailState.phase),0);
 
  // Blinks at irregular intervals, sometimes twice.

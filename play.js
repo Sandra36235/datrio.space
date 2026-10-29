@@ -1,7 +1,7 @@
 import * as T from './vendor/three.module.js';
 import {route,walkable} from './walk.js?v=living-room-1';
-import {createPoodle3D,posePoodle3D} from './poodle3d.js?v=natural-1';
-import {activities,createActivities} from './activities.js?v=natural-1';
+import {createPoodle3D,posePoodle3D} from './poodle3d.js?v=natural-2';
+import {activities,createActivities} from './activities.js?v=natural-2';
 
 export function createWalk(room,canvas,onCoffee,wake,reduced){
  const player=new T.Group(),dog=createPoodle3D();room.add(player);player.add(dog);player.position.set(2.6,.04,2);
@@ -57,7 +57,7 @@ export function createWalk(room,canvas,onCoffee,wake,reduced){
    }else speed=0;
    if(!path.length){marker.visible=false;if(pending&&!keys.size){scenes.arrive();pending=null;}}
    if(forced&&elapsed>until){forced=null;idle=0;}
-   if(scenes.ready){const focus=activities[scenes.current].focus,target=Math.atan2(focus.x-player.position.x,focus.z-player.position.z),delta=Math.atan2(Math.sin(target-player.rotation.y),Math.cos(target-player.rotation.y));player.rotation.y+=delta*(1-Math.exp(-dt*7));}
+   if(scenes.ready){const focus=scenes.focus||activities[scenes.current].focus,target=Math.atan2(focus.x-player.position.x,focus.z-player.position.z),delta=Math.atan2(Math.sin(target-player.rotation.y),Math.cos(target-player.rotation.y));player.rotation.y+=delta*(1-Math.exp(-dt*7));}
    const cycle=idle%24,action=scenes.ready?(scenes.current==='coffee'?'brew':scenes.current):intent?'stand':forced||(reduced?'stand':cycle>9&&cycle<14?'lick':cycle>4&&cycle<18?'sit':'stand');
    posePoodle3D(dog,elapsed,moving?Math.max(.3,speed/2):0,reduced,action,dt);
    scenes.update(dt,reduced);

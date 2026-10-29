@@ -1,0 +1,39 @@
+<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Actividades de Puyol</title>
+<style>body{margin:0;background:#dfe3e8;font:15px system-ui}canvas{display:block;width:100vw;height:100vh}nav{position:absolute;top:14px;left:14px;right:14px;display:flex;flex-wrap:wrap;gap:8px}button{padding:9px 16px;border:1px solid #fff;border-radius:22px;background:#ffffffc0}output{position:absolute;bottom:12px;left:14px}</style>
+<nav><button data-a="coffee">Café</button><button data-a="chess">Ajedrez</button><button data-a="music">Ukulele</button><button data-a="read">Kindle</button><button data-v="game">Vista del juego</button><button data-v="side">Vista lateral</button><button data-p="1">Pausa</button></nav><canvas></canvas><output></output>
+<script type="module">
+// Close-up review of Puyol's activities inside the real salon. ?a=coffee&t=3&view=side freezes a moment.
+import * as T from '../vendor/three.module.js';
+import {createPoodle3D,posePoodle3D} from '../poodle3d.js?v=review';
+import {makeSalon} from '../rooms.js?v=review';
+import {addRoomLife,animateRoom} from '../room-life.js?v=review';
+import {activities,createActivities} from '../activities.js?v=review';
+const q=new URLSearchParams(location.search);
+const canvas=document.querySelector('canvas'),renderer=new T.WebGLRenderer({canvas,antialias:true,preserveDrawingBuffer:true});
+renderer.setPixelRatio(1);renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;
+const scene=new T.Scene();scene.background=new T.Color('#dfe3e8');
+scene.add(new T.HemisphereLight(0xfffaf1,0xc1cbdc,2.8));const sun=new T.DirectionalLight(0xfff7e9,3.4);sun.position.set(-3,12,9);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-10,right:10,top:10,bottom:-10});sun.shadow.bias=-.001;sun.shadow.normalBias=.035;scene.add(sun);
+const room=makeSalon();scene.add(room);
+const player=new T.Group(),dog=createPoodle3D();room.add(player);player.add(dog);player.position.set(2.6,.04,2);
+const scenes=createActivities(room,player,dog);
+const camera=new T.PerspectiveCamera(30,1,.1,100);
+let name=q.get('a')||'coffee',view=q.get('view')||'game',paused=q.has('t'),time=0,last=0;
+function start(a){name=a;time=0;const d=activities[a].destination,f=activities[a].focus;scenes.end();for(let i=0;i<120;i++)scenes.update(1/60);player.position.set(d.x,.04,d.z);player.rotation.y=Math.atan2(f.x-d.x,f.z-d.z);scenes.begin(a);scenes.arrive();}
+function step(dt){time+=dt;const f=scenes.focus||activities[name].focus,target=Math.atan2(f.x-player.position.x,f.z-player.position.z),delta=Math.atan2(Math.sin(target-player.rotation.y),Math.cos(target-player.rotation.y));player.rotation.y+=delta*(1-Math.exp(-dt*7));scenes.update(dt,false);posePoodle3D(dog,time,0,false,name==='coffee'?'brew':name,dt);animateRoom(room,dt,false);}
+document.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>start(b.dataset.a));
+document.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>view=b.dataset.v);
+document.querySelector('[data-p]').onclick=()=>paused=!paused;
+start(name);
+if(q.has('t')){const target=Number(q.get('t'));while(time<target)step(1/60);}
+function frame(now){
+ const dt=Math.min((now-last)/1000||.016,.05);last=now;if(!paused)step(dt);
+ const w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;
+ const p=dog.getWorldPosition(new T.Vector3()),yaw=player.rotation.y;
+ const offset=view==='side'?new T.Vector3(Math.cos(yaw)*6,1.6,-Math.sin(yaw)*6):new T.Vector3(Math.sin(.72)*Math.cos(.64),Math.sin(.64),Math.cos(.72)*Math.cos(.64)).multiplyScalar(8);
+ camera.position.copy(p).add(offset);camera.lookAt(p.x,p.y+.75,p.z);camera.near=view==="side"?4.4:.1;camera.updateProjectionMatrix();
+ renderer.render(scene,camera);
+ document.querySelector('output').textContent=`${name} · ${time.toFixed(1)} s · ${view}`;
+ requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script></html>

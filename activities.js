@@ -1,10 +1,11 @@
 import * as T from './vendor/three.module.js';
 
 export const activities={
- coffee:{label:'Preparar café',destination:{x:-5.6,z:-.7},focus:{x:-4.55,z:-.7}},
+ // Puyol faces the kitchen counter, where the AeroPress sits.
+ coffee:{label:'Preparar café',destination:{x:-5.4,z:-.7},focus:{x:-7.5,z:-.7}},
  chess:{label:'Jugar ajedrez',destination:{x:-1.4,z:2},focus:{x:.1,z:1.8}},
  music:{label:'Tocar ukulele',destination:{x:4.5,z:-2.8},focus:{x:4.2,z:.5}},
- read:{label:'Leer Kindle',destination:{x:2.15,z:.55},focus:{x:2.3,z:1.7}}
+ read:{label:'Leer Kindle',destination:{x:2.15,z:.55},focus:{x:5,z:-.6}}
 };
 const smooth=t=>t*t*(3-2*t);
 const ease=t=>smooth(Math.min(1,Math.max(0,t)));
@@ -19,7 +20,7 @@ const mat=(color,metalness=0)=>new T.MeshStandardMaterial({color,roughness:metal
 function part(parent,geo,material,x=0,y=0,z=0){const m=new T.Mesh(geo,material);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m;}
 function line(parent,points,r,material){return part(parent,new T.TubeGeometry(new T.CatmullRomCurve3(points.map(p=>new T.Vector3(...p))),18,r,6,false),material);}
 function stool(room){
- const g=new T.Group();g.name='puyol-coffee-stool';g.position.set(-5.6,0,-.7);g.rotation.y=Math.PI/2;g.visible=false;room.add(g);
+ const g=new T.Group();g.name='puyol-coffee-stool';g.position.set(activities.coffee.destination.x,0,activities.coffee.destination.z);g.rotation.y=Math.PI/2;g.visible=false;room.add(g);
  const oak=mat('#b68558'),brass=mat('#bb965b',.55),cloth=new T.MeshPhysicalMaterial({color:'#69a3a0',roughness:.86,sheen:.55,sheenColor:'#d6f5ed'});
  for(const x of [-.3,.3])for(const z of [-.48,.48]){
   const leg=part(g,new T.CylinderGeometry(.04,.055,.37,12),oak,x,.2,z);leg.rotation.z=x*.12;
@@ -42,7 +43,7 @@ function musicPad(room){
  return g;
 }
 function aeroPress(room){
- const g=new T.Group();g.name='puyol-aeropress';g.visible=false;g.position.set(-4.82,1.245,-.92);room.add(g);
+ const g=new T.Group();g.name='puyol-aeropress';g.visible=false;g.position.set(-6.02,1.226,-.7);g.scale.setScalar(.6);room.add(g);
  const black=mat('#242b30'),rubber=mat('#111a1c'),metal=mat('#b9bec0',.45),coffee=mat('#8b5938');
  const glass=new T.MeshPhysicalMaterial({color:'#b8d4d4',transparent:true,opacity:.55,roughness:.12,metalness:.04,depthWrite:false});
  part(g,new T.CylinderGeometry(.21,.21,.018,32),mat('#e7d7bb'),0,.006,0);
@@ -79,12 +80,18 @@ export function createActivities(room,player,dog){
  const pages=[pageTexture(1),pageTexture(2)];
  const screen=kindle&&part(kindle,new T.PlaneGeometry(.19,.25),new T.MeshBasicMaterial({map:pages[0],side:T.DoubleSide}),0,.021,-.015);
  if(screen){screen.rotation.x=-Math.PI/2;screen.visible=false;}
- const place=new T.Vector3(),rig=dog.userData.rig;let current=null,ready=false,time=0,audio=null,lastNote=-1,readApproach=null,descent=null;
+ const place=new T.Vector3(),point=new T.Vector3(),turn=new T.Quaternion(),parentTurn=new T.Quaternion(),angles=new T.Euler(),rig=dog.userData.rig;
+ let current=null,ready=false,time=0,audio=null,lastNote=-1,readApproach=null,descent=null,focus=null;
+ // Seat heights above the floor: the stool cushion and the sofa seat.
+ const STOOL=.49,SOFA=.95;
+ const goals=[{p:new T.Vector3(),w:0},{p:new T.Vector3(),w:0}];
+ // A paw target, given in world space, stored in Puyol's own space.
+ function goal(i,world,weight){const g=goals[i];g.p.copy(world);dog.worldToLocal(g.p);g.w=weight;rig.goals[i]=g;}
  function reset(){
   bench.visible=false;bench.scale.set(1,0,1);pad.visible=false;press.g.visible=false;press.plunger.position.y=0;press.drip.visible=false;
   restore(uke,ukeHome);restore(kindle,kindleHome);restore(pawn,pawnHome);
   if(screen)screen.visible=false;
-  Object.assign(rig,{crouch:0,air:0,hopping:false,press:0,beat:0,page:0});
+  Object.assign(rig,{crouch:0,air:0,hopping:false,press:0,beat:0,page:0,goals:[null,null]});focus=null;
   room.userData.activity=null;
  }
  // Leaving the stool or sofa: the walking position returns to the floor at once,
@@ -113,10 +120,16 @@ export function createActivities(room,player,dog){
    o.connect(gain).connect(audio.destination);o.start(at);o.stop(at+.57);
   }
  }
- function bring(prop,from,local,scale,rotation,dt){
-  if(!prop)return;player.localToWorld(place.set(...local));prop.parent.worldToLocal(place);
-  const blend=1-Math.exp(-dt*5);prop.position.lerp(place,blend);prop.scale.lerp(place.setScalar(scale),blend);
-  prop.rotation.x+=(rotation[0]-prop.rotation.x)*blend;prop.rotation.y+=(rotation[1]-prop.rotation.y)*blend;prop.rotation.z+=(rotation[2]-prop.rotation.z)*blend;
+ // Holds a prop relative to Puyol: `anchor` (a point on the prop) goes to `local` (a point in Puyol's space).
+ function hold(prop,anchor,local,rotation,scale,dt,reduced){
+  if(!prop)return;
+  player.updateMatrixWorld(true);
+  turn.setFromEuler(angles.set(...rotation)).premultiply(player.getWorldQuaternion(parentTurn));
+  point.set(...anchor).multiplyScalar(scale).applyQuaternion(turn);
+  dog.localToWorld(place.set(...local)).sub(point);prop.parent.worldToLocal(place);
+  turn.premultiply(prop.parent.getWorldQuaternion(parentTurn).invert());
+  const k=reduced?1:1-Math.exp(-dt*6);
+  prop.position.lerp(place,k);prop.quaternion.slerp(turn,k);prop.scale.lerp(point.setScalar(scale),k);
  }
  function update(dt,reduced=false){
   if(descent){
@@ -131,13 +144,19 @@ export function createActivities(room,player,dog){
    // The stool rises first, then Puyol jumps onto it and starts pressing.
    bench.visible=true;const rise=reduced?1:ease(time/.5);bench.scale.set(1,rise,1);
    const h=reduced?hop(1):hop(time-.45);
-   dog.position.y=.42*h.travel+Math.sin(h.travel*Math.PI)*.18;
+   dog.position.y=STOOL*h.travel+Math.sin(h.travel*Math.PI)*.18;
    Object.assign(rig,{crouch:h.crouch,air:h.air,hopping:!h.done});
    press.g.visible=true;
-   const pressing=Math.max(0,time-1.5),cycle=reduced?.68:(pressing*.68)%1;
-   press.plunger.position.y=-.22*smooth(cycle);
-   rig.press=pressing>0?smooth(cycle):0;
-   press.drip.visible=pressing>.3&&(reduced||cycle>.45);
+   // He rears up: one paw steadies on the counter, the other pushes the plunger
+   // down slowly, then lets it rise again.
+   const pressing=Math.max(0,time-1.8),cycle=reduced?.6:(pressing*.5)%1;
+   const depth=pressing<=0?0:cycle<.7?ease(cycle/.7):1-ease((cycle-.7)/.3);
+   press.plunger.position.y=-.22*depth;rig.press=depth;
+   press.drip.visible=pressing>.3&&depth>.25;
+   room.updateMatrixWorld(true);
+   const reach=h.done?1:0;
+   goal(0,press.plunger.localToWorld(point.set(0,1.02,0)),reach);
+   goal(1,point.set(-5.93,1.26,-.53),reach);
   }
   if(current==='chess'&&pawn&&pawnHome){
    const turn=reduced?1:(1+Math.sin(time*1.3-Math.PI/2))*.5;
@@ -145,30 +164,35 @@ export function createActivities(room,player,dog){
    pawn.position.y=pawnHome.position.y+(reduced?0:Math.sin(turn*Math.PI)*.08);
   }
   if(current==='music'){
-   pad.visible=true;
+   // Held against his chest like a guitar: left paw on the neck, right paw strums.
+   const beat=reduced?.5:(time%.78)/.78,stroke=beat<.14?ease(beat/.14):1-ease((beat-.14)/.86);
+   rig.beat=beat;
    if(uke){
-    place.set(4.5,.3,-1.63);uke.parent.worldToLocal(place);
-    const blend=1-Math.exp(-dt*5);
-    uke.position.lerp(place,blend);uke.scale.lerp(place.setScalar(.48),blend);
-    uke.rotation.x+=(-Math.PI/2-uke.rotation.x)*blend;
-    uke.rotation.y+=(0-uke.rotation.y)*blend;
-    uke.rotation.z+=(0-uke.rotation.z)*blend;
+    hold(uke,[0,.6,0],[.02,.44,.6],[-.18,0,-1.02],.55,dt,reduced);
+    room.updateMatrixWorld(true);
+    goal(1,uke.localToWorld(point.set(0,1.3,.16)),1);
+    goal(0,uke.localToWorld(point.set(.02,.92-.3*stroke,.24)),1);
    }
-   const note=Math.floor(time/.78);rig.beat=reduced?.5:(time%.78)/.78;if(!reduced&&note!==lastNote){lastNote=note;pluck();}
+   const note=Math.floor(time/.78);if(!reduced&&note!==lastNote){lastNote=note;pluck();}
   }
   if(current==='read'){
-   // Hop up onto the sofa, then lean back into the cushion.
+   // Hop up onto the sofa, turn along the seat and lie down with the Kindle
+   // between the front paws; a paw taps the corner to turn each page.
    const h=reduced?hop(1):hop(time,1);
-   player.position.x=readApproach.x+(2.15-readApproach.x)*h.travel;
+   player.position.x=readApproach.x+(1.7-readApproach.x)*h.travel;
    player.position.z=readApproach.z+(-.6-readApproach.z)*h.travel;
-   dog.position.y=.91*h.travel+Math.sin(h.travel*Math.PI)*.16;
-   dog.rotation.x=-.52*(reduced?1:ease((time-1)/.7));
+   dog.position.y=SOFA*h.travel+Math.sin(h.travel*Math.PI)*.16;
    Object.assign(rig,{crouch:h.crouch,air:h.air,hopping:!h.done});
-   rig.page=reduced?0:(time%4)/4;
-   bring(kindle,kindleHome,[0,1.22,.5],1.8,[.7,0,0],dt);
-   if(screen){screen.visible=true;screen.material.map=pages[Math.floor(time/4)%2];}
+   focus=h.done?null:{x:1.7,z:-3};
+   const page=reduced?0:(time%4)/4;rig.page=page;
+   if(h.done){
+    hold(kindle,[0,0,0],[0,.03,1.08],[0,Math.PI,0],1.35,dt,reduced);
+    if(screen){screen.visible=true;screen.material.map=pages[Math.floor(time/4)%2];}
+    room.updateMatrixWorld(true);
+    goal(0,kindle.localToWorld(point.set(.1,.06,.09)),page>.86?Math.sin((page-.86)/.14*Math.PI):0);
+   }
   }
   return true;
  }
- return {begin,arrive,end,update,get current(){return current;},get ready(){return ready;},get hopping(){return !!descent||rig.hopping;}};
+ return {begin,arrive,end,update,get current(){return current;},get ready(){return ready;},get hopping(){return !!descent||rig.hopping;},get focus(){return focus;}};
 }

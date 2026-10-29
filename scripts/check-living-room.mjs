@@ -36,9 +36,12 @@ const scenes=createActivities(room,player,pu);
 for(const [name,station] of Object.entries(activities)){
  assert(walkable(station.destination.x,station.destination.z),name+': destination blocked');
  assert(route(player.position,station.destination).length>0,name+': destination unreachable');
+ player.position.set(station.destination.x,.04,station.destination.z);
  scenes.begin(name);scenes.arrive();
- for(let i=0;i<180;i++){scenes.update(1/60,false);posePoodle3D(pu,i/60,false,false,name==='coffee'?'brew':name,1/60);}
+ for(let i=0;i<180;i++){const f=scenes.focus||station.focus;player.rotation.y=Math.atan2(f.x-player.position.x,f.z-player.position.z);scenes.update(1/60,false);posePoodle3D(pu,i/60,false,false,name==='coffee'?'brew':name,1/60);}
  if(name==='coffee'){
+  const pressPaw=pu.userData.rig.knees[0].getObjectByName('paw').getWorldPosition(new T.Vector3()),handle=room.getObjectByName('aeropress-plunger').localToWorld(new T.Vector3(0,1.02,0));
+  assert(pressPaw.distanceTo(handle)<.12,'Paw should push the AeroPress plunger');
   assert(room.getObjectByName('puyol-coffee-stool').visible,'Coffee stool did not appear');
   assert(room.getObjectByName('puyol-aeropress').visible,'AeroPress did not appear');
   assert(room.getObjectByName('aeropress-plunger').position.y<0,'AeroPress plunger did not move');
@@ -54,7 +57,10 @@ for(const [name,station] of Object.entries(activities)){
  }
  if(name==='music'){
   assert(room.getObjectByName('ukulele').scale.x<1,'Ukulele did not move');
-  assert(room.getObjectByName('puyol-music-pad').visible,'Ukulele has no support');
+  const uke=room.getObjectByName('ukulele').getWorldPosition(new T.Vector3()),chest=pu.getWorldPosition(new T.Vector3()).add(new T.Vector3(0,.5,0));
+  assert(uke.distanceTo(chest)<.8,'Puyol should hold the ukulele against his chest');
+  const neckPaw=pu.userData.rig.knees[1].getObjectByName('paw').getWorldPosition(new T.Vector3()),neck=room.getObjectByName('ukulele').localToWorld(new T.Vector3(0,1.3,.16));
+  assert(neckPaw.distanceTo(neck)<.12,'Left paw should hold the ukulele neck');
  }
  if(name==='read'){
   assert(room.getObjectByName('kindle').scale.x>1,'Kindle was not picked up');
@@ -68,6 +74,6 @@ for(const [name,station] of Object.entries(activities)){
  for(let i=0;i<90;i++){scenes.update(1/60,false);posePoodle3D(pu,3+i/60,false,false,'stand',1/60);}
  assert(!scenes.hopping,name+': hop down never finished');
  assert(!room.getObjectByName('puyol-coffee-stool').visible,name+': prop was not cleared');
- assert(Math.abs(player.position.z-2)<.01&&pu.position.length()===0,name+': Puyol did not return to the floor');
+ assert(Math.abs(player.position.z-station.destination.z)<.01&&pu.position.length()===0,name+': Puyol did not return to the floor');
 }
 console.log('All four interactive stations are reachable and restore their props.');
