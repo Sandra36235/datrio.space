@@ -1,5 +1,5 @@
 import * as T from './vendor/three.module.js';
-import {posePoodle3D} from './poodle3d.js?v=living-room-1';
+import {posePoodle3D} from './poodle3d.js?v=activities-1';
 
 // Shared geometry and textures keep the added detail affordable on mobile.
 const foliage = [];
@@ -188,7 +188,7 @@ export function animateRoom(room,dt,reduced=false){
     p.crown.rotation.z=Math.sin(t*.65+p.phase)*.023;
     p.crown.rotation.x=Math.sin(t*.47+p.phase)*.015;
   }
-  for(const p of life.steam){const f=(t*.25+p.phase)%1;p.sprite.visible=true;p.sprite.position.set(p.x+Math.sin(f*5+t*.4)*.035,p.y+f*.48,p.z+Math.cos(f*4)*.02);p.sprite.scale.set(.07+f*.18,.16+f*.22,1);p.sprite.material.opacity=Math.sin(f*Math.PI)*.2;}
+  for(const p of life.steam){const brewing=room.userData.activity==='coffee',f=(t*(brewing?.38:.25)+p.phase)%1;p.sprite.visible=true;p.sprite.position.set(p.x+Math.sin(f*5+t*.4)*.035,p.y+f*(brewing?.7:.48),p.z+Math.cos(f*4)*.02);p.sprite.scale.set(.07+f*(brewing?.26:.18),.16+f*(brewing?.3:.22),1);p.sprite.material.opacity=Math.sin(f*Math.PI)*(brewing?.38:.2);}
   if(life.record)life.record.rotation.z=-t*.65;
   life.fans.forEach(fan=>fan.rotation.z=-t*2.4);
   life.curtains.forEach((p,i)=>{p.mesh.rotation.z=Math.sin(t*.6+i*.25)*.009;p.mesh.position.x=p.x+Math.sin(t*.6+i*.25)*.012;});

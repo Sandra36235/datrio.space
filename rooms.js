@@ -1,6 +1,6 @@
 import * as T from './vendor/three.module.js';
-import {createPoodle3D} from './poodle3d.js?v=living-room-1';
-import {botanical,pillow,addRoomLife} from './room-life.js?v=living-room-1';
+import {createPoodle3D} from './poodle3d.js?v=activities-1';
+import {botanical,pillow,addRoomLife} from './room-life.js?v=activities-1';
 const materialCache=new Map();
 export function mat(color){if(!materialCache.has(color))materialCache.set(color,new T.MeshStandardMaterial({color,roughness:.78}));return materialCache.get(color)}
 const C={white:'#fffaf1',blue:'#1c5ccc',sky:'#7bc0eb',yellow:'#f6bf25',orange:'#f18a29',oak:'#c49663',oakLight:'#ddb58b',dark:'#29323e',cream:'#ece4d8',leaf:'#4b7643',gold:'#bd8c40'};
@@ -101,7 +101,7 @@ function chess(g,x,z){
  for(let i=0;i<8;i++)for(let j=0;j<8;j++){
   const px=x-.56+i*.16,pz=z-.56+j*.16;
   box(g,.16,.008,.16,(i+j)%2?'#8b6c55':'#e9dcc4',px,.727,pz);
-  if(j<2||j>5){const type=(j===1||j===6)?'pawn':['rook','knight','bishop','queen','king','bishop','knight','rook'][i];const piece=group(g,px,.75,pz);piece.scale.setScalar(1.37);lewisPiece(piece,0,0,0,type,j<2?'#a96750':'#f1e2bf')}
+  if(j<2||j>5){const type=(j===1||j===6)?'pawn':['rook','knight','bishop','queen','king','bishop','knight','rook'][i];const piece=group(g,px,.75,pz);piece.name=i===3&&j===6?'interactive-chess-pawn':'lewis-piece';piece.scale.setScalar(1.37);lewisPiece(piece,0,0,0,type,j<2?'#a96750':'#f1e2bf')}
  }
 }
 function techCorner(g){
@@ -147,7 +147,7 @@ function music(g){
  box(u,.16,.03,.04,'#654331',0,.39,.13,.008);
  for(let i=0;i<4;i++){const x=(i-1.5)*.034;box(u,.003,1.27,.003,'#f0e2bf',x,1.05,.146);sphere(u,.023,C.white,(i%2?1:-1)*.13,1.64+(i%2)*.12,.04)}
  // Two visible prongs and a floor base hold it upright.
- box(u,.5,.035,.4,C.dark,0,-.04,0,.015);for(const x of [-.13,.13])box(u,.035,.31,.045,C.dark,x,.18,.12,.01);
+ const stand=group(g,.15,.08,-3.1,.12);stand.name='ukulele-stand';box(stand,.5,.035,.4,C.dark,0,-.04,0,.015);for(const x of [-.13,.13])box(stand,.035,.31,.045,C.dark,x,.18,.12,.01);
 }
 function rug(g){const t=texture((ctx,w,h)=>{ctx.fillStyle='#ede7dc';ctx.fillRect(0,0,w,h);ctx.fillStyle='#4078be';ctx.beginPath();ctx.moveTo(0,70);ctx.bezierCurveTo(180,0,180,500,512,310);ctx.lineTo(512,460);ctx.bezierCurveTo(200,650,160,200,0,210);ctx.fill();for(let i=0;i<1500;i++){ctx.fillStyle=i%2?'#ffffff19':'#655b4810';ctx.fillRect((i*71)%w,(i*113)%h,1,3)}});const a=place(new T.PlaneGeometry(7,4.6),new T.MeshStandardMaterial({map:t,roughness:1}),g,0,.04,1);a.rotation.x=-Math.PI/2}
 function lamp(g){cyl(g,.22,.3,.04,C.dark,-.7,.05,-2.9);cyl(g,.018,.018,2.7,C.dark,-.7,1.4,-2.9);for(let j=0;j<3;j++){const q=cyl(g,.12,.18,.35,j===1?C.sky:C.orange,-.7+(j-1)*.23,2.4+j*.22,-2.9,20);q.rotation.z=(j-1)*.5}const textureStripe=texture((c,w,h)=>{c.fillStyle=C.white;c.fillRect(0,0,w,h);c.fillStyle='#292d32';for(let y=0;y<h;y+=80)c.fillRect(0,y,w,40)});const shade=place(new T.CylinderGeometry(.48,.48,.55,32,1,true),new T.MeshStandardMaterial({map:textureStripe,side:T.DoubleSide}),g,.7,3.5,-1.6);cyl(g,.01,.01,.6,C.dark,.7,4.05,-1.6);cyl(g,.46,.46,.015,C.white,.7,3.22,-1.6)}
@@ -204,7 +204,7 @@ function salonDetails(g){
  cyl(g,.105,.15,.79,C.white,4.62,.45,-.45,32);
  cyl(g,.29,.29,.055,C.white,4.62,.06,-.45,40);
  // A Kindle and a clear glass of water belong on this smaller table.
- const kindle=group(g,4.49,.91,-.47,-.16);box(kindle,.23,.023,.31,'#292c30',0,0,0,.012);box(kindle,.19,.004,.25,'#e5e1cf',0,.014,-.015);
+ const kindle=group(g,4.49,.91,-.47,-.16);kindle.name='kindle';box(kindle,.23,.023,.31,'#292c30',0,0,0,.012);box(kindle,.19,.004,.25,'#e5e1cf',0,.014,-.015);
  for(let i=0;i<5;i++)box(kindle,.17,.003,.008,'#7e827f',0,.018,-.1+i*.035);
  const waterGlass=new T.MeshPhysicalMaterial({color:'#d4edf0',transparent:true,opacity:.38,roughness:.08,depthWrite:false});
  cyl(g,.075,.067,.18,waterGlass,4.82,1.0,-.45,24);cyl(g,.064,.064,.006,'#83c7db',4.82,.985,-.45,24);

@@ -616,12 +616,17 @@ footer { border-top-color: rgba(255,255,255,.25); }
 .walk-hud { bottom: 12px; gap: 6px; }
 .walk-hud .walk-status { flex-basis: 100%; padding: 0 0 4px; text-align: center; background: transparent; color: #f5f8fa; text-shadow: 0 1px 3px #273c4677; }
 .puyol-actions { display: flex; gap: 6px; pointer-events: auto; }
+.puyol-menu { position: absolute; bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%); z-index: 8; width: min(420px, calc(100vw - 36px)); padding: 12px; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 7px; border: 1px solid #ffffffb8; border-radius: 24px; background: linear-gradient(150deg,#dbe7ecba,#b8c9d3a8); backdrop-filter: blur(24px) saturate(1.3); -webkit-backdrop-filter: blur(24px) saturate(1.3); box-shadow: 0 18px 45px #2137443b, inset 0 1px 1px #fff; pointer-events: auto; }
+.puyol-menu[hidden] { display: none; }
+.puyol-menu button { width: 100%; min-height: 44px; padding: 8px 11px; text-align: left; font-size: 11px; }
 .walk-hud button { min-height: 38px; padding: 8px 13px; font-size: 11px; }
 .walk-hud button[aria-pressed="true"] { border-color: #f4dfb7; box-shadow: inset 0 1px 2px #ffffffc9, 0 0 14px #ffe9b633; }
 @media (max-width: 900px) {
   .walk-hud { bottom: 0; gap: 5px; }
   .walk-hud button { min-height: 44px; padding: 7px 9px; font-size: 10px; }
   .puyol-actions { gap: 5px; }
+  .puyol-menu { bottom: calc(100% + 8px); padding: 9px; gap: 5px; border-radius: 20px; }
+  .puyol-menu button { min-height: 44px; padding: 7px 8px; font-size: 10px; }
   .pin { width: 30px; height: 30px; font-size: 17px; }
   .pin[data-object="toolbox"],.pin[data-object="tech"],.pin[data-object="titles"] { display: none; }
   .worldbar { scrollbar-width: none; }

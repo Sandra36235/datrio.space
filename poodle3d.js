@@ -122,7 +122,7 @@ export function createPoodle3D(){
 export function posePoodle3D(root,time,moving,reduced=false,action='stand',dt=1/60){
  const rig=root.userData.rig,{torso,hips,head,ears,legs,knees,tail,tongue,eyes}=rig;
  const blend=reduced?1:1-Math.exp(-dt*6);
- rig.sit+=((action==='sit'||action==='lick'?1:0)-rig.sit)*blend;
+ rig.sit+=((['sit','lick','chess','music','read'].includes(action)?1:0)-rig.sit)*blend;
  rig.lick+=((action==='lick'?1:0)-rig.lick)*blend;
  const sit=rig.sit,lick=rig.lick,gait=moving?Math.sin(time*11.5):0;
  const breath=reduced?0:Math.sin(time*1.8)*.008;
@@ -152,7 +152,29 @@ export function posePoodle3D(root,time,moving,reduced=false,action='stand',dt=1/
   legs[0].rotation.order='YXZ';legs[0].rotation.x=shoulder*lick;legs[0].rotation.y=Math.atan2(x,z)*lick;
   knees[0].rotation.x=(bend+Math.atan2(.035,.315))*lick;
  }
- ears.forEach((ear,i)=>ear.rotation.z=(i?1:-1)*(moving?Math.sin(time*11.5+i)*.07:Math.sin(time*2+i)*.018));
+ // Each activity has its own readable gesture, layered over the normal gait.
+ if(action==='brew'){
+  legs[0].rotation.x=-1.05+(reduced?0:Math.sin(time*3)*.12);
+  knees[0].rotation.x=-.35;
+  head.rotation.x=.05;
+ }
+ if(action==='chess'){
+  const move=reduced?.5:(1+Math.sin(time*2.8))*.5;
+  legs[1].rotation.x=-.9-move*.45;knees[1].rotation.x=-.55;
+  head.rotation.x+=.15;head.rotation.y+=.1;
+ }
+ if(action==='music'){
+  const strum=reduced?.5:Math.sin(time*8);
+  legs[0].rotation.x=-.82+strum*.25;knees[0].rotation.x=-.45;
+  legs[1].rotation.x=-.7-strum*.18;knees[1].rotation.x=-.3;
+  head.rotation.z+=(reduced?0:Math.sin(time*2)*.1);
+ }
+ if(action==='read'){
+  legs[0].rotation.x=-.65;legs[1].rotation.x=-.65;
+  knees[0].rotation.x=-.25;knees[1].rotation.x=-.25;
+  head.rotation.x+=.36;
+ }
+ ears.forEach((ear,i)=>ear.rotation.z=(i?1:-1)*((moving?Math.sin(time*11.5+i)*.07:Math.sin(time*2+i)*.018)+(action==='music'&&!reduced?Math.sin(time*4)*.11:0)));
  tail.position.y=.94-.6*sit;tail.position.z=-.55+.07*sit;
  tail.rotation.y=reduced?0:Math.sin(time*(moving?8:3.8))*.25;
  tail.rotation.x=.2*sit;
