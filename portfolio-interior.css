@@ -1,15 +1,16 @@
-/* Shared atmosphere for Datrio's interior pages. Their individual artwork stays intact. */
+/* Shared warm atmosphere for Datrio's interior pages, matching the salon. Artwork stays intact. */
 body.datrio-interior {
-  --interior-text: #f7fbff;
-  --interior-soft: rgba(247,251,255,.78);
-  --interior-line: rgba(255,255,255,.24);
-  --interior-blue: #c5dcff;
-  --interior-glass: linear-gradient(150deg, rgba(248,252,255,.16), rgba(121,143,155,.12) 62%, rgba(235,245,250,.08));
+  --interior-text: #3b2430;
+  --interior-soft: #7a6670;
+  --interior-line: rgba(90,36,49,.14);
+  --interior-blue: #7a0c2c;
+  --interior-accent: #5a74b8;
+  --interior-glass: linear-gradient(150deg, rgba(255,255,255,.72), rgba(250,240,225,.55) 62%, rgba(255,255,255,.6));
   color: var(--interior-text);
   background:
-    radial-gradient(ellipse at 68% 18%, rgba(218,230,236,.23), transparent 38%),
-    radial-gradient(ellipse at 16% 78%, rgba(182,203,215,.19), transparent 43%),
-    linear-gradient(145deg, #56636b 0%, #7d898e 49%, #46535d 100%);
+    radial-gradient(ellipse at 78% 8%, rgba(243,220,147,.55), transparent 42%),
+    radial-gradient(ellipse at 8% 88%, rgba(165,185,228,.45), transparent 46%),
+    linear-gradient(165deg, #fcf8f0 0%, #f6efe2 55%, #f1e8d8 100%);
   background-attachment: fixed;
 }
 body.datrio-interior header,
@@ -27,14 +28,14 @@ body.datrio-interior .card strong,
 body.datrio-interior .contact-card strong { color: var(--interior-text); }
 body.datrio-interior .logo span,
 body.datrio-interior .brand span,
-body.datrio-interior .hero h1 em { color: var(--interior-blue); }
+body.datrio-interior .hero h1 em { color: var(--interior-blue); font-style: italic; }
 body.datrio-interior .eyebrow,
 body.datrio-interior .section-tag,
 body.datrio-interior .card-num,
 body.datrio-interior .card-top,
 body.datrio-interior .num,
 body.datrio-interior .step span,
-body.datrio-interior .tag { color: #d4e4ff; }
+body.datrio-interior .tag { color: var(--interior-accent); }
 body.datrio-interior .hero p,
 body.datrio-interior p.intro,
 body.datrio-interior .intro p,
@@ -51,15 +52,15 @@ body.datrio-interior footer { color: var(--interior-soft); }
 
 /* The same restrained liquid-glass return button as the universe. */
 body.datrio-interior .back {
-  color: #fff;
-  border: 1px solid rgba(255,255,255,.78);
+  color: var(--interior-text);
+  border: 1px solid #fff;
   border-radius: 999px;
-  background: linear-gradient(155deg, rgba(239,246,250,.18), rgba(83,101,112,.19) 53%, rgba(227,238,244,.13));
+  background: linear-gradient(180deg, rgba(255,255,255,.85), rgba(250,240,225,.72));
   -webkit-backdrop-filter: blur(9px) saturate(1.45);
   backdrop-filter: blur(9px) saturate(1.45);
-  box-shadow: 0 11px 20px rgba(24,37,47,.15), inset 0 2px 1px rgba(255,255,255,.94),
-    inset 0 -3px 3px rgba(233,245,251,.5);
-  text-shadow: 0 1px 2px rgba(40,55,78,.55);
+  box-shadow: 0 12px 24px rgba(122,12,44,.12), inset 0 2px 2px #fff,
+    inset 0 -3px 5px rgba(165,185,228,.25);
+  text-shadow: none;
 }
 body.datrio-interior .back:hover { transform: translateY(-2px); border-color: #fff; }
 
@@ -72,43 +73,43 @@ body.datrio-interior .skills,
 body.datrio-interior .continue {
   color: var(--interior-text);
   background: var(--interior-glass);
-  border: 1px solid rgba(255,255,255,.30);
+  border: 1px solid rgba(255,255,255,.9);
   border-radius: 18px;
-  box-shadow: 0 13px 25px rgba(28,42,51,.13), inset 0 1px 0 rgba(255,255,255,.5);
+  box-shadow: 0 13px 28px rgba(122,12,44,.08), inset 0 1px 0 #fff;
   -webkit-backdrop-filter: blur(12px) saturate(1.25);
   backdrop-filter: blur(12px) saturate(1.25);
 }
 body.datrio-interior .card:hover,
 body.datrio-interior .contact-card:hover {
-  border-color: rgba(255,255,255,.66);
-  box-shadow: 0 17px 29px rgba(28,42,51,.19), inset 0 1px 0 rgba(255,255,255,.65);
+  border-color: #fff;
+  box-shadow: 0 17px 32px rgba(122,12,44,.14), inset 0 1px 0 #fff;
 }
 body.datrio-interior .card small,
 body.datrio-interior .card a,
 body.datrio-interior .contact-card span,
 body.datrio-interior .continue a,
 body.datrio-interior .origin,
-body.datrio-interior .arrow { color: #d1e4ff; }
+body.datrio-interior .arrow { color: var(--interior-blue); }
 body.datrio-interior .chips span,
 body.datrio-interior .skill-groups span {
-  color: #f8fbff;
-  background: rgba(255,255,255,.1);
-  border: 1px solid rgba(255,255,255,.27);
+  color: var(--interior-text);
+  background: rgba(255,255,255,.6);
+  border: 1px solid rgba(255,255,255,.95);
 }
 body.datrio-interior .empty { border-style: dashed; }
-body.datrio-interior .empty .symbol { color: #ffbe8d; }
-body.datrio-interior .skills b { color: #fff; }
+body.datrio-interior .empty .symbol { color: #d9a43d; }
+body.datrio-interior .skills b { color: var(--interior-text); }
 body.datrio-interior .skills h2,
-body.datrio-interior .continue strong { color: #fff; }
+body.datrio-interior .continue strong { color: var(--interior-text); }
 body.datrio-interior a:focus-visible,
-body.datrio-interior button:focus-visible { outline: 3px solid #d5e9ff; outline-offset: 4px; }
+body.datrio-interior button:focus-visible { outline: 3px solid #a5b9e4; outline-offset: 4px; }
 
 /* Preserve the teaching chalkboard and the illustrated objects as focal points. */
 body.datrio-interior .chalkboard h3 { color: #f9f7e9; }
 body.datrio-interior .board-content p { color: #e3ece5; }
 body.datrio-interior .frame { color: #263149; }
-body.datrio-interior .placeholder { background: rgba(255,255,255,.06); }
-body.datrio-interior .number { color: rgba(247,251,255,.68); }
+body.datrio-interior .placeholder { background: rgba(255,255,255,.5); }
+body.datrio-interior .number { color: var(--interior-soft); }
 
 @media (max-width: 700px) {
   html, body.datrio-interior { max-width: 100%; overflow-x: clip; }

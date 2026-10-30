@@ -30,7 +30,7 @@ function frame(now){
  const w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;
  const p=dog.getWorldPosition(new T.Vector3()),yaw=player.rotation.y;
  const offset=view==='side'?new T.Vector3(Math.cos(yaw)*6,1.6,-Math.sin(yaw)*6):new T.Vector3(Math.sin(.72)*Math.cos(.64),Math.sin(.64),Math.cos(.72)*Math.cos(.64)).multiplyScalar(8);
- camera.position.copy(p).add(offset);camera.lookAt(p.x,p.y+.75,p.z);camera.near=view==="side"?4.4:.1;camera.updateProjectionMatrix();
+ if(view==="wide"){camera.position.set(+(q.get("cx")||7),+(q.get("cy")||9),+(q.get("cz")||10));camera.lookAt(+(q.get("lx")||-1.5),+(q.get("ly")||.8),+(q.get("lz")||-1.8));}else{camera.position.copy(p).add(offset);camera.lookAt(p.x,p.y+.75,p.z);}camera.near=view==="side"?4.4:.1;camera.updateProjectionMatrix();
  renderer.render(scene,camera);
  document.querySelector('output').textContent=`${name} · ${time.toFixed(1)} s · ${view}`;
  requestAnimationFrame(frame);

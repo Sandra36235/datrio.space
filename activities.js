@@ -21,7 +21,7 @@ function part(parent,geo,material,x=0,y=0,z=0){const m=new T.Mesh(geo,material);
 function line(parent,points,r,material){return part(parent,new T.TubeGeometry(new T.CatmullRomCurve3(points.map(p=>new T.Vector3(...p))),18,r,6,false),material);}
 function stool(room){
  const g=new T.Group();g.name='puyol-coffee-stool';g.position.set(activities.coffee.destination.x,0,activities.coffee.destination.z);g.rotation.y=Math.PI/2;g.visible=false;room.add(g);
- const oak=mat('#b68558'),brass=mat('#bb965b',.55),cloth=new T.MeshPhysicalMaterial({color:'#69a3a0',roughness:.86,sheen:.55,sheenColor:'#d6f5ed'});
+ const oak=mat('#b68558'),brass=mat('#bb965b',.55),cloth=new T.MeshPhysicalMaterial({color:'#8fa6da',roughness:.86,sheen:.55,sheenColor:'#e3e9fa'});
  for(const x of [-.3,.3])for(const z of [-.48,.48]){
   const leg=part(g,new T.CylinderGeometry(.04,.055,.37,12),oak,x,.2,z);leg.rotation.z=x*.12;
   part(g,new T.CylinderGeometry(.055,.055,.018,12),brass,x,.018,z);

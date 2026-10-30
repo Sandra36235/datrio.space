@@ -1,0 +1,73 @@
+/* Warm theme that matches the salon: cream paper, butter and periwinkle light,
+   plum ink and burgundy accents. Loaded last so it overrides the grey glass look. */
+:root{--ink:#3b2430;--ink-soft:#7a6670;--wine:#7a0c2c;--butter:#f3dc93;--peri:#a5b9e4;--cream:#fbf6ec}
+
+html body{
+ color:var(--ink);
+ background:
+  radial-gradient(ellipse at 78% 8%, rgba(243,220,147,.55), transparent 42%),
+  radial-gradient(ellipse at 8% 88%, rgba(165,185,228,.45), transparent 46%),
+  radial-gradient(ellipse at 40% 55%, rgba(232,185,181,.18), transparent 50%),
+  linear-gradient(165deg,#fcf8f0 0%,#f6efe2 55%,#f1e8d8 100%);
+ background-attachment:scroll;
+}
+
+/* Header and hero */
+html body .topbar{border-bottom-color:rgba(90,36,49,.12)}
+html body .topbar .logo,html body .topbar .logo .logo-word,html body .topbar .logo span{color:var(--ink)}
+html body .story h1.hero-title{margin:0;color:var(--ink);text-shadow:none;font-family:'Fraunces',Georgia,'Times New Roman',serif;font-weight:600;font-optical-sizing:auto;letter-spacing:-.02em;line-height:.98}
+html body .story h1.hero-title span{display:block}
+html body .story h1.hero-title em{font-style:italic;font-weight:500;color:var(--wine)}
+@media(min-width:901px){html body .experience{grid-template-columns:300px 1fr}html body .story h1.hero-title{font-size:clamp(50px,4.4vw,70px)}html body .story{padding-top:64px}}
+@media(max-width:900px){html body .story h1.hero-title{font-size:clamp(42px,12vw,66px);margin:8px 0 0}}
+
+/* Glass controls become light, warm and readable on cream */
+html body .topbar nav,
+html body .view-controls,
+html body .worldbar{background:rgba(255,255,255,.42);border-color:rgba(255,255,255,.85);box-shadow:0 14px 30px rgba(122,12,44,.08),inset 0 1px 0 rgba(255,255,255,.9)}
+html body .topbar nav button{color:var(--ink);text-shadow:none}
+html body .topbar nav button.selected,
+html body .topbar nav button:not(.selected):hover{color:var(--ink);text-shadow:none;background:linear-gradient(160deg,#fffaf0 0%,#f6e3a6 100%);border-color:#fff;box-shadow:0 10px 22px rgba(122,12,44,.12),inset 0 2px 2px #fff,inset 0 -3px 5px rgba(214,170,70,.25)}
+html body .about-link,
+html body .cta,
+html body .walk-hud button,
+html body .detail-action,
+html body .project-link,
+html body #close-dialog{color:var(--ink);text-shadow:none;border-color:#fff;background:linear-gradient(180deg,rgba(255,255,255,.82) 0%,rgba(250,240,225,.72) 100%);box-shadow:0 12px 24px rgba(122,12,44,.12),0 3px 8px rgba(122,12,44,.08),inset 0 2px 2px #fff,inset 0 -3px 5px rgba(165,185,228,.25)}
+html body .about-link:hover,
+html body .cta:hover,
+html body .walk-hud button:hover,
+html body .detail-action:hover,
+html body .project-link:hover{box-shadow:0 16px 28px rgba(122,12,44,.16),0 4px 10px rgba(122,12,44,.1),inset 0 2px 2px #fff}
+html body .about-link span,html body .topbar nav button span,html body .cta span{color:var(--wine)}
+html body .walk-hud button[aria-pressed="true"]{border-color:var(--wine);box-shadow:inset 0 1px 2px #fff,0 0 0 2px rgba(122,12,44,.18)}
+html body .view-controls button,
+html body .pin{color:var(--wine);text-shadow:none;border-color:#fff;background:rgba(255,255,255,.72);box-shadow:0 6px 14px rgba(122,12,44,.14),inset 0 1px 0 #fff}
+
+/* Room caption, hints and walking status */
+html body .stage-caption{color:var(--ink);text-shadow:none}
+html body .stage-caption i{background:var(--wine)}
+html body .hint{color:var(--ink-soft)}
+html body .walk-status,html body .walk-hud .walk-status{color:var(--ink);text-shadow:none}
+
+/* World cards and shortcuts below the room */
+html body .world-card,html body .world-card.selected{color:var(--ink);background:rgba(255,255,255,.5);border-color:rgba(255,255,255,.9)}
+html body .world-card.selected{background:linear-gradient(155deg,rgba(255,255,255,.75),rgba(243,220,147,.45))}
+html body .world-card.selected::before{background:linear-gradient(90deg,transparent,var(--wine),transparent)}
+html body .world-card b{color:var(--ink)}
+html body .world-number,html body .world-card small,html body .worldbar-heading,html body .worldbar-heading b,
+html body .object-shortcuts,html body .object-shortcuts > span,html body footer{color:var(--ink-soft)}
+html body .object-shortcuts button{color:var(--ink)}
+html body .object-shortcuts button:hover{color:var(--wine)}
+html body .world-symbol.blue{color:#5a74b8}
+html body footer{border-top-color:rgba(90,36,49,.14)}
+
+/* Discreet object pins: smaller and softer until you point at them */
+html body .pin{width:28px;height:28px;font-size:15px;opacity:.72;transition:opacity .2s,transform .2s}
+html body .pin:hover,html body .pin:focus-visible{opacity:1;transform:scale(1.12)}
+
+/* Phones: zoom controls move to the empty top-right corner of the room view */
+@media(max-width:900px){
+ html body .view-controls{top:10px;right:8px;bottom:auto;flex-direction:column;padding:4px;gap:4px}
+ html body .view-controls button{width:36px;height:36px;font-size:17px}
+}

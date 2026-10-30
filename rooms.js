@@ -1,9 +1,11 @@
 import * as T from './vendor/three.module.js';
-import {createPoodle3D} from './poodle3d.js?v=floor-1';
-import {botanical,pillow,addRoomLife} from './room-life.js?v=floor-1';
+import {createPoodle3D} from './poodle3d.js?v=pastel-9';
+import {botanical,pillow,addRoomLife} from './room-life.js?v=pastel-9';
+import {coffeeBar,teachingCorner,musicCorner} from './salon-corners.js?v=pastel-9';
+import {mergeStatic,contactShadows,coffeeExtras,libraryCollectibles,gamerSetup,fluffySofa,fluffyChair,pumpkinPouf,puyolBed,fiddleLeaf,birdOfParadise,succulentBowl,libraryScallops,bubblePedestal,mushroomTable,wavyMirror} from './salon-extras.js?v=pastel-9';
 const materialCache=new Map();
 export function mat(color){if(!materialCache.has(color))materialCache.set(color,new T.MeshStandardMaterial({color,roughness:.78}));return materialCache.get(color)}
-const C={white:'#fffaf1',blue:'#1c5ccc',sky:'#7bc0eb',yellow:'#f6bf25',orange:'#f18a29',oak:'#c49663',oakLight:'#ddb58b',dark:'#29323e',cream:'#ece4d8',leaf:'#4b7643',gold:'#bd8c40'};
+const C={white:'#fffaf1',blue:'#7891cc',sky:'#a5b9e4',yellow:'#f0d37a',orange:'#8e3b4a',oak:'#c49663',oakLight:'#ddb58b',dark:'#2f2a33',cream:'#ece4d8',leaf:'#4b7643',gold:'#bd8c40'};
 function place(geo,m,g,x=0,y=0,z=0){const a=new T.Mesh(geo,typeof m==='string'?mat(m):m);a.position.set(x,y,z);a.castShadow=true;a.receiveShadow=true;g.add(a);return a}
 export function box(g,w,h,d,m,x=0,y=0,z=0,r=0){if(!r)return place(new T.BoxGeometry(w,h,d),m,g,x,y,z);r=Math.min(r,w/3,h/3,d/3);const s=new T.Shape(),a=-w/2+r,b=-h/2+r,W=w-2*r,H=h-2*r;s.moveTo(a,b-r);s.lineTo(a+W,b-r);s.quadraticCurveTo(a+W+r,b-r,a+W+r,b);s.lineTo(a+W+r,b+H);s.quadraticCurveTo(a+W+r,b+H+r,a+W,b+H+r);s.lineTo(a,b+H+r);s.quadraticCurveTo(a-r,b+H+r,a-r,b+H);s.lineTo(a-r,b);s.quadraticCurveTo(a-r,b-r,a,b-r);const geo=new T.ExtrudeGeometry(s,{depth:d-2*r,bevelEnabled:true,bevelSize:r,bevelThickness:r,bevelSegments:2,steps:1,curveSegments:3});geo.translate(0,0,-(d-2*r)/2);return place(geo,m,g,x,y,z)}
 export const sphere=(g,r,m,x,y,z,sx=1,sy=1,sz=1)=>{const a=place(new T.SphereGeometry(r,24,16),m,g,x,y,z);a.scale.set(sx,sy,sz);return a};
@@ -11,9 +13,12 @@ function cyl(g,rt,rb,h,m,x,y,z,n=20){return place(new T.CylinderGeometry(rt,rb,h
 function group(g,x=0,y=0,z=0,rotation=0){const a=new T.Group();a.position.set(x,y,z);a.rotation.y=rotation;g.add(a);return a}
 function texture(draw,w=512,h=512){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);const t=new T.CanvasTexture(c);t.colorSpace=T.SRGBColorSpace;return t}
 function imagePlane(g,w,h,t,x,y,z,rot=0){const a=place(new T.PlaneGeometry(w,h),new T.MeshBasicMaterial({map:t,side:T.DoubleSide}),g,x,y,z);a.rotation.y=rot;return a}
-function parquet(){return texture((ctx,w,h)=>{ctx.fillStyle='#6f4a2c';ctx.fillRect(0,0,w,h);for(let j=-8;j<16;j++)for(let i=-8;i<16;i++){ctx.save();ctx.translate(i*64+j*32,j*32-i*64);ctx.rotate(Math.PI/4);ctx.fillStyle=['#9b6b43','#a3724a','#946640','#a8774c','#9e6e45'][((i+j)%5+5)%5];ctx.fillRect(0,0,127,31);ctx.strokeStyle='#6a4529';ctx.lineWidth=.8;ctx.strokeRect(0,0,127,31);ctx.strokeStyle='#4f321c2a';for(let q=5;q<28;q+=7){ctx.beginPath();ctx.moveTo(4,q);ctx.lineTo(122,q+1);ctx.stroke()}ctx.restore()}})}
-const woodTex=parquet();woodTex.wrapS=woodTex.wrapT=T.RepeatWrapping;woodTex.repeat.set(5,4);
-function shell(w=10.5,d=8.5){const g=new T.Group();box(g,w,.26,d,C.cream,0,-.2,0,.08);box(g,w-.2,.04,d-.2,new T.MeshStandardMaterial({map:woodTex,roughness:.85}),0,.005,0);box(g,w,4.1,.18,C.white,0,2.02,-d/2+.1);box(g,.18,4.1,d,C.white,-w/2+.1,2.02,0);box(g,w+.1,.17,.24,C.sky,0,4.06,-d/2+.12);box(g,.24,.17,d,C.sky,-w/2+.12,4.06,0);box(g,w-.3,.09,.06,'#e7decd',0,.08,-d/2+.23);box(g,.06,.09,d-.4,'#e7decd',-w/2+.23,.08,0);return g}
+// Natural oak herringbone: each plank has its own honey tone and soft grain.
+function parquet(){return texture((ctx,w,h)=>{ctx.fillStyle='#b08a5e';ctx.fillRect(0,0,w,h);const W=32,L=128,P=256,tones=['#c6a072','#c29c6e','#caa577','#bf996b','#c49e70','#cba679'];let n=0;
+ const plank=(x,y,pw,ph)=>{for(const ox of [-P,0,P,2*P])for(const oy of [-P,0,P,2*P]){const X=x+ox,Y=y+oy;if(X>w||Y>h||X+pw<0||Y+ph<0)continue;ctx.fillStyle=tones[n%tones.length];ctx.fillRect(X,Y,pw,ph);ctx.strokeStyle='#6b4a2c12';ctx.lineWidth=1;const along=pw>ph;for(let q=0;q<5;q++){const o=4+q*5.5+((n*7+q*3)%4);ctx.beginPath();if(along){ctx.moveTo(X+2,Y+o*ph/32);ctx.bezierCurveTo(X+pw*.35,Y+o*ph/32+2,X+pw*.65,Y+o*ph/32-2,X+pw-2,Y+o*ph/32+1)}else{ctx.moveTo(X+o*pw/32,Y+2);ctx.bezierCurveTo(X+o*pw/32+2,Y+ph*.35,X+o*pw/32-2,Y+ph*.65,X+o*pw/32+1,Y+ph-2)}ctx.stroke()}ctx.strokeStyle='#a17d55';ctx.lineWidth=1;ctx.strokeRect(X+.5,Y+.5,pw-1,ph-1)}n++};
+ for(let k=0;k<P/W;k++){plank(k*W,k*W,L,W);plank(k*W,(k+1)*W,W,L)}})}
+const woodTex=parquet();woodTex.wrapS=woodTex.wrapT=T.RepeatWrapping;woodTex.repeat.set(6,4.75);
+function shell(w=10.5,d=8.5){const g=new T.Group();box(g,w,.26,d,C.cream,0,-.2,0,.08);box(g,w-.2,.04,d-.2,new T.MeshStandardMaterial({map:woodTex,roughness:.85}),0,.005,0);box(g,w,4.1,.18,C.white,0,2.02,-d/2+.1);box(g,.18,4.1,d,C.white,-w/2+.1,2.02,0);box(g,w+.1,.17,.24,'#eadfca',0,4.06,-d/2+.12);box(g,.24,.17,d,'#eadfca',-w/2+.12,4.06,0);box(g,w-.3,.09,.06,'#e7decd',0,.08,-d/2+.23);box(g,.06,.09,d-.4,'#e7decd',-w/2+.23,.08,0);return g}
 function windowPanel(g,x,z,width=2.5){const win=group(g,x,0,z,Math.PI/2);const sky=texture((ctx,w,h)=>{const gr=ctx.createLinearGradient(0,0,0,h);gr.addColorStop(0,'#d1eaf4');gr.addColorStop(.65,'#f4f1d5');gr.addColorStop(1,'#9bbc8a');ctx.fillStyle=gr;ctx.fillRect(0,0,w,h);for(let i=0;i<30;i++){ctx.fillStyle=i%2?'#98b78055':'#d7dfac66';ctx.beginPath();ctx.arc((i*93)%w,h*.62+(i*41)%150,30,0,7);ctx.fill()}});box(win,width+.14,2.85,.08,C.oakLight,0,2.1,0);imagePlane(win,width,2.7,sky,0,2.1,.06);box(win,.055,2.8,.06,C.white,0,2.1,.11);box(win,width,.055,.06,C.white,0,2.1,.11);for(let side of [-1,1])for(let i=0;i<5;i++)box(win,.1,2.95,.08,'#f7f3ed',side*(width/2+.12)+i*.055,2.1,.12,.02)}
 function plant(g,x,y,z,s=1){return botanical(g,x,y,z,s)}
 function mug(g,x,y,z,color=C.white,matcha=false){cyl(g,.1,.085,.19,color,x,y+.095,z);cyl(g,.082,.082,.007,matcha?'#76a23c':'#473222',x,y+.194,z);const handle=place(new T.TorusGeometry(.055,.016,6,12),color,g,x+.115,y+.11,z);return handle}
@@ -22,10 +27,10 @@ function coffeeMethods(g){
  const steel=new T.MeshStandardMaterial({color:'#b7a689',metalness:.7,roughness:.25});
  const curve=(points,r,m)=>place(new T.TubeGeometry(new T.CatmullRomCurve3(points.map(p=>new T.Vector3(...p))),24,r,8,false),m,g);
  // Two pour-over brewers: a glass V60 on a carafe and a fluted ceramic Origami.
- for(const [z,color,flutes] of [[-2.52,'#e9e4db',false],[-1.96,'#e58557',true]]){
+ for(const [z,color,flutes] of [[-2.52,'#e9e4db',false],[-1.96,'#e8b9b5',true]]){
   const x=-6.47;cyl(g,.115,.14,.18,glass,x,1.29,z,24);cyl(g,.13,.13,.025,steel,x,1.4,z,24);
   cyl(g,.065,.155,.23,color,x,1.53,z,flutes?16:32);cyl(g,.135,.135,.018,'#f9e8cf',x,1.655,z,flutes?16:32);
-  if(flutes)for(let i=0;i<16;i++){const a=i*Math.PI/8;curve([[x+Math.cos(a)*.085,1.46,z+Math.sin(a)*.085],[x+Math.cos(a)*.14,1.64,z+Math.sin(a)*.14]],.004,'#f8b48d')}
+  if(flutes)for(let i=0;i<16;i++){const a=i*Math.PI/8;curve([[x+Math.cos(a)*.085,1.46,z+Math.sin(a)*.085],[x+Math.cos(a)*.14,1.64,z+Math.sin(a)*.14]],.004,'#f3d0cc')}
  }
  // Japanese siphon: paired glass bulbs, a vertical stand and tiny burner.
  const sx=-6.84,sz=-3.02;
@@ -41,31 +46,25 @@ function coffeeMethods(g){
 function book(g,x,y,z,h=.48,color=C.blue,width=.1){box(g,width,h,.35,color,x,y+h/2,z,.012);box(g,width*.8,.018,.012,'#efdfc4',x,y+h*.75,z+.182);box(g,width*.8,.012,.012,'#efdfc4',x,y+h*.68,z+.182)}
 function shelves(g,x,z,w=2.2){
  // A cabinet carcass with a recessed back: the shelves and books occupy real space.
- box(g,w-.1,3.55,.055,'#a77c50',x,1.86,z-.31);
- for(const side of [-1,1])box(g,.1,3.65,.7,C.oak,x+side*(w/2-.05),1.85,z,.018);
- box(g,w,.1,.72,C.oakLight,x,3.72,z,.018);
- box(g,w,.1,.72,C.oakLight,x,.075,z,.018);
+ box(g,w-.1,3.55,.055,'#4c1d28',x,1.86,z-.31);
+ for(const side of [-1,1])box(g,.1,3.65,.7,'#5c2532',x+side*(w/2-.05),1.85,z,.018);
+ box(g,w,.1,.72,'#6b2e3b',x,3.72,z,.018);
+ box(g,w,.1,.72,'#6b2e3b',x,.075,z,.018);
  for(let j=0;j<5;j++){
   const y=.35+j*.68;
-  box(g,w-.12,.075,.66,C.oakLight,x,y,z,.014);
-  box(g,w-.13,.018,.035,'#8e6745',x,y-.04,z+.27);
+  box(g,w-.12,.075,.66,'#6b2e3b',x,y,z,.014);
+  box(g,w-.13,.018,.035,'#4c1d28',x,y-.04,z+.27);
   for(let k=0;k<6;k++){
    if(j===1&&k>2)continue;
-   book(g,x-w/2+.2+k*.17,y+.04,z+.07,.36+((k+j)%3)*.09,[C.blue,C.white,C.orange,C.yellow,'#697767'][((k+j)%5)],.12);
+   book(g,x-w/2+.2+k*.17,y+.04,z+.07,.36+((k+j)%3)*.09,[C.blue,'#f4ead6',C.yellow,'#e8b9b5',C.sky][((k+j)%5)],.12);
   }
  }
- plant(g,x+.62,2.43,z+.1,.7);
+ succulentBowl(g,x+.62,2.43,z+.1,.9);
 }
 function framed(g,x,y,z,w,h,map){box(g,w+.1,h+.1,.07,C.white,x,y,z,.02);imagePlane(g,w,h,map,x,y,z+.045)}
 function petPortrait(i){return texture((ctx,w,h)=>{const bg=['#223349','#263859','#4d798c','#edaaa6','#bcd5dd'][i%5];ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);if(i===2){ctx.strokeStyle='#e4c56e';ctx.lineWidth=12;for(let j=0;j<20;j++){ctx.beginPath();ctx.arc((j*89)%w,(j*71)%h,20+j%4*5,0,5);ctx.stroke()}}ctx.fillStyle=i===3?'#181b24':'#b98255';ctx.beginPath();ctx.ellipse(w*.5,h*.78,w*.3,h*.39,0,0,7);ctx.fill();ctx.fillStyle=i===1?'#d4b486':i===3?'#141720':'#d5a46c';ctx.beginPath();ctx.ellipse(w*.5,h*.45,w*.25,h*.26,0,0,7);ctx.fill();if(i%2===0){for(const s of [-1,1]){ctx.beginPath();ctx.moveTo(w*(.5+s*.25),h*.4);ctx.lineTo(w*(.5+s*.2),h*.13);ctx.lineTo(w*(.5+s*.05),h*.32);ctx.fill()}}else{for(const s of [-1,1]){ctx.beginPath();ctx.ellipse(w*(.5+s*.25),h*.48,w*.12,h*.25,s*.2,0,7);ctx.fill()}}ctx.fillStyle='#e5dab3';for(const s of [-1,1]){ctx.beginPath();ctx.ellipse(w*(.5+s*.1),h*.45,w*.045,h*.045,0,0,7);ctx.fill()}ctx.fillStyle='#24221e';for(const s of [-1,1]){ctx.beginPath();ctx.arc(w*(.5+s*.1),h*.45,w*.017,0,7);ctx.fill()}ctx.beginPath();ctx.ellipse(w*.5,h*.57,w*.055,h*.035,0,0,7);ctx.fill();if(i===0){ctx.fillStyle='#3977aa';ctx.beginPath();ctx.ellipse(w*.5,h*.23,w*.27,h*.12,-.2,0,7);ctx.fill();ctx.fillStyle='#ece1b9';ctx.beginPath();ctx.arc(w*.75,h*.65,12,0,7);ctx.fill()}if(i===2){ctx.fillStyle='#e1b451';ctx.beginPath();ctx.ellipse(w*.5,h*.2,w*.37,h*.09,.2,0,7);ctx.fill()}})}
-function coffee(g){const x=-4.47;box(g,1.03,1.1,4.35,C.oak,x,.55,-1.05,.02);box(g,1.15,.09,4.5,C.white,x,1.15,-1.05,.025);for(let z=-2.75;z<.85;z+=.78){box(g,.02,.78,.012,'#a77a49',x+.525,.55,z);box(g,.03,.04,.21,C.gold,x+.545,.9,z+.3)}cyl(g,.13,.18,.42,'#26323a',x,1.4,-2.5);box(g,.28,.12,.28,C.oak,x,1.19,-2.5);cyl(g,.16,.12,.3,'#63717a',x,1.37,-1.9);cyl(g,.09,.19,.18,C.white,x,1.6,-1.9);cyl(g,.13,.13,.3,'#463d32',x,1.34,-1.24);box(g,.22,.035,.22,C.dark,x,1.51,-1.24);cyl(g,.012,.012,.18,C.dark,x,1.6,-1.24);mug(g,x+.14,1.2,-.7);box(g,.75,.04,.55,C.oakLight,x,1.22,-.08,.04);cyl(g,.16,.1,.15,'#799b65',x-.1,1.31,-.07);cyl(g,.13,.13,.01,'#5d8c35',x-.1,1.39,-.07);cyl(g,.045,.035,.19,C.oakLight,x+.21,1.34,-.07);for(let j=0;j<8;j++){let a=j*.8;cyl(g,.004,.004,.13,'#bb945f',x+.21+Math.cos(a)*.025,1.44,-.07+Math.sin(a)*.025,4)}}
-function sofa(g){const s=group(g,1.65,0,-.75);box(s,4.5,.38,1.6,C.blue,0,.52,0,.15);box(s,4.45,.93,.34,C.blue,0,1.14,-.65,.13);for(let x of [-2.05,2.05])box(s,.38,.75,1.6,C.blue,x,.93,0,.14);for(let i=0;i<3;i++)box(s,1.24,.24,1.2,'#216ad5',-1.3+i*1.3,.82,.08,.1);
- // Rounded pillows rest on the seat cushions, clear of the arms and backrest.
- for(const [x,color,angle] of [[-1.35,'#f4eee1',-.09],[0,'#acd7d2',.02],[1.35,'#dc9356',.09]]){
-  pillow(s,x,1.27,-.14,color,angle);
- }
- for(let x of [-1.7,1.7])for(let z of [-.5,.5])cyl(s,.055,.04,.3,C.oak,x,.2,z)}
-function chair(g,x,z){const s=group(g,x,0,z,-.2);cyl(s,.67,.58,.25,C.yellow,0,.55,0);box(s,1.25,.75,.22,C.yellow,0,1.01,-.46,.12);for(let sign of [-1,1])box(s,.2,.45,1,C.yellow,sign*.58,.81,0,.06);
+function sofa(g){const s=group(g,1.65,0,-.75);fluffySofa(s)}
+function chair(g,x,z){const s=group(g,x,0,z,-.2);cyl(s,.67,.58,.25,'#f0d37a',0,.55,0);box(s,1.25,.75,.22,'#f0d37a',0,1.01,-.46,.12);for(let sign of [-1,1])box(s,.2,.45,1,'#f0d37a',sign*.58,.81,0,.06);
  // Solid tapered oak legs connect visibly to the underside of the seat.
  for(const xx of [-.42,.42])for(const zz of [-.34,.34]){
   const leg=cyl(s,.072,.055,.4,C.oak,xx,.23,zz,12);leg.rotation.z=xx<0?.08:-.08;
@@ -96,40 +95,27 @@ function chess(g,x,z){
  const glass=new T.MeshPhysicalMaterial({color:'#d9edf0',transparent:true,opacity:.52,roughness:.09,metalness:.04,depthWrite:false});
  cyl(g,1.07,1.07,.08,glass,x,.63,z,48);
  const rim=place(new T.TorusGeometry(1.035,.018,8,64),'#b8a88b',g,x,.67,z);rim.rotation.x=Math.PI/2;
- cyl(g,.085,.085,.56,'#b8a88b',x,.31,z,16);cyl(g,.37,.37,.045,'#b8a88b',x,.06,z,32);
+ bubblePedestal(g,x,z);
  box(g,1.42,.045,1.42,'#866d54',x,.7,z);
  for(let i=0;i<8;i++)for(let j=0;j<8;j++){
   const px=x-.56+i*.16,pz=z-.56+j*.16;
   box(g,.16,.008,.16,(i+j)%2?'#8b6c55':'#e9dcc4',px,.727,pz);
-  if(j<2||j>5){const type=(j===1||j===6)?'pawn':['rook','knight','bishop','queen','king','bishop','knight','rook'][i];const piece=group(g,px,.75,pz);piece.name=i===3&&j===6?'interactive-chess-pawn':'lewis-piece';piece.scale.setScalar(1.37);lewisPiece(piece,0,0,0,type,j<2?'#a96750':'#f1e2bf')}
+  if(j<2||j>5){const type=(j===1||j===6)?'pawn':['rook','knight','bishop','queen','king','bishop','knight','rook'][i];const piece=group(g,px,.75,pz);piece.name=i===3&&j===6?'interactive-chess-pawn':'lewis-piece';piece.scale.setScalar(1.37);lewisPiece(piece,0,0,0,type,j<2?'#7a3544':'#f1e2bf')}
  }
 }
 function techCorner(g){
- const pink='#f4a8c8',light='#ffe1ed',deep='#b8568a',glow=new T.MeshBasicMaterial({color:'#ff8fc6'});
- const screen=texture((ctx,w,h)=>{ctx.fillStyle='#1c1937';ctx.fillRect(0,0,w,h);const gradient=ctx.createLinearGradient(0,0,w,h);gradient.addColorStop(0,'#ef72b2');gradient.addColorStop(1,'#7d6dee');ctx.fillStyle=gradient;ctx.beginPath();ctx.arc(w*.68,h*.45,h*.32,0,7);ctx.fill();ctx.fillStyle='#fff0fa';ctx.font='bold 38px sans-serif';ctx.fillText('CREATE  /  PLAY',34,70);ctx.fillStyle='#ffcce5';for(let i=0;i<5;i++)ctx.fillRect(34,125+i*50,145+i*36,12)});
+ const pink='#a5b9e4',light='#3a3352',deep='#2f2a33',glow=new T.MeshBasicMaterial({color:'#b79cf0'});glow.name='rgb-glow';
+ const screen=texture((ctx,w,h)=>{ctx.fillStyle='#2a2440';ctx.fillRect(0,0,w,h);const gradient=ctx.createLinearGradient(0,0,w,h);gradient.addColorStop(0,'#f0d37a');gradient.addColorStop(1,'#7891cc');ctx.fillStyle=gradient;ctx.beginPath();ctx.arc(w*.68,h*.45,h*.32,0,7);ctx.fill();ctx.fillStyle='#fff0fa';ctx.font='bold 38px sans-serif';ctx.fillText('CREATE  /  PLAY',34,70);ctx.fillStyle='#c9d4f0';for(let i=0;i<5;i++)ctx.fillRect(34,125+i*50,145+i*36,12)});
  // Compact desk stays against the back wall, beside the library.
  box(g,2.35,.12,.95,light,-2.65,1.13,-4.65,.055);
  for(const x of [-3.68,-1.62])for(const z of [-4.95,-4.34])box(g,.07,1.05,.07,deep,x,.55,z,.02);
- box(g,1.26,.85,.09,'#f9d5e7',-2.85,2.0,-4.82,.06);imagePlane(g,1.13,.71,screen,-2.85,2.0,-4.76);
- box(g,.08,.29,.08,pink,-2.85,1.42,-4.82);box(g,.48,.045,.28,pink,-2.85,1.29,-4.73,.02);
- box(g,.72,.1,.32,C.white,-2.83,1.23,-4.24,.025);for(let i=0;i<8;i++)box(g,.055,.008,.05,i%3?pink:'#c69bf0',-3.11+i*.075,1.29,-4.25,.01);
- const tower=box(g,.39,.72,.45,'#fcf4f9',-1.65,1.58,-4.75,.05);tower.name='gamer-pc';box(g,.31,.55,.018,'#3b274c',-1.65,1.59,-4.51,.015);
+ const tower=box(g,.39,.72,.45,'#f6eedc',-1.65,1.58,-4.75,.05);tower.name='gamer-pc';box(g,.31,.55,.018,'#2a2440',-1.65,1.59,-4.51,.015);
  for(let i=0;i<3;i++){const fan=place(new T.TorusGeometry(.073,.018,8,24),glow,g,-1.65,1.38+i*.19,-4.49);fan.rotation.x=Math.PI/2}
- box(g,2.2,.025,.04,glow,-2.65,1.02,-4.17);
- const chair=group(g,-2.78,0,-3.63);box(chair,.65,.16,.58,pink,0,.64,0,.07);box(chair,.68,.84,.16,pink,0,1.2,-.25,.07);box(chair,.52,.57,.05,'#fce5f0',0,1.23,-.15,.04);cyl(chair,.055,.055,.48,deep,0,.32,0);cyl(chair,.31,.31,.04,deep,0,.07,0);
  // Three framed titles are intentionally generic until Sandra provides exact credentials.
- const paper=texture((ctx,w,h)=>{ctx.fillStyle='#fffaf4';ctx.fillRect(0,0,w,h);ctx.strokeStyle='#d0a88f';ctx.lineWidth=8;ctx.strokeRect(15,15,w-30,h-30);ctx.fillStyle='#ac80a2';ctx.fillRect(90,94,w-180,13);for(let j=0;j<3;j++)ctx.fillRect(65,155+j*32,w-130,5);ctx.fillStyle='#d6a44e';ctx.beginPath();ctx.arc(w/2,h-75,22,0,7);ctx.fill()});
+ const paper=texture((ctx,w,h)=>{ctx.fillStyle='#fffaf4';ctx.fillRect(0,0,w,h);ctx.strokeStyle='#d0a88f';ctx.lineWidth=8;ctx.strokeRect(15,15,w-30,h-30);ctx.fillStyle='#7891cc';ctx.fillRect(90,94,w-180,13);for(let j=0;j<3;j++)ctx.fillRect(65,155+j*32,w-130,5);ctx.fillStyle='#d6a44e';ctx.beginPath();ctx.arc(w/2,h-75,22,0,7);ctx.fill()});
  for(const [i,x] of [-3.43,-2.62,-1.81].entries()){box(g,.68,.86,.06,i===1?deep:'#b88e68',x,3.12,-5.53,.02);imagePlane(g,.59,.76,paper,x,3.12,-5.48)}
 }
 function music(g){
- box(g,3.7,1,.75,C.oak,2.5,.5,-3.52,.025);
- for(let x=1;x<4;x+=.14)box(g,.03,.8,.04,'#b48754',x,.5,-3.12);
- for(let i=0;i<9;i++)box(g,.045,.56,.58,[C.dark,C.blue,C.orange,C.white][i%4],1.3+i*.09,.39,-3.1);
- box(g,1,.08,.58,C.dark,2.5,1.08,-3.48);cyl(g,.21,.21,.02,'#171e24',2.5,1.14,-3.45,32);cyl(g,.045,.045,.025,C.orange,2.5,1.16,-3.45);
- for(let x of [1.2,3.8]){box(g,.4,.5,.35,'#795834',x,1.3,-3.48,.02);sphere(g,.12,C.dark,x,1.25,-3.29,1,1,.15);sphere(g,.05,C.dark,x,1.44,-3.29,1,1,.15)}
- // Small fabric-covered smart speaker, supported by the console top.
- sphere(g,.15,'#d9d5ca',3.18,1.16,-3.48,1,1,.96);
- const ring=place(new T.TorusGeometry(.112,.009,6,32),'#70a9dd',g,3.18,1.045,-3.48);ring.rotation.x=Math.PI/2;
  // A single carved figure-eight body gives the ukulele a continuous silhouette.
  const u=group(g,.15,.08,-3.1,.12);u.name='ukulele';
  const shape=new T.Shape();shape.moveTo(0,.2);
@@ -149,21 +135,21 @@ function music(g){
  // Two visible prongs and a floor base hold it upright.
  const stand=group(g,.15,.08,-3.1,.12);stand.name='ukulele-stand';box(stand,.5,.035,.4,C.dark,0,-.04,0,.015);for(const x of [-.13,.13])box(stand,.035,.31,.045,C.dark,x,.18,.12,.01);
 }
-// Navy wool rug with a cream and mustard border, so white Puyol stands out on it.
-function rug(g){const t=texture((ctx,w,h)=>{ctx.fillStyle='#2c4166';ctx.fillRect(0,0,w,h);const band=(m,c,lw)=>{ctx.strokeStyle=c;ctx.lineWidth=lw;ctx.strokeRect(m,m*h/w,w-2*m,h-2*m*h/w)};band(18,'#efe4cf',14);band(34,'#d6a23d',4);band(46,'#efe4cf',3);ctx.fillStyle='#3a5583';for(let y=0;y<3;y++)for(let x=0;x<5;x++){const cx=w*(.2+x*.15),cy=h*(.3+y*.2);ctx.beginPath();ctx.moveTo(cx,cy-22);ctx.lineTo(cx+18,cy);ctx.lineTo(cx,cy+22);ctx.lineTo(cx-18,cy);ctx.closePath();ctx.fill()}ctx.strokeStyle='#d6a23d88';ctx.lineWidth=2;ctx.strokeRect(w*.14,h*.2,w*.72,h*.6);for(let i=0;i<4000;i++){ctx.fillStyle=i%3?'#ffffff0d':'#0b142614';ctx.fillRect((i*71)%w,(i*113)%h,1,3)}},768,512);const a=place(new T.PlaneGeometry(7,4.6),new T.MeshStandardMaterial({map:t,roughness:1}),g,0,.04,1);a.rotation.x=-Math.PI/2;a.receiveShadow=true}
-function lamp(g){cyl(g,.22,.3,.04,C.dark,-.7,.05,-2.9);cyl(g,.018,.018,2.7,C.dark,-.7,1.4,-2.9);for(let j=0;j<3;j++){const q=cyl(g,.12,.18,.35,j===1?C.sky:C.orange,-.7+(j-1)*.23,2.4+j*.22,-2.9,20);q.rotation.z=(j-1)*.5}const textureStripe=texture((c,w,h)=>{c.fillStyle=C.white;c.fillRect(0,0,w,h);c.fillStyle='#292d32';for(let y=0;y<h;y+=80)c.fillRect(0,y,w,40)});const shade=place(new T.CylinderGeometry(.48,.48,.55,32,1,true),new T.MeshStandardMaterial({map:textureStripe,side:T.DoubleSide}),g,.7,3.5,-1.6);cyl(g,.01,.01,.6,C.dark,.7,4.05,-1.6);cyl(g,.46,.46,.015,C.white,.7,3.22,-1.6)}
+// Butter-yellow and periwinkle checkerboard wool rug.
+function rug(g){const t=texture((ctx,w,h)=>{const n=12,m=8,sw=w/n,sh=h/m;for(let y=0;y<m;y++)for(let x=0;x<n;x++){ctx.fillStyle=(x+y)%2?'#e8c260':'#8399cf';ctx.fillRect(x*sw,y*sh,sw+1,sh+1)}for(let i=0;i<14000;i++){ctx.fillStyle=i%2?'#ffffff0a':'#2a2f5010';ctx.fillRect(Math.random()*w,Math.random()*h,1,2)}},768,512);const a=place(new T.PlaneGeometry(7,4.6),new T.MeshStandardMaterial({map:t,roughness:1}),g,0,.04,1);a.rotation.x=-Math.PI/2;a.receiveShadow=true}
+function lamp(g){cyl(g,.22,.3,.04,C.dark,-.7,.05,-2.9);cyl(g,.018,.018,2.7,C.dark,-.7,1.4,-2.9);for(let j=0;j<3;j++){const q=cyl(g,.12,.18,.35,j===1?'#a8b6e6':'#f0d37a',-.7+(j-1)*.23,2.4+j*.22,-2.9,20);q.rotation.z=(j-1)*.5}const textureStripe=texture((c,w,h)=>{c.fillStyle='#aab3e4';c.fillRect(0,0,w,h);c.fillStyle='#96a0d6';for(let x=0;x<w;x+=32)c.fillRect(x,0,10,h)});const shade=place(new T.CylinderGeometry(.48,.48,.55,32,1,true),new T.MeshStandardMaterial({map:textureStripe,side:T.DoubleSide}),g,.7,3.5,-1.6);cyl(g,.01,.01,.6,C.dark,.7,4.05,-1.6);cyl(g,.46,.46,.015,C.white,.7,3.22,-1.6)}
 export function makeSalon(){
  const g=shell(14.5,11.5);g.name='salon';windowPanel(g,-7.03,2,3.4);
- rug(g);coffee(group(g,-2,0,-1.5));shelves(g,-5.2,-5.25,2.2);techCorner(g);
- const librarySign=texture((ctx,w,h)=>{ctx.fillStyle='#234c94';ctx.fillRect(0,0,w,h);ctx.strokeStyle='#dbb875';ctx.lineWidth=10;ctx.strokeRect(16,16,w-32,h-32);ctx.fillStyle='#fff9e8';ctx.textAlign='center';ctx.font='600 46px sans-serif';ctx.fillText('BIBLIOTECA',w/2,h*.62)},512,128);
+ rug(g);coffeeBar(g);teachingCorner(g);musicCorner(g);shelves(g,-5.2,-5.25,2.2);techCorner(g);gamerSetup(g);libraryCollectibles(g);pumpkinPouf(g);puyolBed(g);
+ const librarySign=texture((ctx,w,h)=>{ctx.fillStyle='#5a2431';ctx.fillRect(0,0,w,h);ctx.strokeStyle='#f0d37a';ctx.lineWidth=10;ctx.strokeRect(16,16,w-32,h-32);ctx.fillStyle='#fff9e8';ctx.textAlign='center';ctx.font='600 46px sans-serif';ctx.fillText('BIBLIOTECA',w/2,h*.62)},512,128);
  imagePlane(g,1.95,.48,librarySign,-5.2,3.77,-4.83);
  const seating=group(g,0,0,.1);seating.name='sofa';sofa(seating);
- const armchair=chair(g,-1.85,-.15);armchair.rotation.y=.5;armchair.name='reading-chair';
+ fluffyChair(g);
  chess(g,.1,1.8);music(group(g,1,0,-1.5));lamp(group(g,1,0,-1.5));
- plant(g,-6.4,0,4.5,1.4);plant(g,6.2,0,-4.5,1.5);
+ fiddleLeaf(g,-6.4,4.5,1.25);birdOfParadise(g,6.2,-4.5,1.4);wavyMirror(g);libraryScallops(g);
  g.userData.artPanels=[];
  for(let i=0;i<4;i++){const x=.6+i*1.25;framed(g,x,2.95,-5.52,1.03,1.23,petPortrait(i));g.userData.artPanels.push(g.children[g.children.length-1])}
- salonDetails(g);addRoomLife(g);return g;
+ salonDetails(g);contactShadows(g);addRoomLife(g);mergeStatic(g);return g;
 }
 function whiteboardTexture(){return texture((ctx,w,h)=>{ctx.fillStyle='#fcfdfb';ctx.fillRect(0,0,w,h);ctx.strokeStyle='#467eb8';ctx.lineWidth=4;for(let i=0;i<6;i++){let x=30+(i%3)*155,y=40+Math.floor(i/3)*160;ctx.strokeRect(x,y,100,55);ctx.beginPath();ctx.moveTo(x+105,y+27);ctx.lineTo(x+145,y+27);ctx.lineTo(x+137,y+20);ctx.stroke()}for(let i=0;i<3;i++){ctx.strokeStyle=['#4b7bc7','#e4ae40','#ed9454'][i];ctx.beginPath();ctx.arc(150+i*60,390,70,0,7);ctx.stroke()}for(let i=0;i<5;i++){ctx.fillStyle=['#f7c86f','#8ac9e8','#f5a6a2'][i%3];ctx.fillRect(380+(i%2)*50,260+i*40,40,35)}})}
 function monitor(g,x,y,z){box(g,1.8,1.1,.1,C.dark,x,y,z,.04);const tx=texture((ctx,w,h)=>{ctx.fillStyle='#f7faff';ctx.fillRect(0,0,w,h);ctx.fillStyle='#3158cb';ctx.fillRect(0,0,w,35);ctx.fillStyle='#dbe4f4';ctx.fillRect(0,35,65,h);for(let i=0;i<5;i++){ctx.fillStyle=i%2?'#ee9c45':'#4274d6';ctx.fillRect(95+i*65,270-i*28,38,80+i*28)}ctx.strokeStyle='#3e74c7';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(90,440);ctx.lineTo(170,390);ctx.lineTo(230,405);ctx.lineTo(310,345);ctx.lineTo(450,330);ctx.stroke()});imagePlane(g,1.65,.96,tx,x,y,z+.06);box(g,.08,.35,.08,'#8e9baa',x,y-.7,z);box(g,.65,.04,.4,'#c5ced7',x,y-.88,z+.08)}
@@ -183,7 +169,6 @@ function salonDetails(g){
  box(g,3.1,.045,.045,'#e9e1d4',-2.45,.4,-5.59);box(g,3.1,.045,.045,'#e9e1d4',-2.45,1.7,-5.59);
  const glow=new T.MeshBasicMaterial({color:'#ffe2a6'});box(g,2.05,.025,.05,glow,-5.2,3.5,-4.88);
  // Piped sofa cushions and a softly draped ivory throw at the far end.
- for(let i=0;i<3;i++){const x=.35+i*1.3;cord([[x-.56,.9,-.95],[x+.56,.9,-.95],[x+.56,.9,-.08],[x-.56,.9,-.08],[x-.56,.9,-.95]],.014,'#7297d1')}
  const dinoFabric=texture((ctx,w,h)=>{
   ctx.fillStyle='#f5e8cf';ctx.fillRect(0,0,w,h);
   for(let row=0;row<5;row++)for(let col=0;col<4;col++){
@@ -201,76 +186,27 @@ function salonDetails(g){
  const topPattern=place(new T.PlaneGeometry(.62,1.02),blanket,g,3.22,1.017,-.42);topPattern.rotation.x=-Math.PI/2;
  imagePlane(g,.62,.43,dinoFabric,3.22,.72,.186);
  // Small, all-white pedestal table between the sofa and music corner.
- cyl(g,.46,.46,.065,C.white,4.62,.87,-.45,48);
- cyl(g,.105,.15,.79,C.white,4.62,.45,-.45,32);
- cyl(g,.29,.29,.055,C.white,4.62,.06,-.45,40);
+ mushroomTable(g,4.62,-.45);
  // A Kindle and a clear glass of water belong on this smaller table.
  const kindle=group(g,4.49,.91,-.47,-.16);kindle.name='kindle';box(kindle,.23,.023,.31,'#292c30',0,0,0,.012);box(kindle,.19,.004,.25,'#e5e1cf',0,.014,-.015);
  for(let i=0;i<5;i++)box(kindle,.17,.003,.008,'#7e827f',0,.018,-.1+i*.035);
  const waterGlass=new T.MeshPhysicalMaterial({color:'#d4edf0',transparent:true,opacity:.38,roughness:.08,depthWrite:false});
  cyl(g,.075,.067,.18,waterGlass,4.82,1.0,-.45,24);cyl(g,.064,.064,.006,'#83c7db',4.82,.985,-.45,24);
- // Matcha preparation, glass coffee vessels, jars, ceramic tray and shelf.
- box(g,.78,.045,.63,'#d9c1a1',-6.45,1.22,-1.65,.06);
- cyl(g,.15,.13,.27,glass,-6.5,1.37,-3.15);cyl(g,.13,.13,.025,C.oak,-6.5,1.52,-3.15);
- for(let j=0;j<13;j++)sphere(g,.025,'#523829',-6.5+Math.sin(j*2.4)*.085,1.3+(j%3)*.03,-3.15+Math.cos(j*2.4)*.08,1,.6,1.4);
  // The brewers sit on one shallow serving tray, flush with the stone counter.
  box(g,.62,.018,2.35,'#d7b99a',-6.47,1.194,-1.64,.008);
- coffeeMethods(g);
- // Turn the upper shelf into a built-in hutch: uprights meet the counter and
- // shelf underside, while a back rail visibly ties it to the wall.
- for(const z of [-4.45,-.75]){
-  box(g,.31,1.27,.075,C.oakLight,-6.9,1.83,z,.016);
-  box(g,.38,.045,.28,'#ac8055',-6.84,2.44,z,.012);
- }
- box(g,.055,.16,3.9,'#b78b5d',-7.075,2.37,-2.6,.012);
- box(g,.55,.06,4.1,C.oakLight,-6.84,2.5,-2.6,.02);
- for(const [j,z] of [-4.25,-3.7,-3.15,-2.05,-1.5,-.95].entries()){
-  cyl(g,.12,.12,.29,j%2?'#d9e4d4':ceramic,-6.78,2.68,z);
-  cyl(g,.125,.125,.035,C.oak,-6.78,2.84,z);
-  box(g,.16,.09,.012,j%2?C.blue:'#bd7653',-6.77,2.7,z+.125,.008);
- }
- // A small plate of Bolivian cuñapés shares the top shelf with the coffee jars.
- cyl(g,.27,.27,.035,C.white,-6.78,2.56,-2.6,28);
- for(let i=0;i<5;i++){const a=i*Math.PI*2/5;sphere(g,.075,i%2?'#d8a766':'#edc88b',-6.78+Math.cos(a)*.15,2.63,-2.6+Math.sin(a)*.15,1,.7,1)}
+ coffeeMethods(g);coffeeExtras(g);
  // Lounge window: softly folded linen and slim brass curtain rail.
  for(const z of [.18,3.85])for(let i=0;i<7;i++){const fold=cyl(g,.055,.065,3.0,'#eee9de',-6.88,2.0,z+i*.075,12);fold.scale.x=.6}
  const rail=cyl(g,.022,.022,4.65,brass,-6.86,3.55,2.05);rail.rotation.x=Math.PI/2;
  // A low window bench makes the left-front corner feel lived in.
  box(g,1.05,.18,2.0,C.oakLight,-6.22,.5,1.88,.04);box(g,.97,.14,1.9,'#ede5d4',-6.22,.67,1.88,.06);
  for(const z of [1.13,2.63])for(const x of [-6.6,-5.88])box(g,.07,.43,.07,C.oak,x,.25,z,.015);
- const cushion=box(g,.65,.37,.6,'#d98b40',-6.2,.94,2.35,.1);cushion.rotation.y=.12;
- // A little classroom toolbox rests on the window bench, beside its cushion.
- const kit=group(g,-6.22,0,1.32);kit.name='teaching-toolbox';
- box(kit,.72,.37,.52,'#2c67b4',0,.925,0,.055);
- box(kit,.77,.07,.57,'#f3e8d7',0,1.135,0,.025);
- box(kit,.2,.09,.025,C.gold,0,1.06,.28,.01);
- const handle=place(new T.TorusGeometry(.14,.023,8,24),C.oakLight,kit,0,1.275,0);handle.scale.y=.7;
- for(let i=0;i<3;i++)box(kit,.065,.055+i*.035,.012,'#d9e7ed',-.18+i*.12,.91+i*.018,.269,.006);
- // Record sleeves, cabinet handles, woven speaker grilles and brass knobs.
- // A low front rack makes every CD sleeve visibly rest on the console.
- box(g,.9,.05,.29,'#a8794b',2.91,.16,-4.52,.012);
- for(let j=0;j<8;j++)box(g,.055,.67,.34,['#c3d6dc','#dfbc62','#d8866c','#396b8b'][j%4],2.65+j*.075,.51,-4.52,.008);
- for(const x of [2.2,4.8]){for(let j=0;j<9;j++)box(g,.32,.008,.01,'#9c815d',x,1.1+j*.04,-4.79);sphere(g,.025,brass,x+.12,1.53,-4.77)}
- for(let j=0;j<3;j++)box(g,.32,.025,.04,brass,2.4+j*.9,.8,-4.58,.01);
  // Accents on the shelves: ceramic vases, laid books, a small hourglass.
  for(let j=0;j<3;j++){box(g,.58,.06,.38,[C.orange,C.blue,C.white][j],-4.57,1.12+j*.065,-4.96,.01)}
  cyl(g,.11,.16,.35,'#b0ba8a',-5.87,2.63,-4.93);cyl(g,.065,.11,.15,'#b0ba8a',-5.87,2.88,-4.93);
  for(let i=0;i<4;i++)cord([[-5.87,2.9,-4.93],[-5.87+Math.sin(i)*.12,3.3,-4.93+Math.cos(i)*.08]],.008,'#ac8d52');
  // Brass picture lights and warm downward pools illuminate the art wall.
  for(let i=0;i<2;i++){const x=1.3+i*2.5;box(g,.48,.045,.09,brass,x,3.8,-5.3,.015);const light=new T.PointLight('#ffdb9e',1.0,3,2);light.position.set(x,3.65,-5.15);g.add(light)}
- // Puyol's plush cushion has a paw-print fabric and a generously padded rim.
- const pawFabric=texture((ctx,w,h)=>{
-  ctx.fillStyle='#f4e9d8';ctx.fillRect(0,0,w,h);ctx.fillStyle='#8aa7a3';
-  for(let row=0;row<4;row++)for(let col=0;col<4;col++){
-   const px=45+col*125+(row%2)*20,py=45+row*125;
-   ctx.beginPath();ctx.ellipse(px,py+19,15,12,0,0,Math.PI*2);ctx.fill();
-   for(let t=0;t<3;t++){ctx.beginPath();ctx.ellipse(px-17+t*17,py-2-(t%2)*5,6,8,0,0,Math.PI*2);ctx.fill()}
-  }
- });
- const bed=group(g,5.8,0,2.55);bed.name='puyol-bed';
- cyl(bed,.66,.66,.14,'#d0b6a0',0,.11,0,48);sphere(bed,.56,'#f3e8d8',0,.2,0,1,.22,1);
- const rim=place(new T.TorusGeometry(.56,.13,16,56),'#e7d5bf',bed,0,.25,0);rim.rotation.x=Math.PI/2;
- const paws=place(new T.CircleGeometry(.49,48),new T.MeshStandardMaterial({map:pawFabric,roughness:1,side:T.DoubleSide}),bed,0,.33,0);paws.rotation.x=-Math.PI/2;
  // Low ceramic water bowl, visibly filled, within reach of the bed.
  cyl(g,.19,.16,.075,C.white,6.7,.04,2.45,32);cyl(g,.15,.15,.006,'#8ac9dc',6.7,.082,2.45,32);
 }
@@ -285,7 +221,7 @@ export function applySalonArt(g,{paintings,materials,philosopher}){
   const replacements=new Map();
   g.traverse(o=>{if(!o.isMesh||!o.material?.isMeshStandardMaterial||o.userData.refined)return;const old=o.material,key='#'+old.color.getHexString();let map,tint='#ffffff';
    if([C.oak,C.oakLight,'#ac7e4d','#b48754'].includes(key))map=wood;
-   if([C.blue,'#216ad5'].includes(key))map=blue;
+   if(key===C.blue){map=linen;tint=C.blue}
    if(['#ede5d4','#eee9de',C.cream].includes(key))map=linen;
    if(key===C.yellow){map=linen;tint=C.yellow}
    if(key===C.white&&!old.map)map=stone;

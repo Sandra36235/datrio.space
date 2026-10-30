@@ -1,5 +1,5 @@
 import * as T from './vendor/three.module.js';
-import {posePoodle3D} from './poodle3d.js?v=floor-1';
+import {posePoodle3D} from './poodle3d.js?v=pastel-9';
 
 // Shared geometry and textures keep the added detail affordable on mobile.
 const foliage = [];
@@ -104,10 +104,10 @@ export function refineMaterials(room) {
     if(!o.isMesh || !o.material?.color || o.userData.refined)return;
     const color='#'+o.material.color.getHexString();let m;
     if(['#c49663','#ddb58b','#b48754','#ac7e4d'].includes(color))m=new T.MeshStandardMaterial({color:'#ffffff',map:wood,bumpMap:wood,bumpScale:.006,roughness:.48});
-    if(['#1c5ccc','#216ad5','#f6bf25','#ede5d4','#eee9de'].includes(color))m=fabric(color);
+    if(['#5a2431','#672b39','#f0d37a','#a5b9e4','#ede5d4','#eee9de'].includes(color))m=fabric(color);
     if(color==='#fffaf1' && !o.material.map){
       const s=o.geometry.parameters;const wall=(s?.width>8||s?.depth>8)&&s?.height>3;
-      m=wall?new T.MeshStandardMaterial({color:'#fffaf1',bumpMap:plaster,bumpScale:.018,roughness:.92}):new T.MeshPhysicalMaterial({color:'#fffaf1',roughness:.3,clearcoat:.25});
+      m=wall?new T.MeshStandardMaterial({color:'#f6ecda',bumpMap:plaster,bumpScale:.018,roughness:.92}):new T.MeshPhysicalMaterial({color:'#fffaf1',roughness:.3,clearcoat:.25});
     }
     if(m){o.material=m;o.userData.refined=true;}
   });
@@ -122,7 +122,7 @@ function steam(room,x,y,z) {
   }
 }
 function disc(room,x,y,z){
-  const map=tex('vinyl',(c,n)=>{c.fillStyle='#1f242a';c.fillRect(0,0,n,n);c.strokeStyle='#67707c55';c.lineWidth=.7;for(let r=55;r<252;r+=3){c.beginPath();c.arc(n/2,n/2,r,0,Math.PI*2);c.stroke();}c.fillStyle='#c98b61';c.beginPath();c.arc(n/2,n/2,64,0,7);c.fill();c.fillStyle='#fff3db';c.font='bold 19px serif';c.textAlign='center';c.fillText('SIDE A',n/2,n/2-15);c.font='12px sans-serif';c.fillText('GOOD COMPANY',n/2,n/2+16);c.fillStyle='#b0b4b5';c.beginPath();c.arc(n/2,n/2,7,0,7);c.fill();});
+  const map=tex('vinyl',(c,n)=>{c.fillStyle='#1f242a';c.fillRect(0,0,n,n);c.strokeStyle='#67707c55';c.lineWidth=.7;for(let r=55;r<252;r+=3){c.beginPath();c.arc(n/2,n/2,r,0,Math.PI*2);c.stroke();}c.fillStyle='#e8b9b5';c.beginPath();c.arc(n/2,n/2,64,0,7);c.fill();c.fillStyle='#fff3db';c.font='bold 19px serif';c.textAlign='center';c.fillText('SIDE A',n/2,n/2-15);c.font='12px sans-serif';c.fillText('GOOD COMPANY',n/2,n/2+16);c.fillStyle='#b0b4b5';c.beginPath();c.arc(n/2,n/2,7,0,7);c.fill();});
   const record=mesh(room,new T.CircleGeometry(.205,48),new T.MeshStandardMaterial({map,roughness:.3}),x,y,z);record.rotation.x=-Math.PI/2;room.userData.life.record=record;
   const arm=solid('#bdb4a7',.3,.8);
   tube(room,[[x+.34,y-.015,z-.16],[x+.25,y+.06,z-.13],[x+.12,y+.04,z+.1]],.011,arm);
@@ -137,14 +137,14 @@ export function addRoomLife(room,studio=false){
   });
   if(studio){botanical(room,2.65,1.37,-.45,.32);steam(room,2.35,1.58,.65);refineMaterials(room);return;}
   botanical(room,-4.43,3.78,-5.18,.65,'trailing');
-  botanical(room,6.05,0,-2.05,.9);
-  botanical(room,-3.6,1.2,-4.72,.35);
+  snakePlant(room,6.05,-2.05,1.1);
+  faceCactus(room,-3.6,1.19,-4.72,.55,.4);
   botanical(room,-6.86,2.54,-4.52,.36,'trailing');
   // Rotating fan blades remain behind the tower's illuminated rings.
   for(let i=0;i<3;i++){
     const fan=new T.Group();fan.position.set(-1.65,1.38+i*.19,-4.475);room.add(fan);
     for(let blade=0;blade<5;blade++){
-      const a=blade*Math.PI*2/5,m=mesh(fan,sphere,solid('#dba2cc',.38),Math.cos(a)*.034,Math.sin(a)*.034,0);
+      const a=blade*Math.PI*2/5,m=mesh(fan,sphere,solid('#3a2f55',.38),Math.cos(a)*.034,Math.sin(a)*.034,0);
       m.scale.set(.031,.012,.004);m.rotation.z=a+.45;
     }
     room.userData.life.fans.push(fan);
@@ -158,27 +158,17 @@ export function addRoomLife(room,studio=false){
     for(const dx of [-.565,.565])mesh(room,new T.BoxGeometry(.022,1.36,.04),brass,x+dx,2.95,-5.46);
     for(const dy of [-.665,.665])mesh(room,new T.BoxGeometry(1.15,.022,.04),brass,x,2.95+dy,-5.46);
   }
-  // Fine stitching across each upholstered back cushion.
-  for(let i=0;i<3;i++){
-    const x=.35+i*1.3;
-    tube(room,[[x-.57,.85,-1.105],[x-.57,1.49,-1.105],[x+.57,1.49,-1.105],[x+.57,.85,-1.105]],.005,solid('#74a0df'));
-  }
-  const readingChair=room.getObjectByName('reading-chair');
-  if(readingChair){
-    const cushion=mesh(readingChair,new T.SphereGeometry(1,24,16),fabric('#f5c742'),0,.72,-.01);
-    cushion.scale.set(.51,.115,.42);
-    tube(readingChair,[[-.53,.74,-.35],[-.53,1.26,-.35],[0,1.38,-.35],[.53,1.26,-.35],[.53,.74,-.35]],.012,solid('#df9e32'));
-    for(const side of [-1,1])mesh(readingChair,new T.SphereGeometry(.026,12,8),solid('#f7dc7a'),side*.44,.75,.24);
-  }
   // Warm under-shelf illumination and a physical metallic switch on the cabinet.
   const strip=mesh(room,new T.BoxGeometry(.035,.018,3.7),new T.MeshBasicMaterial({color:'#ffe2ac'}),-6.59,2.46,-2.6);strip.castShadow=false;
   const glow=new T.PointLight('#ffd8a2',.65,2.2,2);glow.position.set(-6.35,2.25,-2.6);room.add(glow);
   // Name plaque mounted on the front of Puyol's bed.
   const label=tex('puyol-label',(c,n)=>{c.fillStyle='#b88761';c.fillRect(0,0,n,n);c.fillStyle='#fff4df';c.textAlign='center';c.font='600 115px Georgia';c.fillText('Puyol',n/2,n*.61);},256);
-  mesh(room,new T.PlaneGeometry(.28,.13),new T.MeshStandardMaterial({map:label,roughness:.8}),5.8,.22,3.212);
+  mesh(room,new T.PlaneGeometry(.28,.13),new T.MeshStandardMaterial({map:label,roughness:.8}),5.8,.25,3.272);
   refineMaterials(room);
 }
 
+import {animateCorners} from './salon-corners.js?v=pastel-9';
+import {animateExtras,snakePlant,faceCactus} from './salon-extras.js?v=pastel-9';
 export function animateRoom(room,dt,reduced=false){
   const life=room?.userData.life;if(!life)return false;
   if(reduced){for(const p of life.steam)p.sprite.visible=false;return false;}
@@ -190,6 +180,7 @@ export function animateRoom(room,dt,reduced=false){
   }
   for(const p of life.steam){const brewing=room.userData.activity==='coffee',f=(t*(brewing?.38:.25)+p.phase)%1;p.sprite.visible=true;p.sprite.position.set(p.x+Math.sin(f*5+t*.4)*.035,p.y+f*(brewing?.7:.48),p.z+Math.cos(f*4)*.02);p.sprite.scale.set(.07+f*(brewing?.26:.18),.16+f*(brewing?.3:.22),1);p.sprite.material.opacity=Math.sin(f*Math.PI)*(brewing?.38:.2);}
   if(life.record)life.record.rotation.z=-t*.65;
+  animateCorners(room,t);animateExtras(room,t);
   life.fans.forEach(fan=>fan.rotation.z=-t*2.4);
   life.curtains.forEach((p,i)=>{p.mesh.rotation.z=Math.sin(t*.6+i*.25)*.009;p.mesh.position.x=p.x+Math.sin(t*.6+i*.25)*.012;});
   if(life.dog){const phase=t%24;posePoodle3D(life.dog,t,false,false,phase>9&&phase<14?'lick':phase>4&&phase<18?'sit':'stand',dt);}
