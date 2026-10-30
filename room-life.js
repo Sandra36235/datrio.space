@@ -1,5 +1,5 @@
 import * as T from './vendor/three.module.js';
-import {posePoodle3D} from './poodle3d.js?v=poodle-1';
+import {posePoodle3D} from './poodle3d.js?v=floor-1';
 
 // Shared geometry and textures keep the added detail affordable on mobile.
 const foliage = [];
