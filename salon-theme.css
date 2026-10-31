@@ -160,3 +160,63 @@ html body .world-symbol svg{display:block}
  html body .world-symbol,html body .world-symbol.blue,html body .world-symbol.orange,html body .world-symbol.yellow{width:42px;height:42px}
 }
 html body .world-symbol{position:static;margin-left:0}
+
+/* ------------------------------------------------------------------
+   Destination cards, "wow" version: each one is a little colour world
+   with its illustration popping out over the top edge. */
+html body .worldbar{padding-top:46px;align-items:stretch}
+html body .worldbar-heading{align-self:center;font-family:'Fraunces',Georgia,serif;font-size:15px;letter-spacing:0;line-height:1.3;color:var(--ink-soft);text-transform:none}
+html body .worldbar-heading b{display:block;font-weight:600;font-style:italic;font-size:22px;color:var(--wine)}
+html body .worldbar-heading>span{color:var(--wine)}
+html body .world-card,html body .world-card.selected,html body .world-card:not(.selected){
+ position:relative;display:flex;align-items:flex-end;min-height:178px;padding:22px 22px 20px;overflow:visible;
+ border:1px solid rgba(255,255,255,.95);border-radius:28px;text-align:left;isolation:isolate;
+ box-shadow:0 18px 34px -14px rgba(122,12,44,.28),inset 0 1px 0 #fff;transition:transform .35s cubic-bezier(.2,.8,.2,1.2),box-shadow .35s}
+html body .world-card.card-salon{background:radial-gradient(circle at 85% 30%,#fff8e0 0,transparent 55%),linear-gradient(155deg,#fff4d4,#f0cf73)}
+html body .world-card.card-estudio{background:radial-gradient(circle at 85% 30%,#f5f7ff 0,transparent 55%),linear-gradient(155deg,#eef2fc,#adbfea)}
+html body .world-card.card-retazos{background:radial-gradient(circle at 85% 30%,#fff3f0 0,transparent 55%),linear-gradient(155deg,#fdf0ec,#eab8b6)}
+html body .world-card::after{content:'';position:absolute;inset:0;border-radius:inherit;z-index:-1;pointer-events:none;
+ background:radial-gradient(rgba(255,255,255,.55) 1px,transparent 1.4px) 0 0/14px 14px;opacity:.5;
+ -webkit-mask:linear-gradient(120deg,transparent 40%,#000);mask:linear-gradient(120deg,transparent 40%,#000);display:block}
+html body .world-card:hover{transform:translateY(-6px);box-shadow:0 28px 44px -16px rgba(122,12,44,.38),inset 0 1px 0 #fff}
+html body .world-card.selected{box-shadow:0 0 0 2.5px var(--wine),0 18px 34px -14px rgba(122,12,44,.32),inset 0 1px 0 #fff}
+
+html body .world-number{position:absolute;top:16px;left:18px;padding:4px 9px;border-radius:999px;background:rgba(255,255,255,.7);
+ font-family:var(--ui-font);font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--wine);opacity:1;margin:0}
+html body .world-text{position:relative;z-index:2;max-width:52%;display:flex;flex-direction:column;gap:6px}
+html body .world-card b{font-family:'Fraunces',Georgia,serif;font-size:27px;font-weight:600;line-height:.98;letter-spacing:-.02em;color:var(--ink)}
+html body .world-card b em{font-style:italic;font-weight:500;color:var(--wine)}
+html body .world-card small{margin:0;font-size:12.5px;line-height:1.35;color:rgba(59,36,48,.72)}
+html body .world-go{margin-top:6px;align-self:flex-start;display:inline-flex;height:28px;padding:0 12px;align-items:center;border-radius:999px;
+ background:var(--ink);color:#fff8ea;font-family:var(--ui-font);font-size:11.5px;font-weight:600;transition:background .2s,padding .25s}
+html body .world-card:hover .world-go{background:var(--wine);padding:0 16px}
+html body .go-here{display:none}
+html body .world-card.selected .go-enter{display:none}
+html body .world-card.selected .go-here{display:inline}
+html body .world-card.selected .world-go{background:rgba(255,255,255,.75);color:var(--wine)}
+html body .world-card.selected .world-go::before{content:'';width:7px;height:7px;margin-right:7px;border-radius:50%;background:var(--wine);animation:here-pulse 1.8s ease-in-out infinite}
+@keyframes here-pulse{0%,100%{box-shadow:0 0 0 0 rgba(122,12,44,.45)}50%{box-shadow:0 0 0 5px rgba(122,12,44,0)}}
+
+html body .world-art{position:absolute;z-index:1;pointer-events:none;object-fit:contain;
+ filter:drop-shadow(0 14px 14px rgba(90,30,40,.25));transition:transform .45s cubic-bezier(.2,.8,.2,1.25)}
+html body .card-salon .world-art{right:-14px;bottom:10px;width:62%;transform:rotate(-3deg)}
+html body .card-estudio .world-art{right:-12px;bottom:12px;width:60%;transform:rotate(2deg)}
+html body .card-retazos .world-art{right:2px;bottom:0;height:128%;max-width:52%}
+html body .world-card:hover .world-art{transform:translateY(-10px) rotate(0) scale(1.06)}
+html body .world-symbol{display:none}
+@media(prefers-reduced-motion:reduce){html body .world-card.selected .world-go::before{animation:none}}
+
+@media(max-width:900px){
+ html body .worldbar{padding-top:40px;padding-bottom:22px;grid-auto-columns:minmax(260px,78vw)}
+ html body .world-card,html body .world-card.selected,html body .world-card:not(.selected){min-height:170px;padding:20px 18px 18px}
+ html body .world-card b{font-size:25px}
+}
+/* Card fine-tuning: room for the number, text on the left, art breaking out of the top */
+html body .world-card,html body .world-card.selected,html body .world-card:not(.selected){min-height:196px;padding:54px 20px 20px}
+html body .world-text{max-width:50%}
+html body .world-card b{font-size:24px}
+html body .card-salon .world-art{top:-40px;bottom:auto;right:-16px;width:64%}
+html body .card-estudio .world-art{top:-36px;bottom:auto;right:-14px;width:62%}
+html body .card-retazos .world-art{top:-44px;bottom:0;right:4px;height:auto;max-width:none;width:auto;max-height:calc(100% + 44px)}
+@media(max-width:900px){html body .world-card b{font-size:23px}}
+html body .card-retazos .world-art{right:-18px;max-width:50%;object-position:right bottom}
