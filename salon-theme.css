@@ -23,8 +23,7 @@ html body .story h1.hero-title em{font-style:italic;font-weight:500;color:var(--
 
 /* Glass controls become light, warm and readable on cream */
 html body .topbar nav,
-html body .view-controls,
-html body .worldbar{background:rgba(255,255,255,.42);border-color:rgba(255,255,255,.85);box-shadow:0 14px 30px rgba(122,12,44,.08),inset 0 1px 0 rgba(255,255,255,.9)}
+html body .view-controls{background:rgba(255,255,255,.42);border-color:rgba(255,255,255,.85);box-shadow:0 14px 30px rgba(122,12,44,.08),inset 0 1px 0 rgba(255,255,255,.9)}
 html body .topbar nav button{color:var(--ink);text-shadow:none}
 html body .topbar nav button.selected,
 html body .topbar nav button:not(.selected):hover{color:var(--ink);text-shadow:none;background:linear-gradient(160deg,#fffaf0 0%,#f6e3a6 100%);border-color:#fff;box-shadow:0 10px 22px rgba(122,12,44,.12),inset 0 2px 2px #fff,inset 0 -3px 5px rgba(214,170,70,.25)}
@@ -71,3 +70,73 @@ html body .pin:hover,html body .pin:focus-visible{opacity:1;transform:scale(1.12
  html body .view-controls{top:10px;right:8px;bottom:auto;flex-direction:column;padding:4px;gap:4px}
  html body .view-controls button{width:36px;height:36px;font-size:17px}
 }
+
+/* ------------------------------------------------------------------
+   One button system for the whole page.
+   Trays (menu, zoom) are 44px tall with 4px padding; buttons inside are 36px.
+   Stand-alone buttons are 44px. Same font, radius, border and shadow everywhere. */
+html body{--ui-font:'DM Sans',system-ui,sans-serif;--tray-bg:rgba(255,255,255,.5);--tray-line:rgba(255,255,255,.95);
+ --tray-shadow:0 8px 22px rgba(122,12,44,.08),inset 0 1px 0 #fff;
+ --btn-bg:linear-gradient(180deg,rgba(255,255,255,.92),rgba(250,240,225,.8));
+ --btn-shadow:0 6px 16px rgba(122,12,44,.1),inset 0 1px 0 #fff;
+ --btn-on:linear-gradient(180deg,#fff8e6,#f3dc93)}
+
+/* Trays */
+html body .topbar nav,html body .view-controls{display:flex;gap:4px;padding:4px;border:1px solid var(--tray-line);border-radius:999px;
+ background:var(--tray-bg);box-shadow:var(--tray-shadow);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+html body .topbar nav{height:44px;box-sizing:border-box}
+
+/* Every pill button */
+html body .topbar nav button,html body .about-link,html body .cta,html body .walk-hud button,html body .puyol-menu button,
+html body .detail-action,html body .project-link{
+ box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;gap:6px;
+ height:44px;min-height:44px;padding:0 18px;margin:0;border:1px solid #fff;border-radius:999px;
+ font-family:var(--ui-font);font-size:13px;font-weight:600;letter-spacing:0;line-height:1;white-space:nowrap;
+ color:var(--ink);text-shadow:none;background:var(--btn-bg);box-shadow:var(--btn-shadow);
+ -webkit-backdrop-filter:none;backdrop-filter:none;transform:none;transition:transform .18s,box-shadow .18s,background .18s}
+html body .topbar nav button::before,html body .topbar nav button::after,html body .about-link::before,html body .about-link::after,
+html body .cta::before,html body .cta::after,html body .walk-hud button::before,html body .walk-hud button::after,
+html body .puyol-menu button::before,html body .puyol-menu button::after,html body .view-controls button::before,html body .view-controls button::after{content:none;display:none}
+html body .topbar nav button span,html body .about-link span,html body .cta span,html body .walk-hud button span{margin:0;font-size:1em;color:var(--wine)}
+
+/* Buttons inside a tray are flat until selected */
+html body .topbar nav button{flex:1 1 0;height:36px;min-height:36px;border-color:transparent;background:transparent;box-shadow:none}
+html body .topbar nav button.selected{background:var(--btn-on);border-color:#fff;box-shadow:var(--btn-shadow)}
+html body .topbar nav button:not(.selected):hover{background:rgba(255,255,255,.7);border-color:#fff;box-shadow:none;transform:none}
+
+/* Hover and pressed for stand-alone pills */
+html body .about-link:hover,html body .cta:hover,html body .walk-hud button:hover,html body .puyol-menu button:hover,
+html body .detail-action:hover,html body .project-link:hover{transform:translateY(-1px);box-shadow:0 10px 22px rgba(122,12,44,.14),inset 0 1px 0 #fff}
+html body .walk-hud button[aria-pressed="true"]{background:var(--btn-on);border-color:#fff;box-shadow:var(--btn-shadow)}
+
+/* Round icon buttons: zoom and pins share the same look */
+html body .view-controls button{width:36px;height:36px;min-height:36px;padding:0;display:grid;place-items:center;border:1px solid #fff;border-radius:50%;
+ font-family:var(--ui-font);font-size:17px;font-weight:600;color:var(--wine);background:var(--btn-bg);box-shadow:none}
+html body .view-controls button:hover{background:var(--btn-on)}
+html body .pin{font-family:var(--ui-font);font-weight:600}
+
+/* Puyol's activity menu: warm tray instead of grey glass */
+html body .puyol-menu{border:1px solid var(--tray-line);border-radius:24px;background:rgba(255,250,240,.88);box-shadow:0 18px 40px rgba(122,12,44,.14),inset 0 1px 0 #fff}
+html body .puyol-menu button{width:100%;justify-content:flex-start;font-size:12px}
+
+/* Destination cards: no band behind them, same radius family as the trays */
+html body .worldbar{background:transparent;border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+html body .world-card,html body .world-card.selected{border-radius:22px;border:1px solid #fff;box-shadow:var(--btn-shadow);font-family:var(--ui-font)}
+html body .world-card.selected{background:linear-gradient(160deg,#fffaf0,#f6e6b0)}
+html body .world-card b{font-family:var(--ui-font);font-weight:600}
+
+/* Explore links: same font as everything else */
+html body .object-shortcuts,html body .object-shortcuts button{font-family:var(--ui-font)}
+html body .object-shortcuts button{font-weight:600}
+
+@media(max-width:900px){
+ html body .topbar nav button,html body .about-link,html body .cta,html body .walk-hud button,html body .puyol-menu button{font-size:12px;padding:0 14px}
+ html body .topbar nav button{padding:0 8px}
+}
+@media(max-width:420px){
+ html body .topbar nav button,html body .walk-hud button{font-size:11px;padding:0 10px}
+}
+html body .topbar .about-link,html body .topbar a.about-link{font-size:13px;height:44px;min-height:44px;padding:0 18px;border:1px solid #fff}
+@media(max-width:900px){html body .topbar .about-link,html body .topbar a.about-link{font-size:12px;padding:0 14px}}
+html body .world-card:not(.selected){background:rgba(255,255,255,.62)}
+html body .world-card.selected::before{content:none;display:none}
