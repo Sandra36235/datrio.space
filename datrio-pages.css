@@ -127,21 +127,48 @@ main{max-width:1280px;margin:0 auto;padding:0 var(--gutter) 80px;animation:arriv
 .chips{display:flex;flex-wrap:wrap;gap:7px}
 .chips span{display:inline-flex;align-items:center;height:32px;padding:0 13px;border-radius:999px;background:var(--btn-bg);border:1px solid #fff;box-shadow:0 3px 8px rgba(122,12,44,.06);font:600 12.5px/1 var(--ui);color:var(--ink)}
 
-/* Chalkboard, same as the salon's "¡A probar!" board */
-.board{padding:14px;border-radius:30px;background:linear-gradient(160deg,#d4aa78,#b98a57);box-shadow:0 24px 50px -18px rgba(90,40,30,.45),inset 0 1px 0 #f1d2a6}
-.board-inner{position:relative;overflow:hidden;min-height:340px;padding:28px clamp(20px,4vw,48px) 34px;border-radius:18px;color:#f6eedc;
- background:radial-gradient(circle at 80% 15%,#3a423e,#2a302d 65%);box-shadow:inset 0 0 40px rgba(0,0,0,.35)}
-.board-tabs{display:flex;flex-wrap:wrap;gap:8px;padding-bottom:24px;border-bottom:1px solid rgba(246,238,220,.18)}
-.board-tabs button{height:38px;padding:0 15px;border-radius:999px;border:1px solid rgba(246,238,220,.35);background:transparent;color:#e7dcc6;font:600 12.5px/1 var(--ui);cursor:pointer;transition:background .2s,color .2s,transform .2s}
-.board-tabs button:hover{transform:translateY(-1px);background:rgba(246,238,220,.1)}
-.board-tabs button[aria-selected="true"]{background:#f3dc93;border-color:#f3dc93;color:#3b2430}
-.board-content{position:relative;z-index:1;max-width:720px;padding-top:26px}
-.board-content.switching{animation:chalk-in .32s ease}
+/* Teaching dashboard: dark plum panel with a window bar, side nav, tiles and a flow */
+.dash{border-radius:30px;overflow:hidden;color:#f3e9dc;background:linear-gradient(160deg,#2f1f29,#1e141b 70%);
+ border:1px solid rgba(255,255,255,.08);box-shadow:0 30px 60px -24px rgba(50,10,25,.6),inset 0 1px 0 rgba(255,255,255,.06)}
+.dash-bar{display:flex;align-items:center;gap:14px;height:46px;padding:0 18px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.03)}
+.dots{display:flex;gap:6px}.dots i{width:10px;height:10px;border-radius:50%;background:#7a0c2c}.dots i:nth-child(2){background:#f3dc93}.dots i:nth-child(3){background:#a5b9e4}
+.dash-url{flex:1;max-width:340px;height:26px;display:flex;align-items:center;padding:0 12px;border-radius:999px;background:rgba(255,255,255,.06);font:500 12px/1 var(--ui);color:rgba(243,233,220,.6)}
+.dash-live{margin-left:auto;display:inline-flex;align-items:center;gap:7px;font:600 11.5px/1 var(--ui);color:rgba(243,233,220,.7)}
+.dash-live b{width:7px;height:7px;border-radius:50%;background:#8fd6a0;box-shadow:0 0 0 0 rgba(143,214,160,.6);animation:live 2s infinite}
+@keyframes live{70%{box-shadow:0 0 0 7px rgba(143,214,160,0)}100%{box-shadow:0 0 0 0 rgba(143,214,160,0)}}
+.dash-body{display:grid;grid-template-columns:250px 1fr;min-height:380px}
+.dash-nav{display:flex;flex-direction:column;gap:6px;padding:18px 14px;border-right:1px solid rgba(255,255,255,.07);background:rgba(0,0,0,.12)}
+.dash-nav button{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:0 12px;border:1px solid transparent;border-radius:14px;background:transparent;
+ color:rgba(243,233,220,.72);font:600 13px/1.2 var(--ui);text-align:left;cursor:pointer;transition:background .2s,color .2s}
+.dash-nav button:hover{background:rgba(255,255,255,.05);color:#fff}
+.dash-nav .ico{display:grid;place-items:center;flex:none;width:28px;height:28px;border-radius:9px;background:rgba(255,255,255,.06);color:#a5b9e4;font-size:14px}
+.dash-nav button[aria-selected="true"]{background:linear-gradient(135deg,rgba(243,220,147,.16),rgba(122,12,44,.35));border-color:rgba(243,220,147,.28);color:#fff}
+.dash-nav button[aria-selected="true"] .ico{background:#f3dc93;color:#3b2430}
+.dash-main{padding:26px clamp(20px,3.5vw,40px) 28px}
+.dash-main.switching{animation:chalk-in .32s ease}
 .board-kicker{font:700 11px/1 var(--ui);letter-spacing:.16em;text-transform:uppercase;color:#f3dc93}
-.board-content h3{margin:16px 0 14px;font-family:var(--display);font-weight:600;font-size:clamp(30px,4vw,46px);line-height:1.05}
-.board-content p{margin:0;max-width:620px;font-size:16.5px;line-height:1.7;color:#e7dcc6}
-.board-chalk{margin-top:28px;font-family:var(--display);font-style:italic;font-weight:500;font-size:22px;color:#c9d4f0}
+.dash-main h3{margin:14px 0 10px;font-family:var(--display);font-weight:600;font-size:clamp(28px,3.4vw,42px);line-height:1.05;color:#fff}
+.dash-main p{margin:0;max-width:620px;font-size:15.5px;line-height:1.65;color:rgba(243,233,220,.75)}
+.tiles{display:grid;grid-template-columns:1fr 1fr 1.1fr;gap:12px;margin-top:22px}
+.tile{display:flex;flex-direction:column;gap:8px;min-height:92px;padding:14px 16px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}
+.tile small{font:600 10.5px/1 var(--ui);letter-spacing:.14em;text-transform:uppercase;color:rgba(243,233,220,.5)}
+.tile strong{font:600 15px/1.3 var(--ui);color:#fff}
+.bars{flex:1;display:flex;align-items:flex-end;gap:6px;min-height:46px}
+.bars i{flex:1;border-radius:5px 5px 2px 2px;background:linear-gradient(180deg,#f3dc93,#c98a5a);opacity:.9;transition:height .5s cubic-bezier(.2,.8,.2,1)}
+.bars i:nth-child(odd){background:linear-gradient(180deg,#a5b9e4,#6f86c4)}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:18px}
+.flow .step{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px 0 6px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font:600 13px/1 var(--ui);color:#fff}
+.flow .step b{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:rgba(243,220,147,.18);color:#f3dc93;font-size:10.5px}
+.flow .arrow{color:rgba(243,233,220,.4)}
 @keyframes chalk-in{from{opacity:.2;transform:translateY(7px)}to{opacity:1;transform:none}}
+@media(max-width:900px){
+ .dash-body{grid-template-columns:1fr}
+ .dash-nav{flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid rgba(255,255,255,.07);scrollbar-width:none}
+ .dash-nav::-webkit-scrollbar{display:none}
+ .dash-nav button{width:auto;flex:none;white-space:nowrap}
+ .tiles{grid-template-columns:1fr 1fr}.tile.chart{grid-column:1/-1}
+}
+@media(max-width:600px){.dash-url{display:none}.tiles{grid-template-columns:1fr}}
 
 /* Closing note box */
 .closing{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:40px;padding:24px 28px;border-radius:28px;
@@ -150,7 +177,7 @@ main{max-width:1280px;margin:0 auto;padding:0 var(--gutter) 80px;animation:arriv
 .closing p{margin:4px 0 0;font-size:14.5px;color:var(--ink-soft)}
 
 @media(max-width:900px){.chip-groups{grid-template-columns:1fr}.cards.two{grid-template-columns:1fr 1fr}}
-@media(max-width:600px){.cards.two{grid-template-columns:1fr}.soon{flex-direction:column;padding:22px}.board-inner{min-height:380px}.board-tabs button{font-size:12px}}
+@media(max-width:600px){.cards.two{grid-template-columns:1fr}.soon{flex-direction:column;padding:22px}}
 @media(max-width:900px){.hero-art.portrait img{max-height:260px}.hero-art img{width:min(420px,100%)}}
 
 /* Invitation cards (contact): both in the salon's burgundy, butter details */
@@ -167,3 +194,4 @@ main{max-width:1280px;margin:0 auto;padding:0 var(--gutter) 80px;animation:arriv
 .cards.invite .pill.dark{background:var(--butter);color:var(--ink)}
 .cards.invite .pill.dark span{color:var(--wine)}
 .cards.invite .card:hover .pill.dark{background:#fff4d4}
+.cards.invite .who{color:rgba(251,241,225,.65)}

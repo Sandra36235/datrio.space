@@ -6,7 +6,7 @@
 <title>Biblioteca universitaria · Datrio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700&family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&display=swap">
-<link rel="stylesheet" href="datrio-pages.css?v=3">
+<link rel="stylesheet" href="datrio-pages.css?v=4">
 <link rel="icon" href="datrio-mark.svg">
 </head>
 <body>
@@ -27,17 +27,30 @@
  <section class="block" aria-labelledby="teaching-title">
   <div class="section-head">
    <div><div class="eyebrow">01 / La profesora</div><h2 id="teaching-title">Mi recorrido <em>en el aula</em></h2></div>
-   <p>Soy Sandra Abasto. Me dedico a los datos y al marketing, y disfruto crear espacios para aprender juntos. Toca la pizarra para conocer dónde he enseñado.</p>
+   <p>Soy Sandra Abasto. Me dedico a los datos y al marketing, y disfruto crear espacios para aprender juntos. Explora el panel para conocer dónde he enseñado.</p>
   </div>
-  <div class="board"><div class="board-inner">
-   <div class="board-tabs" role="tablist" aria-label="Espacios de docencia">
-    <button type="button" role="tab" id="tab-pregrado" data-board="pregrado" aria-controls="board-panel" aria-selected="true" tabindex="0">UPB · Pregrado</button>
-    <button type="button" role="tab" id="tab-posgrado" data-board="posgrado" aria-controls="board-panel" aria-selected="false" tabindex="-1">UPB · Posgrado</button>
-    <button type="button" role="tab" id="tab-bbv" data-board="bbv" aria-controls="board-panel" aria-selected="false" tabindex="-1">Bolsa Boliviana de Valores</button>
-    <button type="button" role="tab" id="tab-academy" data-board="academy" aria-controls="board-panel" aria-selected="false" tabindex="-1">Datrio Academy</button>
+  <div class="dash">
+   <div class="dash-bar" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="dash-url">aula.datrio · panel docente</span><span class="dash-live"><b></b> 4 espacios</span></div>
+   <div class="dash-body">
+    <div class="dash-nav" role="tablist" aria-label="Espacios de docencia">
+     <button type="button" role="tab" id="tab-pregrado" data-board="pregrado" aria-controls="board-panel" aria-selected="true" tabindex="0"><span class="ico" aria-hidden="true">◎</span>UPB · Pregrado</button>
+     <button type="button" role="tab" id="tab-posgrado" data-board="posgrado" aria-controls="board-panel" aria-selected="false" tabindex="-1"><span class="ico" aria-hidden="true">✦</span>UPB · Posgrado</button>
+     <button type="button" role="tab" id="tab-bbv" data-board="bbv" aria-controls="board-panel" aria-selected="false" tabindex="-1"><span class="ico" aria-hidden="true">▥</span>Bolsa Boliviana de Valores</button>
+     <button type="button" role="tab" id="tab-academy" data-board="academy" aria-controls="board-panel" aria-selected="false" tabindex="-1"><span class="ico" aria-hidden="true">✎</span>Datrio Academy</button>
+    </div>
+    <div class="dash-main" id="board-panel" role="tabpanel" aria-labelledby="tab-pregrado" tabindex="0">
+     <div class="board-kicker" id="board-kicker">01 / Universidad Privada Boliviana</div>
+     <h3 id="board-title">Enseñar en pregrado</h3>
+     <p id="board-copy">En la UPB he compartido el aula con estudiantes de pregrado. Aquí empieza una parte importante de mi historia como profesora.</p>
+     <div class="tiles">
+      <div class="tile"><small>Institución</small><strong id="tile-place">Universidad Privada Boliviana</strong></div>
+      <div class="tile"><small>Formato</small><strong id="tile-format">Pregrado</strong></div>
+      <div class="tile chart" aria-hidden="true"><small>Actividad</small><div class="bars" id="bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+     </div>
+     <div class="flow" id="board-flow" aria-label="Ruta de la clase"></div>
+    </div>
    </div>
-   <div class="board-content" id="board-panel" role="tabpanel" aria-labelledby="tab-pregrado" tabindex="0"><div class="board-kicker" id="board-kicker">01 / Universidad Privada Boliviana</div><h3 id="board-title">Enseñar en pregrado</h3><p id="board-copy">En la UPB he compartido el aula con estudiantes de pregrado. Aquí empieza una parte importante de mi historia como profesora.</p><div class="board-chalk" aria-hidden="true">ideas → preguntas → proyectos</div></div>
-  </div></div>
+  </div>
  </section>
 
  <section class="block" aria-labelledby="contact-title">
@@ -56,7 +69,7 @@
    <div><div class="eyebrow">03 / Creaciones del aula</div><h2 id="projects-title">Proyectos de <em>estudiantes</em></h2></div>
    <p>Demos que nacieron en clase, cada una con su autoría.</p>
   </div>
-  <div class="cards">
+  <div class="cards invite">
    <a class="card" href="https://datrio.space/saltenas-intinia/" target="_blank" rel="noopener noreferrer"><div class="card-top"><span class="tag">01 · Demo</span><span class="card-icon" aria-hidden="true">◍</span></div><h3>Salteñería <em>Intiña</em></h3><p>Plataforma web para gestionar pedidos de una salteñería.</p><span class="who">Adriana Claros</span><span class="pill dark">Ver demo <span>↗</span></span></a>
    <a class="card" href="https://datrio.space/ASYNC/" target="_blank" rel="noopener noreferrer"><div class="card-top"><span class="tag">02 · Demo</span><span class="card-icon" aria-hidden="true">⛰</span></div><h3>Corporación <em>Async</em></h3><p>Administración de expediciones.</p><span class="who">Antonio Nuñez</span><span class="pill dark">Ver demo <span>↗</span></span></a>
    <a class="card" href="https://datrio.space/animal-hospital-anomaly/" target="_blank" rel="noopener noreferrer"><div class="card-top"><span class="tag">03 · Demo</span><span class="card-icon" aria-hidden="true">✚</span></div><h3>Animal Hospital <em>Anomaly</em></h3><p>Juego de atención veterinaria: detectar anomalías, tratar pacientes y administrar el hospital.</p><span class="who">Keyla Lopez</span><span class="pill dark">Ver demo <span>↗</span></span></a>
@@ -70,11 +83,17 @@
 <footer class="page-foot"><span>Un lugar para aprender y compartir.</span><span>datrio / un universo en construcción</span></footer>
 <script>
 const boardEntries={
- pregrado:{kicker:'01 / Universidad Privada Boliviana',title:'Enseñar en pregrado',copy:'En la UPB he compartido el aula con estudiantes de pregrado. Aquí empieza una parte importante de mi historia como profesora.',chalk:'ideas → preguntas → proyectos'},
- posgrado:{kicker:'02 / Universidad Privada Boliviana',title:'Seguir aprendiendo en posgrado',copy:'También he dado clases de posgrado en la UPB: otro espacio para conversar, profundizar y llevar las ideas a la práctica.',chalk:'experiencia + curiosidad = aprendizaje'},
- bbv:{kicker:'03 / Bolsa Boliviana de Valores',title:'Formación en la BBV',copy:'Mi trayectoria docente incluye capacitaciones en la Bolsa Boliviana de Valores. Me gusta acercar los temas complejos a las personas.',chalk:'preguntar · comprender · aplicar'},
- academy:{kicker:'04 / Datrio Academy',title:'Aprender con Datrio Academy',copy:'En Datrio Academy creamos capacitaciones y nuevas oportunidades para compartir conocimiento. Si tu empresa necesita un curso, conversemos.',chalk:'aprender juntos ↗'}
+ pregrado:{kicker:'01 / Universidad Privada Boliviana',title:'Enseñar en pregrado',copy:'En la UPB he compartido el aula con estudiantes de pregrado. Aquí empieza una parte importante de mi historia como profesora.',place:'Universidad Privada Boliviana',format:'Pregrado',flow:['ideas','preguntas','proyectos'],bars:[38,55,46,70,62,84,76]},
+ posgrado:{kicker:'02 / Universidad Privada Boliviana',title:'Seguir aprendiendo en posgrado',copy:'También he dado clases de posgrado en la UPB: otro espacio para conversar, profundizar y llevar las ideas a la práctica.',place:'Universidad Privada Boliviana',format:'Posgrado',flow:['experiencia','curiosidad','aprendizaje'],bars:[52,44,68,58,80,72,90]},
+ bbv:{kicker:'03 / Bolsa Boliviana de Valores',title:'Formación en la BBV',copy:'Mi trayectoria docente incluye capacitaciones en la Bolsa Boliviana de Valores. Me gusta acercar los temas complejos a las personas.',place:'Bolsa Boliviana de Valores',format:'Capacitaciones',flow:['preguntar','comprender','aplicar'],bars:[30,48,62,54,70,66,78]},
+ academy:{kicker:'04 / Datrio Academy',title:'Aprender con Datrio Academy',copy:'En Datrio Academy creamos capacitaciones y nuevas oportunidades para compartir conocimiento. Si tu empresa necesita un curso, conversemos.',place:'Datrio Academy',format:'Cursos para empresas',flow:['diagnóstico','curso a medida','aprender juntos'],bars:[44,60,52,74,68,88,96]}
 };
+function paintExtras(entry){
+ document.getElementById('tile-place').textContent=entry.place;
+ document.getElementById('tile-format').textContent=entry.format;
+ document.getElementById('board-flow').innerHTML=entry.flow.map((step,n)=>'<span class="step"><b>'+String(n+1).padStart(2,'0')+'</b>'+step+'</span>').join('<span class="arrow" aria-hidden="true">→</span>');
+ document.querySelectorAll('#bars i').forEach((bar,n)=>bar.style.height=entry.bars[n]+'%');
+}
 const boardTabs=[...document.querySelectorAll('[data-board]')];
 const boardPanel=document.getElementById('board-panel');
 function showBoard(tab){
@@ -84,12 +103,13 @@ function showBoard(tab){
  document.getElementById('board-kicker').textContent=entry.kicker;
  document.getElementById('board-title').textContent=entry.title;
  document.getElementById('board-copy').textContent=entry.copy;
- document.querySelector('.board-chalk').textContent=entry.chalk;
+ paintExtras(entry);
  boardPanel.classList.remove('switching');void boardPanel.offsetWidth;boardPanel.classList.add('switching');
 }
+paintExtras(boardEntries.pregrado);
 boardTabs.forEach((tab,index)=>{
  tab.addEventListener('click',()=>showBoard(tab));
- tab.addEventListener('keydown',event=>{let next;if(event.key==='ArrowRight')next=(index+1)%boardTabs.length;else if(event.key==='ArrowLeft')next=(index-1+boardTabs.length)%boardTabs.length;else if(event.key==='Home')next=0;else if(event.key==='End')next=boardTabs.length-1;else return;event.preventDefault();boardTabs[next].focus();showBoard(boardTabs[next])});
+ tab.addEventListener('keydown',event=>{let next;if(event.key==='ArrowRight'||event.key==='ArrowDown')next=(index+1)%boardTabs.length;else if(event.key==='ArrowLeft'||event.key==='ArrowUp')next=(index-1+boardTabs.length)%boardTabs.length;else if(event.key==='Home')next=0;else if(event.key==='End')next=boardTabs.length-1;else return;event.preventDefault();boardTabs[next].focus();showBoard(boardTabs[next])});
 });
 document.getElementById('back').addEventListener('click',e=>{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;e.preventDefault();document.querySelector('main').classList.add('leaving');const href=e.currentTarget.href;setTimeout(()=>location.href=href,350)});
 addEventListener('pageshow',()=>document.querySelector('main').classList.remove('leaving'));
