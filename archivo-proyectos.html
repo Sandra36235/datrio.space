@@ -1,130 +1,61 @@
-﻿<!DOCTYPE html>
+﻿<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Datrio: proyectos de datos, ideas y aprendizaje. Un espacio de Sandra y sus estudiantes.">
-  <title>Datrio | Proyectos y aprendizaje</title>
-  <style>
-    :root { color-scheme: light; --bg: #f8f9f6; --ink: #202820; --muted: #687167; --line: #dfe4db; --accent: #416848; }
-    * { box-sizing: border-box; }
-    body { margin: 0; background: var(--bg); color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
-    a { color: inherit; }
-    .wrap { width: min(100% - 48px, 1000px); margin-inline: auto; }
-    header { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding-block: 30px; border-bottom: 1px solid var(--line); }
-    .brand { font-size: 20px; font-weight: 650; text-decoration: none; letter-spacing: -.8px; }
-    .brand span { color: var(--muted); font-weight: 400; }
-    .contact { font-size: 14px; text-decoration: none; }
-    .contact:hover { text-decoration: underline; text-underline-offset: 5px; }
-    .intro { padding: 78px 0 66px; max-width: 690px; }
-    .eyebrow { color: var(--accent); font-size: 11px; font-weight: 650; letter-spacing: 1.8px; text-transform: uppercase; }
-    h1 { font-size: clamp(38px, 6vw, 64px); font-weight: 500; line-height: 1.09; letter-spacing: -2.7px; margin: 19px 0 23px; }
-    .intro p { max-width: 530px; color: var(--muted); font-size: 17px; line-height: 1.7; margin: 0; }
-    section { margin-bottom: 48px; }
-    .section-heading { display: flex; align-items: baseline; gap: 14px; margin-bottom: 10px; }
-    .number { font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
-    h2 { margin: 0; font-size: 22px; font-weight: 500; letter-spacing: -.6px; }
-    .section-description { color: var(--muted); font-size: 14px; line-height: 1.6; margin: 0 0 22px; }
-    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-    .card { position: relative; display: flex; flex-direction: column; align-items: flex-start; min-height: 180px; padding: 26px; border: 1px solid var(--line); border-radius: 14px; background: #fff; text-decoration: none; transition: border-color .18s, transform .18s; }
-    a.card:hover { border-color: #8ca68e; transform: translateY(-3px); }
-    a:focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; }
-    .tag { font-size: 11px; color: var(--accent); margin-bottom: 30px; }
-    .arrow { position: absolute; right: 26px; top: 24px; font-size: 21px; color: var(--muted); }
-    h3 { font-size: 18px; font-weight: 550; letter-spacing: -.3px; margin: 0 0 8px; }
-    .card p { font-size: 14px; line-height: 1.55; color: var(--muted); margin: 0; }
-    .placeholder { background: transparent; border-style: dashed; grid-column: 1 / -1; min-height: 150px; justify-content: center; }
-    .placeholder .tag { margin-bottom: 15px; }
-    footer { border-top: 1px solid var(--line); padding: 24px 0 32px; display: flex; justify-content: space-between; gap: 16px; color: var(--muted); font-size: 12px; line-height: 1.6; }
-    @media (max-width: 580px) { .wrap { width: calc(100% - 36px); } header { padding-block: 24px; } .intro { padding: 55px 0 48px; } h1 { letter-spacing: -1.6px; } .grid { grid-template-columns: 1fr; } .card { min-height: 166px; padding: 23px; } footer { flex-direction: column; gap: 3px; } }
-    @media (prefers-reduced-motion: reduce) { .card { transition: none; } a.card:hover { transform: none; } }
-  </style>
-<link rel="stylesheet" href="portfolio-interior.css?v=warm-1">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#fbf6ec">
+<meta name="description" content="Datrio: proyectos de datos, ideas y aprendizaje. Un espacio de Sandra y sus estudiantes.">
+<title>Proyectos y aprendizaje · Datrio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700&family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&display=swap">
+<link rel="stylesheet" href="datrio-pages.css?v=2">
+<link rel="icon" href="datrio-mark.svg">
 </head>
-<body class="datrio-interior">
-  <div class="wrap">
-    <header>
-      <a class="brand" href="./" aria-label="Datrio, inicio">datrio<span>.space</span></a>
-      <a class="contact" href="mailto:sandra36235@gmail.com">Contactar <span aria-hidden="true">↗</span></a>
-    </header>
-    <main>
-      <div class="intro">
-        <span class="eyebrow">Datos · Ideas · Aprendizaje</span>
-        <h1>Un espacio para crear<br>y compartir.</h1>
-        <p>Proyectos de Data Science y Business Intelligence, junto a las ideas que mis estudiantes están convirtiendo en realidad.</p>
-      </div>
-      <section aria-labelledby="mis-proyectos">
-        <div class="section-heading"><span class="number" aria-hidden="true">01</span><h2 id="mis-proyectos">Mis Proyectos</h2></div>
-        <p class="section-description">Una selección de mi trabajo con datos.</p>
-        <div class="grid">
-          <a class="card" href="index.html">
-            <span class="tag">Experiencia interactiva · 3D</span><span class="arrow" aria-hidden="true">↗</span>
-            <h3>Un mundo en 3D</h3><p>Recorre mi salón y mi estudio; descubre los rincones que forman parte de mi universo.</p>
-          </a>
-          <a class="card" href="estudio-powerbi.html">
-            <span class="tag">Power BI · Herramienta de diseño</span><span class="arrow" aria-hidden="true">↗</span>
-            <h3>Datrio Studio</h3><p>Diseñá layouts, extraé paletas desde imágenes y exportá fondos y temas para Power BI.</p>
-          </a>
-          <a class="card" href="paletas.html">
-            <span class="tag">Diseño · Color · Power BI</span><span class="arrow" aria-hidden="true">↗</span>
-            <h3>Generador de paletas</h3><p>Explorá combinaciones, bloqueá tus tonos favoritos y llevá tu paleta al próximo reporte.</p>
-          </a>
-          <a class="card" href="guia-negocios.html">
-            <span class="tag">Negocios · IA · Guía interactiva</span><span class="arrow" aria-hidden="true">↗</span>
-            <h3>De datos a decisiones</h3><p>Elegí tu problema, entendé los modelos y adaptá prompts para trabajar con IA sin programar.</p>
-          </a>
-          <a class="card" href="yape.html">
-            <span class="tag">Presentación</span><span class="arrow" aria-hidden="true">↗</span>
-            <h3>Yape</h3><p>Explorá la presentación del proyecto.</p>
-          </a>
-          <a class="card" href="Guia_Visualizaciones_PowerBI_SandraAbasto.html">
-            <span class="tag">Power BI</span><span class="arrow" aria-hidden="true">↗</span>
-            <h3>Guía de visualizaciones</h3><p>Una guía para contar historias con datos.</p>
-          </a>
-          <a class="card" href="guia-dax.html">
-            <span class="tag">Power BI · Excel · Guía interactiva</span><span class="arrow" aria-hidden="true">↗</span>
-            <h3>Mega guía de DAX</h3><p>Explorá funciones, contexto de filtro y ejemplos prácticos para crear mejores medidas.</p>
-          </a>
-        </div>
-      </section>
-      <section aria-labelledby="proyectos-estudiantes">
-        <div class="section-heading"><span class="number" aria-hidden="true">02</span><h2 id="proyectos-estudiantes">Proyectos de Estudiantes</h2></div>
-        <p class="section-description">Un lugar para experimentar, aprender y mostrar lo que creamos.</p>
-        <div class="grid">
-          <a class="card" href="saltenas-intinia/">
-            <span class="tag">Adriana Claros · Demostración</span><span class="arrow" aria-hidden="true">↗</span>
-            <h3>Salteñería Intiña</h3>
-            <p>Plataforma web para la gestión de pedidos de una salteñería. Explorá la demo.</p>
-          </a>
-          <a class="card" href="ASYNC/">
-            <span class="tag">Antonio Nuñez · Demostración</span><span class="arrow" aria-hidden="true">↗</span>
-            <h3>Corporacion Async</h3>
-            <p>Administración de Expediciones. Explorá la demo.</p>
-          </a>
-          <a class="card" href="animal-hospital-anomaly/">
-            <span class="tag">Keyla Lopez · Demostración</span><span class="arrow" aria-hidden="true">↗</span>
-            <h3>Animal Hospital Anomaly</h3>
-            <p>Juego de atención veterinaria: detectá anomalías, tratá pacientes y administrá el hospital.</p>
-          </a>
-          <a class="card" href="nativas-burgers/">
-            <span class="tag">Nataly Ovando · Demostración</span><span class="arrow" aria-hidden="true">↗</span>
-            <h3>Nativas Burgers</h3>
-            <p>Sistema de ventas e inventario para una hamburguesería, con productos, pedidos y tickets.</p>
-          </a>
-          <a class="card" href="EufratesYTigris/">
-            <span class="tag">Ernesto Ballon · Demostración</span><span class="arrow" aria-hidden="true">↗</span>
-            <h3>Eufrates &amp; Tigris</h3>
-            <p>Comercio de la antigua Mesopotamia, desde el registro del cliente hasta la entrega de cada pedido.</p>
-          </a>
-          <a class="card" href="cineuphoria/">
-            <span class="tag">Ariana Vega Fernandez · Demostración</span><span class="arrow" aria-hidden="true">↗</span>
-            <h3>Cineuphoria</h3>
-            <p>Compra de entradas de cine con cartelera, funciones, selección de asientos, dulcería y pago.</p>
-          </a>
-        </div>
-      </section>
-    </main>
-    <footer><span>datrio.space · Sandra Abasto</span><span>Hecho con curiosidad. Compartido con cariño.</span></footer>
+<body>
+<header class="page-top">
+ <a class="page-logo" href="index.html" aria-label="Datrio, inicio"><img src="datrio-mark.svg" alt=""><span>datrio</span></a>
+ <a class="pill" href="mailto:sandra36235@gmail.com">Contactar <span>↗</span></a>
+</header>
+<main>
+ <section class="page-hero">
+  <div>
+   <div class="eyebrow">Datos · Ideas · Aprendizaje</div>
+   <h1>Un espacio para crear <em>y compartir.</em></h1>
+   <p>Proyectos de Data Science y Business Intelligence, junto a las ideas que mis estudiantes están convirtiendo en realidad.</p>
   </div>
+  <div class="hero-art"><img src="art/card-salon.webp" alt="El salón de Datrio en 3D" width="640" height="440"></div>
+ </section>
+
+ <section class="block" aria-labelledby="mis-proyectos">
+  <div class="section-head">
+   <div><div class="eyebrow">01 / Mi trabajo</div><h2 id="mis-proyectos">Mis <em>proyectos</em></h2></div>
+   <p>Una selección de mi trabajo con datos.</p>
+  </div>
+  <div class="cards">
+   <a class="card" href="index.html"><div class="card-top"><span class="tag">Experiencia 3D</span><span class="card-icon" aria-hidden="true">◇</span></div><h3>Un mundo <em>en 3D</em></h3><p>Recorre mi salón y mi estudio, y descubre los rincones que forman parte de mi universo.</p><span class="pill dark">Entrar <span>↗</span></span></a>
+   <a class="card" href="estudio-powerbi.html"><div class="card-top"><span class="tag">Power BI · Diseño</span><span class="card-icon" aria-hidden="true">▦</span></div><h3>Datrio <em>Studio</em></h3><p>Diseña layouts, extrae paletas desde imágenes y exporta fondos y temas para Power BI.</p><span class="pill dark">Editor de layouts <span>↗</span></span></a>
+   <a class="card" href="paletas.html"><div class="card-top"><span class="tag">Diseño · Color</span><span class="card-icon" aria-hidden="true">◐</span></div><h3>Generador de <em>paletas</em></h3><p>Explora combinaciones, bloquea tus tonos favoritos y lleva tu paleta al próximo reporte.</p><span class="pill dark">Laboratorio de color <span>↗</span></span></a>
+   <a class="card" href="guia-negocios.html"><div class="card-top"><span class="tag">Negocios · IA</span><span class="card-icon" aria-hidden="true">✦</span></div><h3>De datos a <em>decisiones</em></h3><p>Elige tu problema, entiende los modelos y adapta prompts para trabajar con IA sin programar.</p><span class="pill dark">Guía interactiva <span>↗</span></span></a>
+   <a class="card" href="yape.html"><div class="card-top"><span class="tag">Presentación</span><span class="card-icon" aria-hidden="true">▶</span></div><h3><em>Yape</em></h3><p>Explora la presentación del proyecto.</p><span class="pill dark">Ver presentación <span>↗</span></span></a>
+   <a class="card" href="Guia_Visualizaciones_PowerBI_SandraAbasto.html"><div class="card-top"><span class="tag">Power BI</span><span class="card-icon" aria-hidden="true">▥</span></div><h3>Guía de <em>visualizaciones</em></h3><p>Una guía para contar historias con datos.</p><span class="pill dark">Guía de clase <span>↗</span></span></a>
+   <a class="card" href="guia-dax.html"><div class="card-top"><span class="tag">Power BI · Excel</span><span class="card-icon" aria-hidden="true">ƒ</span></div><h3>Mega guía de <em>DAX</em></h3><p>Explora funciones, contexto de filtro y ejemplos prácticos para crear mejores medidas.</p><span class="pill dark">Catálogo interactivo <span>↗</span></span></a>
+  </div>
+ </section>
+
+ <section class="block" aria-labelledby="proyectos-estudiantes">
+  <div class="section-head">
+   <div><div class="eyebrow">02 / Creaciones del aula</div><h2 id="proyectos-estudiantes">Proyectos de <em>estudiantes</em></h2></div>
+   <p>Un lugar para experimentar, aprender y mostrar lo que creamos.</p>
+  </div>
+  <div class="cards">
+   <a class="card" href="saltenas-intinia/"><div class="card-top"><span class="tag">Demo</span><span class="card-icon" aria-hidden="true">◍</span></div><h3>Salteñería <em>Intiña</em></h3><p>Plataforma web para la gestión de pedidos de una salteñería.</p><span class="who">Adriana Claros</span><span class="pill dark">Ver demo <span>↗</span></span></a>
+   <a class="card" href="ASYNC/"><div class="card-top"><span class="tag">Demo</span><span class="card-icon" aria-hidden="true">⛰</span></div><h3>Corporación <em>Async</em></h3><p>Administración de expediciones.</p><span class="who">Antonio Nuñez</span><span class="pill dark">Ver demo <span>↗</span></span></a>
+   <a class="card" href="animal-hospital-anomaly/"><div class="card-top"><span class="tag">Demo</span><span class="card-icon" aria-hidden="true">✚</span></div><h3>Animal Hospital <em>Anomaly</em></h3><p>Juego de atención veterinaria: detecta anomalías, trata pacientes y administra el hospital.</p><span class="who">Keyla Lopez</span><span class="pill dark">Ver demo <span>↗</span></span></a>
+   <a class="card" href="nativas-burgers/"><div class="card-top"><span class="tag">Demo</span><span class="card-icon" aria-hidden="true">◒</span></div><h3>Nativas <em>Burgers</em></h3><p>Sistema de ventas e inventario para una hamburguesería, con productos, pedidos y tickets.</p><span class="who">Nataly Ovando</span><span class="pill dark">Ver demo <span>↗</span></span></a>
+   <a class="card" href="EufratesYTigris/"><div class="card-top"><span class="tag">Demo</span><span class="card-icon" aria-hidden="true">≈</span></div><h3>Eufrates <em>&amp; Tigris</em></h3><p>Comercio de la antigua Mesopotamia, desde el registro del cliente hasta la entrega de cada pedido.</p><span class="who">Ernesto Ballon</span><span class="pill dark">Ver demo <span>↗</span></span></a>
+   <a class="card" href="cineuphoria/"><div class="card-top"><span class="tag">Demo</span><span class="card-icon" aria-hidden="true">✶</span></div><h3><em>Cineuphoria</em></h3><p>Compra de entradas de cine con cartelera, funciones, selección de asientos, dulcería y pago.</p><span class="who">Ariana Vega Fernandez</span><span class="pill dark">Ver demo <span>↗</span></span></a>
+  </div>
+ </section>
+</main>
+<footer class="page-foot"><span>Hecho con curiosidad. Compartido con cariño.</span><span>datrio / un universo en construcción</span></footer>
 </body>
 </html>

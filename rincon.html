@@ -1,12 +1,32 @@
 ﻿<!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#fffaf5"><title>Un rincón de Datrio</title>
-<style>
-:root{--ink:#26354d;--blue:#3159c5;--orange:#ed9a5f;--line:#e9e4dc}*{box-sizing:border-box}body{margin:0;color:var(--ink);background:#fffaf5;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}a{color:inherit;text-decoration:none}a:focus-visible{outline:3px solid var(--orange);outline-offset:5px}header{height:85px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:15px;padding:0 clamp(22px,6vw,90px)}.logo{font-size:27px;font-weight:800;letter-spacing:-1.6px}.logo span{color:var(--blue)}.back{font-size:12px;padding:11px 16px;border:1px solid #dce2ed;border-radius:30px;background:#fff;transition:transform .2s}.back:hover{transform:translateX(-4px)}main{max-width:1150px;margin:auto;padding:clamp(55px,8vw,110px) clamp(22px,6vw,90px) 100px;animation:arrive .6s ease both}.eyebrow{color:var(--blue);font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:750}h1{font-size:clamp(55px,8vw,105px);letter-spacing:-.075em;line-height:.98;font-weight:650;margin:20px 0 25px}.intro{font-size:17px;line-height:1.75;color:#66758a;max-width:640px}.empty{margin-top:75px;max-width:640px;border:1px dashed #c7d2e3;background:#fff;border-radius:22px;padding:33px}.empty .symbol{font-size:38px;color:var(--orange)}.empty h2{font-size:24px;letter-spacing:-.04em;margin:10px 0}.empty p{font-size:14px;line-height:1.7;color:#77869b;margin:0}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:55px}.card{min-height:225px;padding:24px;background:#fff;border:1px solid var(--line);border-radius:18px;display:flex;flex-direction:column}.card .num{color:var(--orange);font-size:12px;font-weight:750;letter-spacing:1px}.card h2{font-size:23px;letter-spacing:-.045em;margin:25px 0 8px}.card p{font-size:13px;line-height:1.65;color:#66758a;margin:0 0 20px}.card a,.card small{font-size:11px;color:var(--blue);font-weight:750;margin-top:auto}.card a{text-decoration:underline;text-underline-offset:3px}.skills{margin-top:55px;padding:26px;border-radius:18px;background:#f8edf4}.skills h2{font-size:23px;letter-spacing:-.04em;margin:0 0 18px}.skill-groups{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.skill-groups b{display:block;font-size:12px;margin-bottom:10px}.skill-groups span{display:inline-block;font-size:11px;background:#fff;padding:7px 10px;border-radius:20px;margin:0 4px 6px 0;color:#64738b}footer{padding:25px clamp(22px,6vw,90px);border-top:1px solid var(--line);font-size:12px;color:#8e98a6}@keyframes arrive{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}@media(max-width:750px){.cards,.skill-groups{grid-template-columns:1fr}.card{min-height:190px}header{height:70px}.back{font-size:10px}}@media(prefers-reduced-motion:reduce){main{animation:none}*{transition:none!important}}
-</style><link rel="stylesheet" href="portfolio-interior.css?v=warm-1"></head>
-<body class="datrio-interior"><header><a class="logo" href="index.html" aria-label="Datrio, volver al universo">datrio<span>✳</span></a><a class="back" id="back" href="index.html">← Volver al universo</a></header><main><div class="eyebrow" id="eyebrow">Un rincón de mi universo</div><h1 id="title">Pasa.</h1><p class="intro" id="intro"></p><div id="content"></div></main><footer>datrio.space · Sandra Abasto</footer>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#fbf6ec">
+<title>Un rincón de Datrio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700&family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&display=swap">
+<link rel="stylesheet" href="datrio-pages.css?v=2">
+<link rel="icon" href="datrio-mark.svg">
+</head>
+<body>
+<header class="page-top">
+ <a class="page-logo" href="index.html#salon" aria-label="Datrio, volver al salón"><img src="datrio-mark.svg" alt=""><span>datrio</span></a>
+ <a class="pill" id="back" href="index.html#salon"><span>←</span> Volver al salón</a>
+</header>
+<main>
+ <section class="page-hero">
+  <div>
+   <div class="eyebrow">Un rincón de mi universo</div>
+   <h1 id="title">Pasa.</h1>
+   <p id="intro"></p>
+  </div>
+  <div class="hero-art"><img src="art/card-salon.webp" alt="El salón de Datrio en 3D, con el sofá burgundy y Puyol" width="640" height="440"></div>
+ </section>
+ <section class="block" id="content"></section>
+</main>
+<footer class="page-foot"><span>Hecho de curiosidad, café y conexiones.</span><span>datrio / un universo en construcción</span></footer>
 <script>
-const universePage='index.html';
-const libraryPage='biblioteca.html';
 const params=new URLSearchParams(location.search);
 const pages={
  coffee:{name:'Café & matcha',intro:'Un lugar para preparar una pausa y dejar que aparezcan nuevas ideas.'},
@@ -20,15 +40,30 @@ const pages={
 const key=Object.hasOwn(pages,params.get('zona'))?params.get('zona'):'work';
 const page=pages[key];
 document.title=page.name+' · Datrio';
-document.getElementById('title').textContent=page.name+'.';
+// The last word of the title goes in burgundy italics, like every Datrio heading.
+const words=page.name.split(' '),last=words.pop();
+const title=document.getElementById('title');title.textContent=words.join(' ')+' ';
+const em=document.createElement('em');em.textContent=last+'.';title.append(em);
 document.getElementById('intro').textContent=page.intro;
 const from=params.get('desde')==='estudio'?'estudio':'salon';
-for(const link of document.querySelectorAll('header a'))link.href=universePage+'#'+from;
+for(const link of document.querySelectorAll('header a'))link.href='index.html#'+from;
+const card=(tag,icon,h,p,link)=>`<${link?'a':'article'} class="card${link?'':' static'}"${link?` href="${link.href}"${link.ext?' target="_blank" rel="noopener noreferrer"':''}`:''}><div class="card-top"><span class="tag">${tag}</span><span class="card-icon" aria-hidden="true">${icon}</span></div><h3>${h}</h3><p>${p}</p>${link?`<span class="pill dark">${link.label} <span>↗</span></span>`:'<span class="who">Más detalles pronto</span>'}</${link?'a':'article'}>`;
+const head=(n,h)=>`<div class="section-head"><div><div class="eyebrow">${n}</div><h2>${h}</h2></div></div>`;
 const content=document.getElementById('content');
 if(key==='tech'){
- content.innerHTML='<div class="cards"><article class="card"><span class="num">01 / APP PERSONAL</span><h2>El árbol</h2><p>Uno de mis desarrollos personales. Su repositorio es privado.</p><small>Más detalles pronto</small></article><article class="card"><span class="num">02 / APP PERSONAL</span><h2>eusebiOS</h2><p>Aplicación de gestión anti-estrés con una experiencia visual propia. Su repositorio es privado.</p><small>Más detalles pronto</small></article><article class="card"><span class="num">03 / APP PERSONAL</span><h2>Kurtos</h2><p>Aplicación de ventas con un personalizador 3D paso a paso.</p><a href="https://github.com/Sandra36235/kurtosapp" target="_blank" rel="noopener noreferrer">Ver repositorio ↗</a></article></div><section class="skills"><h2>Mi tablero de herramientas</h2><div class="skill-groups"><div><b>Business intelligence</b><span>Power BI</span><span>SQL</span><span>Excel</span><span>Python</span><span>Microsoft Fabric</span><span>Snowflake</span></div><div><b>Desarrollo</b><span>Django</span><span>JavaScript</span><span>HTML / CSS</span></div><div><b>Experiencias 3D</b><span>Three.js</span></div></div></section>';
+ content.innerHTML=head('01 / Apps personales','Lo que <em>construyo</em>')+'<div class="cards">'+
+  card('App personal','✿','El <em>árbol</em>','Uno de mis desarrollos personales. Su repositorio es privado.')+
+  card('App personal','☺','eusebi<em>OS</em>','Aplicación de gestión anti-estrés con una experiencia visual propia. Su repositorio es privado.')+
+  card('App personal','◇','<em>Kurtos</em>','Aplicación de ventas con un personalizador 3D paso a paso.',{href:'https://github.com/Sandra36235/kurtosapp',ext:1,label:'Ver repositorio'})+
+  '</div>'+head('02 / Mi tablero','Mis <em>herramientas</em>')+
+  '<div class="chip-groups"><div><b>Business intelligence</b><div class="chips"><span>Power BI</span><span>SQL</span><span>Excel</span><span>Python</span><span>Microsoft Fabric</span><span>Snowflake</span></div></div><div><b>Desarrollo</b><div class="chips"><span>Django</span><span>JavaScript</span><span>HTML / CSS</span></div></div><div><b>Experiencias 3D</b><div class="chips"><span>Three.js</span></div></div></div>';
 }else if(key==='chess'){
- content.innerHTML='<div class="cards"><article class="card"><span class="num">01 / IDEA</span><h2>Datrio</h2><p>Un espacio para compartir datos, ideas y lo que nace en el aula.</p><a href="https://datrio.space/" target="_blank" rel="noopener noreferrer">Visitar Datrio ↗</a></article><article class="card"><span class="num">02 / FORMACIÓN</span><h2>Datrio Academy</h2><p>Capacitaciones y cursos a medida para seguir aprendiendo.</p><a id="academy-link" href="biblioteca.html#contact-title">Conversemos ↗</a></article><article class="card"><span class="num">03 / BI</span><h2>Proyectos de BI</h2><p>Aquí irán mis casos y tableros de business intelligence.</p><small>Espacio en preparación</small></article></div>';
- document.getElementById('academy-link').href=libraryPage+'#contact-title';
-}else content.innerHTML='<div class="empty"><div class="symbol" aria-hidden="true">✳</div><h2>Este rincón está tomando forma.</h2><p>Pronto habrá más historias aquí. Mientras tanto, puedes volver a recorrer el universo.</p></div>';
-</script></body></html>
+ content.innerHTML=head('01 / Próximas jugadas','Ideas en el <em>tablero</em>')+'<div class="cards">'+
+  card('Idea','✳','<em>Datrio</em>','Un espacio para compartir datos, ideas y lo que nace en el aula.',{href:'https://datrio.space/',ext:1,label:'Visitar Datrio'})+
+  card('Formación','✎','Datrio <em>Academy</em>','Capacitaciones y cursos a medida para seguir aprendiendo.',{href:'biblioteca.html#contact-title',label:'Conversemos'})+
+  card('BI','▥','Proyectos de <em>BI</em>','Aquí irán mis casos y tableros de business intelligence.')+
+  '</div>';
+}else content.innerHTML='<div class="soon"><span class="card-icon" aria-hidden="true">✳</span><div><h2>Este rincón está tomando forma.</h2><p>Pronto habrá más historias aquí. Mientras tanto, puedes volver a recorrer el salón.</p><a class="text-link" href="index.html#'+from+'">Volver al salón →</a></div></div>';
+</script>
+</body>
+</html>

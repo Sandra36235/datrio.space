@@ -2,35 +2,76 @@
 <html lang="es">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#f9f7f2">
+<meta name="theme-color" content="#fbf6ec">
 <meta name="description" content="Herramientas y guías de Sandra Abasto para aprender datos, Power BI e inteligencia artificial.">
 <title>La caja de herramientas · Datrio</title>
-<style>
-:root{--ink:#203047;--blue:#2557bd;--paper:#f9f7f2;--line:#e6dfd2;--muted:#66758a}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}a{color:inherit;text-decoration:none}a:focus-visible{outline:3px solid #e99a53;outline-offset:4px}
-header{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:22px clamp(24px,6vw,90px);border-bottom:1px solid var(--line)}.logo{font-size:27px;font-weight:800;letter-spacing:-1.7px}.logo span{color:var(--blue)}.back{font-size:13px;border:1px solid #d7dbe5;background:#fff;border-radius:99px;padding:12px 18px;transition:transform .2s}.back:hover{transform:translateX(-4px)}
-main{max-width:1260px;margin:auto;padding:70px clamp(24px,6vw,90px) 100px;animation:arrive .7s ease both}.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center;padding-bottom:70px;border-bottom:1px solid var(--line)}.eyebrow,.section-tag{font-size:11px;font-weight:750;letter-spacing:2px;color:var(--blue);text-transform:uppercase}.hero h1{font-size:clamp(57px,7vw,98px);line-height:.97;letter-spacing:-.072em;font-weight:650;margin:22px 0}.hero h1 em{font-style:normal;color:var(--blue)}.hero p{max-width:590px;color:#59697d;line-height:1.75;font-size:17px;margin:0}.art{height:320px;position:relative;display:grid;place-items:center}.halo{position:absolute;width:295px;height:295px;border-radius:50%;background:#e4edf7}.toolbox{position:relative;width:265px;height:155px;background:#2e65b8;border-radius:19px 19px 26px 26px;box-shadow:0 28px 0 -18px #123c7c,0 38px 50px #2144692b;transform:rotate(-5deg)}.toolbox:before{content:"";position:absolute;left:-8px;right:-8px;top:-30px;height:48px;background:#f1e5cd;border-radius:17px;box-shadow:0 8px 0 #cbb897}.toolbox:after{content:"";position:absolute;width:76px;height:33px;top:-62px;left:95px;border:13px solid #c89956;border-bottom:0;border-radius:32px 32px 0 0}.bars{position:absolute;bottom:35px;left:31px;display:flex;align-items:end;gap:9px}.bars i{display:block;width:20px;border-radius:6px 6px 0 0;background:#dce8f4}.bars i:nth-child(1){height:27px}.bars i:nth-child(2){height:48px}.bars i:nth-child(3){height:67px}.spark{position:absolute;right:48px;top:35px;color:#ffd172;font-size:35px}
-.section-head{display:flex;justify-content:space-between;align-items:end;gap:25px;padding:63px 0 25px}.section-head h2{font-size:clamp(32px,4vw,50px);letter-spacing:-.05em;margin:10px 0 0}.section-head p{max-width:265px;color:var(--muted);font-size:13px;line-height:1.6;margin:0}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}.card{min-height:285px;display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:21px;padding:26px;transition:transform .2s,box-shadow .2s,border-color .2s}.card:hover{transform:translateY(-5px);box-shadow:0 22px 40px #24477417;border-color:#a9bee3}.card-top{display:flex;justify-content:space-between;color:var(--blue);font-weight:750;font-size:11px;letter-spacing:1px}.card-top b{font-size:25px;font-weight:400}.card h3{font-size:26px;letter-spacing:-.04em;line-height:1.1;margin:44px 0 12px}.card p{font-size:14px;line-height:1.65;color:#66758a;margin:0 0 22px}.card small{margin-top:auto;color:#cc754b;font-weight:700;font-size:11px;letter-spacing:.4px}.note{margin-top:35px;color:var(--muted);font-size:13px;line-height:1.6}footer{border-top:1px solid var(--line);padding:26px clamp(24px,6vw,90px);color:#7f8995;font-size:12px;display:flex;justify-content:space-between;gap:15px}.leaving{animation:leave .35s ease forwards}@keyframes arrive{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}@keyframes leave{to{opacity:0;transform:translateY(18px)}}
-@media(max-width:800px){.hero{grid-template-columns:1fr;gap:15px}.art{order:-1;height:260px}.halo{width:230px;height:230px}.toolbox{transform:scale(.8) rotate(-5deg)}.grid{grid-template-columns:1fr 1fr}.section-head{align-items:start;flex-direction:column}.section-head p{max-width:500px}}@media(max-width:560px){header{padding:18px 24px}.back{font-size:11px;padding:10px 12px}main{padding-top:45px}.hero h1{font-size:56px}.hero p{font-size:15px}.grid{grid-template-columns:1fr}.card{min-height:220px}.card h3{margin-top:25px}footer{display:block;line-height:2}}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-.grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-@media(max-width:560px){.grid{grid-template-columns:1fr}}
-</style>
-<link rel="stylesheet" href="portfolio-interior.css?v=warm-1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700&family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&display=swap">
+<link rel="stylesheet" href="datrio-pages.css?v=2">
+<link rel="icon" href="datrio-mark.svg">
 </head>
-<body class="datrio-interior">
-<header><a class="logo" href="index.html#salon" aria-label="Datrio, volver al salón">dat<span>rio.</span></a><a class="back" href="index.html#salon">← Volver al salón</a></header>
+<body>
+<header class="page-top">
+ <a class="page-logo" href="index.html#salon" aria-label="Datrio, volver al salón"><img src="datrio-mark.svg" alt=""><span>datrio</span></a>
+ <a class="pill" href="index.html#salon"><span>←</span> Volver al salón</a>
+</header>
 <main>
- <section class="hero"><div><div class="eyebrow">Un rincón de Datrio · Aula</div><h1>La caja de<br><em>herramientas.</em></h1><p>Recursos que preparé para explicar, experimentar y volver a preguntar. Nacieron para mis clases y aquí puedes abrirlos a tu ritmo.</p></div><div class="art" aria-hidden="true"><div class="halo"></div><div class="toolbox"><div class="bars"><i></i><i></i><i></i></div><span class="spark">✳</span></div></div></section>
- <section aria-labelledby="tools-title"><div class="section-head"><div><div class="section-tag">01 / Para explorar</div><h2 id="tools-title">Abre una herramienta</h2></div><p>Estas guías están publicadas en Datrio y se abren en una pestaña nueva.</p></div><div class="grid">
-    <a class="card" href="https://datrio.space/estudio-powerbi.html" target="_blank" rel="noopener noreferrer"><div class="card-top"><span>POWER BI · DISEÑO</span><b aria-hidden="true">↗</b></div><h3>Datrio Studio</h3><p>Diseña layouts, extrae paletas desde imágenes y exporta fondos y temas para Power BI.</p><small>EDITOR DE LAYOUTS</small></a>
-    <a class="card" href="https://datrio.space/paletas.html" target="_blank" rel="noopener noreferrer"><div class="card-top"><span>DISEÑO · COLOR</span><b aria-hidden="true">↗</b></div><h3>Generador de paletas</h3><p>Explora combinaciones, bloquea tus tonos favoritos y lleva tu paleta al próximo reporte.</p><small>LABORATORIO DE COLOR</small></a>
-  <a class="card" href="https://datrio.space/guia-negocios.html" target="_blank" rel="noopener noreferrer"><div class="card-top"><span>DATOS · IA</span><b aria-hidden="true">↗</b></div><h3>De datos a decisiones</h3><p>Elige un problema de negocio, conoce modelos y adapta prompts para trabajar con IA sin programar.</p><small>GUÍA INTERACTIVA</small></a>
-  <a class="card" href="https://datrio.space/yape.html" target="_blank" rel="noopener noreferrer"><div class="card-top"><span>PRESENTACIÓN</span><b aria-hidden="true">↗</b></div><h3>Yape</h3><p>Explora la presentación del proyecto.</p><small>VER PRESENTACIÓN</small></a>
-  <a class="card" href="https://datrio.space/Guia_Visualizaciones_PowerBI_SandraAbasto.html" target="_blank" rel="noopener noreferrer"><div class="card-top"><span>POWER BI</span><b aria-hidden="true">↗</b></div><h3>Guía de visualizaciones</h3><p>Un recurso para elegir visuales con intención y contar historias más claras con datos.</p><small>GUÍA DE CLASE</small></a>
-  <a class="card" href="https://datrio.space/guia-dax.html" target="_blank" rel="noopener noreferrer"><div class="card-top"><span>POWER BI · EXCEL</span><b aria-hidden="true">↗</b></div><h3>Mega guía de DAX</h3><p>Funciones, contexto de filtro y recetas prácticas para crear y entender mejores medidas.</p><small>CATÁLOGO INTERACTIVO</small></a>
- </div><p class="note">La caja seguirá creciendo a medida que prepare nuevas herramientas para mis estudiantes.</p></section>
+ <section class="page-hero">
+  <div>
+   <div class="eyebrow">Un rincón de Datrio · Aula</div>
+   <h1>La caja de <em>herramientas.</em></h1>
+   <p>Recursos que preparé para explicar, experimentar y volver a preguntar. Nacieron para mis clases y aquí puedes abrirlos a tu ritmo.</p>
+  </div>
+  <div class="hero-art"><img src="art/herramientas-hero.webp" alt="La caja de herramientas del salón, con un globo terráqueo, libros con una manzana y la pizarra ¡A probar!" width="571" height="336"></div>
+ </section>
+
+ <section aria-labelledby="tools-title">
+  <div class="section-head">
+   <div><div class="eyebrow">01 / Para explorar</div><h2 id="tools-title">Abre una <em>herramienta</em></h2></div>
+   <p>Estas guías están publicadas en Datrio y se abren en una pestaña nueva.</p>
+  </div>
+  <div class="cards">
+   <a class="card" href="https://datrio.space/estudio-powerbi.html" target="_blank" rel="noopener noreferrer">
+    <div class="card-top"><span class="tag">Power BI · Diseño</span><span class="card-icon" aria-hidden="true">▦</span></div>
+    <h3>Datrio <em>Studio</em></h3>
+    <p>Diseña layouts, extrae paletas desde imágenes y exporta fondos y temas para Power BI.</p>
+    <span class="pill dark">Editor de layouts <span>↗</span></span>
+   </a>
+   <a class="card" href="https://datrio.space/paletas.html" target="_blank" rel="noopener noreferrer">
+    <div class="card-top"><span class="tag">Diseño · Color</span><span class="card-icon" aria-hidden="true">◐</span></div>
+    <h3>Generador de <em>paletas</em></h3>
+    <p>Explora combinaciones, bloquea tus tonos favoritos y lleva tu paleta al próximo reporte.</p>
+    <span class="pill dark">Laboratorio de color <span>↗</span></span>
+   </a>
+   <a class="card" href="https://datrio.space/guia-negocios.html" target="_blank" rel="noopener noreferrer">
+    <div class="card-top"><span class="tag">Datos · IA</span><span class="card-icon" aria-hidden="true">✦</span></div>
+    <h3>De datos a <em>decisiones</em></h3>
+    <p>Elige un problema de negocio, conoce modelos y adapta prompts para trabajar con IA sin programar.</p>
+    <span class="pill dark">Guía interactiva <span>↗</span></span>
+   </a>
+   <a class="card" href="https://datrio.space/yape.html" target="_blank" rel="noopener noreferrer">
+    <div class="card-top"><span class="tag">Presentación</span><span class="card-icon" aria-hidden="true">▶</span></div>
+    <h3><em>Yape</em></h3>
+    <p>Explora la presentación del proyecto.</p>
+    <span class="pill dark">Ver presentación <span>↗</span></span>
+   </a>
+   <a class="card" href="https://datrio.space/Guia_Visualizaciones_PowerBI_SandraAbasto.html" target="_blank" rel="noopener noreferrer">
+    <div class="card-top"><span class="tag">Power BI</span><span class="card-icon" aria-hidden="true">▥</span></div>
+    <h3>Guía de <em>visualizaciones</em></h3>
+    <p>Un recurso para elegir visuales con intención y contar historias más claras con datos.</p>
+    <span class="pill dark">Guía de clase <span>↗</span></span>
+   </a>
+   <a class="card" href="https://datrio.space/guia-dax.html" target="_blank" rel="noopener noreferrer">
+    <div class="card-top"><span class="tag">Power BI · Excel</span><span class="card-icon" aria-hidden="true">ƒ</span></div>
+    <h3>Mega guía de <em>DAX</em></h3>
+    <p>Funciones, contexto de filtro y recetas prácticas para crear y entender mejores medidas.</p>
+    <span class="pill dark">Catálogo interactivo <span>↗</span></span>
+   </a>
+  </div>
+  <p class="note">La caja seguirá creciendo a medida que prepare nuevas herramientas para mis estudiantes.</p>
+ </section>
 </main>
-<footer><span>HECHO PARA APRENDER HACIENDO.</span><span>datrio / un universo en construcción</span></footer>
+<footer class="page-foot"><span>Hecho para aprender haciendo.</span><span>datrio / un universo en construcción</span></footer>
 <script>document.querySelectorAll('a[href="index.html#salon"]').forEach(link=>link.addEventListener('click',event=>{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;event.preventDefault();document.querySelector('main').classList.add('leaving');setTimeout(()=>location.href=link.href,350)}));</script>
 </body>
 </html>
