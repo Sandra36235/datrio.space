@@ -152,3 +152,18 @@ main{max-width:1280px;margin:0 auto;padding:0 var(--gutter) 80px;animation:arriv
 @media(max-width:900px){.chip-groups{grid-template-columns:1fr}.cards.two{grid-template-columns:1fr 1fr}}
 @media(max-width:600px){.cards.two{grid-template-columns:1fr}.soon{flex-direction:column;padding:22px}.board-inner{min-height:380px}.board-tabs button{font-size:12px}}
 @media(max-width:900px){.hero-art.portrait img{max-height:260px}.hero-art img{width:min(420px,100%)}}
+
+/* Invitation cards (contact): both in the salon's burgundy, butter details */
+.cards.invite .card,.cards.invite .card:nth-child(n){
+ background:radial-gradient(circle at 88% 12%,rgba(243,220,147,.22),transparent 45%),linear-gradient(155deg,#8e1a3a,#5e0a24 70%,#4a061c);
+ border-color:rgba(255,255,255,.18);color:#fbf1e1;box-shadow:0 22px 40px -16px rgba(94,10,36,.55),inset 0 1px 0 rgba(255,255,255,.18)}
+.cards.invite .card::after{background:radial-gradient(rgba(243,220,147,.35) 1px,transparent 1.4px) 0 0/14px 14px;opacity:.35}
+.cards.invite .card:hover{box-shadow:0 30px 50px -18px rgba(94,10,36,.65),inset 0 1px 0 rgba(255,255,255,.2)}
+.cards.invite .tag{background:rgba(255,255,255,.12);color:var(--butter)}
+.cards.invite .card-icon{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.22);color:var(--butter);box-shadow:none}
+.cards.invite .card h3{color:#fbf1e1}
+.cards.invite .card h3 em{color:var(--butter)}
+.cards.invite .card p{color:rgba(251,241,225,.78)}
+.cards.invite .pill.dark{background:var(--butter);color:var(--ink)}
+.cards.invite .pill.dark span{color:var(--wine)}
+.cards.invite .card:hover .pill.dark{background:#fff4d4}
