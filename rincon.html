@@ -6,7 +6,7 @@
 <title>Un rincón de Datrio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700&family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&display=swap">
-<link rel="stylesheet" href="datrio-pages.css?v=9">
+<link rel="stylesheet" href="datrio-pages.css?v=11">
 <link rel="icon" href="datrio-mark.svg">
 </head>
 <body>
@@ -89,9 +89,11 @@ if(key==='tech'){
   '<p>Mi certeza científica me dice que, cuando cierre los ojos, no habrá absolutamente nada. Pero me gusta la ilusión de que él me espera y de que lo voy a volver a ver. Como dice la canción: <em>debo ser buena para estar con mi amor.</em></p>'+
   '<p>En el salón sigue aquí, con su pelota de fútbol, su camita guinda y su pose de modelo. Aquí las reglas las pongo yo.</p>'+
   '</div></div>'+
+  head('Su álbum','Puyol, <em>el modelo</em>')+
+  '<div class="album">'+[["puyol-1.webp","Modelo en el parque, con su corbatita.","Puyol de pie sobre un tronco en el parque, con corbata de moño burdeos"],["puyol-2.webp","Pasarela profesional.","Puyol posando con arnés rojo en una pasarela"],["puyol-3.webp","Abrazo de invierno.","Sandra abrazando a Puyol, que lleva un suéter rojo"],["puyol-4.webp","Navidad, cuidando el pesebre.","Puyol con suéter junto al árbol de Navidad y el pesebre"],["puyol-5.webp","De compras. Él elegía.","Puyol con pañuelo de lunares dentro de un carrito de compras"],["puyol-6.webp","Inspector oficial de camas.","Puyol con abrigo parado sobre una cama"],["puyol-7.webp","Almohada oficial.","Puyol recostado sobre la cabeza de Sandra en una selfie"]].map(([f,cap,alt],i)=>'<button type="button" class="polaroid" data-i="'+i+'"><img src="art/puyol/'+f+'" alt="'+alt+'" loading="lazy" decoding="async"><span>'+cap+'</span></button>').join('')+'</div>'+
+  '<dialog class="lightbox" id="lightbox"><button type="button" class="lb-close" aria-label="Cerrar">×</button><button type="button" class="lb-nav lb-prev" aria-label="Foto anterior">‹</button><figure><img alt=""><figcaption></figcaption></figure><button type="button" class="lb-nav lb-next" aria-label="Foto siguiente">›</button></dialog>'+
   head('Para él','Un perro <em>ha muerto</em>')+
-  '<figure class="poem"><div class="poem-page"><span class="poem-mark" aria-hidden="true">“</span><blockquote><p>Mi perro ha muerto.</p><p>Lo enterré en el jardín</p><p>junto a una vieja máquina oxidada.</p><p class="poem-more" aria-hidden="true">· · ·</p></blockquote><figcaption><span class="poem-title">Un perro ha muerto</span><span class="poem-author">Pablo Neruda</span></figcaption><a class="pill dark" href="https://www.google.com/search?q=Pablo+Neruda+Un+perro+ha+muerto" target="_blank" rel="noopener noreferrer">Leer el poema completo <span>↗</span></a><span class="poem-paw" aria-hidden="true">🐾</span></div></figure>'+
-  '<div class="soon" style="margin-top:28px"><span class="card-icon" aria-hidden="true">✿</span><div><h2>Sus fotos vienen pronto.</h2><p>Estoy eligiendo las mejores. Spoiler: en todas sale guapo.</p></div></div>';
+  '<figure class="poem"><div class="poem-page"><span class="poem-mark" aria-hidden="true">“</span><blockquote><p>Mi perro ha muerto.</p><p>Lo enterré en el jardín</p><p>junto a una vieja máquina oxidada.</p><p class="poem-more" aria-hidden="true">· · ·</p></blockquote><figcaption><span class="poem-title">Un perro ha muerto</span><span class="poem-author">Pablo Neruda</span></figcaption><a class="pill dark" href="https://www.google.com/search?q=Pablo+Neruda+Un+perro+ha+muerto" target="_blank" rel="noopener noreferrer">Leer el poema completo <span>↗</span></a><span class="poem-paw" aria-hidden="true">🐾</span></div></figure>';
 }else if(key==='work'){
  content.innerHTML=head('01 / Lo que hago','Datos con <em>intención</em>')+'<div class="cards">'+
   card('Business intelligence','▥','Tableros que <em>cuentan algo</em>','Reportes en Power BI que responden preguntas de verdad, no solo gráficos bonitos (aunque también).')+
@@ -117,6 +119,13 @@ if(key==='dog')fetch('poema-puyol.txt',{cache:'no-store'}).then(r=>r.ok?r.text()
  for(const stanza of stanzas){const para=document.createElement('p');para.className='stanza';stanza.split('\n').forEach((line,i)=>{if(i)para.append(document.createElement('br'));para.append(line.trim())});q.append(para)}
  document.querySelector('.poem').classList.add('full');
 }).catch(()=>{});
+// Puyol's album: tap a polaroid to see it big, then move with the arrows.
+if(key==='dog'){const lb=document.getElementById('lightbox'),shots=[...document.querySelectorAll('.polaroid')];let at=0;
+ const show=i=>{at=(i+shots.length)%shots.length;const img=shots[at].querySelector('img'),big=lb.querySelector('figure img');big.src=img.src;big.alt=img.alt;lb.querySelector('figcaption').textContent=shots[at].querySelector('span').textContent};
+ shots.forEach((b,i)=>b.onclick=()=>{show(i);lb.showModal()});
+ lb.querySelector('.lb-close').onclick=()=>lb.close();lb.querySelector('.lb-prev').onclick=()=>show(at-1);lb.querySelector('.lb-next').onclick=()=>show(at+1);
+ lb.addEventListener('click',e=>{if(e.target===lb)lb.close()});
+ lb.addEventListener('keydown',e=>{if(e.key==='ArrowRight')show(at+1);if(e.key==='ArrowLeft')show(at-1)});}
 </script>
 </body>
 </html>
