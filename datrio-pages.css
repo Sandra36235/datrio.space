@@ -195,3 +195,34 @@ main{max-width:1280px;margin:0 auto;padding:0 var(--gutter) 80px;animation:arriv
 .cards.invite .pill.dark span{color:var(--wine)}
 .cards.invite .card:hover .pill.dark{background:#fff4d4}
 .cards.invite .who{color:rgba(251,241,225,.65)}
+
+/* Corner pages: coffee passport, music records, Puyol's tribute */
+.passport{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;align-items:stretch}
+.stamps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:22px;border-radius:28px;
+ background:linear-gradient(155deg,#fff8e6,#f6e3c4);border:1px solid #fff;box-shadow:var(--card-shadow)}
+.stamp{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;aspect-ratio:1;border-radius:50%;
+ border:2px dashed rgba(122,12,44,.28);color:rgba(122,12,44,.5);font:600 10px/1.15 var(--ui);text-align:center;text-transform:uppercase;letter-spacing:.06em;transform:rotate(var(--r,-6deg))}
+.stamp:nth-child(2n){--r:5deg}.stamp:nth-child(3n){--r:-2deg}
+.stamp b{font-family:var(--display);font-size:20px;letter-spacing:0;color:var(--wine);opacity:.6}
+.card.passport-cta{background:radial-gradient(circle at 88% 12%,rgba(243,220,147,.22),transparent 45%),linear-gradient(155deg,#8e1a3a,#5e0a24 70%,#4a061c);color:#fbf1e1;border-color:rgba(255,255,255,.18)}
+.card.passport-cta .tag{background:rgba(255,255,255,.12);color:var(--butter)}
+.card.passport-cta .card-icon{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.22);box-shadow:none}
+.card.passport-cta h3{color:#fbf1e1}.card.passport-cta h3 em{color:var(--butter)}
+.card.passport-cta p{color:rgba(251,241,225,.78)}
+.card.passport-cta .pill.dark{background:var(--butter);color:var(--ink)}
+.cards.records .card{min-height:220px}
+.cards.records .card-icon{transition:transform .6s ease}
+.cards.records .card:hover .card-icon{transform:rotate(360deg)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.tribute{padding:32px clamp(22px,4vw,48px);border-radius:30px;background:linear-gradient(160deg,#fffaf0,#f6e8e2);border:1px solid #fff;box-shadow:var(--card-shadow)}
+.tribute-text{max-width:720px}
+.tribute p{margin:0 0 16px;font-family:var(--display);font-size:clamp(19px,2vw,23px);line-height:1.5;color:var(--ink)}
+.tribute p:last-child{margin:0}
+.tribute em{color:var(--wine)}
+.poem{margin:0;padding:28px clamp(22px,4vw,40px);border-radius:30px;color:#f3e9dc;background:linear-gradient(160deg,#2f1f29,#1e141b 70%);box-shadow:0 30px 60px -24px rgba(50,10,25,.6)}
+.poem blockquote{margin:0 0 12px;font-family:var(--display);font-style:italic;font-weight:500;font-size:clamp(24px,3vw,34px);line-height:1.25;color:#fff}
+.poem figcaption{margin-bottom:18px;font:600 12px/1 var(--ui);letter-spacing:.12em;text-transform:uppercase;color:var(--butter)}
+.poem .text-link{color:#f3dc93;border-color:rgba(243,220,147,.35)}
+@media(max-width:900px){.passport{grid-template-columns:1fr}}
+@media(max-width:600px){.stamps{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:16px}.stamp{font-size:7.5px}.stamp b{font-size:15px}}
+@media(prefers-reduced-motion:reduce){.cards.records .card-icon{animation:none}}

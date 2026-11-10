@@ -6,7 +6,7 @@
 <title>Un rincón de Datrio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700&family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&display=swap">
-<link rel="stylesheet" href="datrio-pages.css?v=4">
+<link rel="stylesheet" href="datrio-pages.css?v=6">
 <link rel="icon" href="datrio-mark.svg">
 </head>
 <body>
@@ -17,11 +17,11 @@
 <main>
  <section class="page-hero">
   <div>
-   <div class="eyebrow">Un rincón de mi universo</div>
+   <div class="eyebrow" id="eyebrow">Un rincón de mi universo</div>
    <h1 id="title">Pasa.</h1>
    <p id="intro"></p>
   </div>
-  <div class="hero-art"><img src="art/card-salon.webp" alt="El salón de Datrio en 3D, con el sofá burgundy y Puyol" width="640" height="440"></div>
+  <div class="hero-art"><img id="hero-img" src="art/card-salon.webp" alt="El salón de Datrio en 3D" width="640" height="440"></div>
  </section>
  <section class="block" id="content"></section>
 </main>
@@ -29,11 +29,11 @@
 <script>
 const params=new URLSearchParams(location.search);
 const pages={
- coffee:{name:'Café & matcha',intro:'Un lugar para preparar una pausa y dejar que aparezcan nuevas ideas.'},
- music:{name:'Mi música',intro:'Canciones, ukulele y el espacio que dejo para escuchar.'},
- dog:{name:'Mi compañero',intro:'Un rincón para mi poodle, coqueto y siempre cerca.'},
- work:{name:'Datos & marketing',intro:'Aquí tomarán forma mis proyectos de análisis, datos y marketing.'},
- board:{name:'Docencia',intro:'Un espacio para las ideas que nacen cuando enseñamos y aprendemos.'},
+ coffee:{name:'Café & matcha',intro:'Aquí no hay prisa. Hay agua caliente, una balanza y la paciencia de esperar a que el café diga lo suyo.',art:'art/rincon-cafe.webp',alt:'La barra de café del salón en 3D, con la máquina de espresso, la balanza y el rincón de matcha'},
+ music:{name:'Mi música',intro:'Toco ukelele hace un par de años y sueño con el piano. Mientras tanto, suena rock argentino y, de vez en cuando, algún talento ocasional.',art:'art/rincon-musica.webp',alt:'El rincón de música del salón en 3D, con el tocadiscos, los parlantes y el ukelele'},
+ dog:{name:'Mi compañero',eyebrow:'Puyol · 2016 — 2025',intro:'Puyol fue mi primer perro y mi cable a tierra durante nueve años.',art:'art/rincon-puyol.webp',alt:'Puyol en 3D, un poodle blanco, sentado junto a su camita guinda y su pelota de fútbol'},
+ work:{name:'Datos & marketing',intro:'Donde los datos se convierten en decisiones. Y las decisiones, casi siempre, en nuevas preguntas.',art:'art/card-estudio.webp',alt:'Mi estudio en 3D'},
+ board:{name:'Docencia',intro:'Para mí, enseñar es pensar en voz alta con otras personas. Y salir de clase sabiendo algo que no sabía al entrar.',art:'art/herramientas-hero.webp',alt:'La caja de herramientas del salón en 3D'},
  tech:{name:'Mi setup tech',intro:'Apps, desarrollo y herramientas: el lado más tech de mi universo.'},
  chess:{name:'El ajedrez de las ideas',intro:'Una jugada para cada iniciativa, proyecto y pregunta nueva.'}
 };
@@ -45,9 +45,11 @@ const words=page.name.split(' '),last=words.pop();
 const title=document.getElementById('title');title.textContent=words.join(' ')+' ';
 const em=document.createElement('em');em.textContent=last+'.';title.append(em);
 document.getElementById('intro').textContent=page.intro;
+if(page.eyebrow)document.getElementById('eyebrow').textContent=page.eyebrow;
+if(page.art){const img=document.getElementById('hero-img');img.onerror=()=>{img.onerror=null;img.src='art/card-salon.webp'};img.src=page.art;img.alt=page.alt}
 const from=params.get('desde')==='estudio'?'estudio':'salon';
 for(const link of document.querySelectorAll('header a'))link.href='index.html#'+from;
-const card=(tag,icon,h,p,link)=>`<${link?'a':'article'} class="card${link?'':' static'}"${link?` href="${link.href}"${link.ext?' target="_blank" rel="noopener noreferrer"':''}`:''}><div class="card-top"><span class="tag">${tag}</span><span class="card-icon" aria-hidden="true">${icon}</span></div><h3>${h}</h3><p>${p}</p>${link?`<span class="pill dark">${link.label} <span>↗</span></span>`:'<span class="who">Más detalles pronto</span>'}</${link?'a':'article'}>`;
+const card=(tag,icon,h,p,link)=>`<${link?'a':'article'} class="card${link?'':' static'}"${link?` href="${link.href}"${link.ext?' target="_blank" rel="noopener noreferrer"':''}`:''}><div class="card-top"><span class="tag">${tag}</span><span class="card-icon" aria-hidden="true">${icon}</span></div><h3>${h}</h3><p>${p}</p>${link?`<span class="pill dark">${link.label} <span>↗</span></span>`:(link===undefined?'<span class="who">Más detalles pronto</span>':'')}</${link?'a':'article'}>`;
 const head=(n,h)=>`<div class="section-head"><div><div class="eyebrow">${n}</div><h2>${h}</h2></div></div>`;
 const content=document.getElementById('content');
 if(key==='tech'){
@@ -62,6 +64,48 @@ if(key==='tech'){
   card('Idea','✳','<em>Datrio</em>','Un espacio para compartir datos, ideas y lo que nace en el aula.',{href:'https://datrio.space/',ext:1,label:'Visitar Datrio'})+
   card('Formación','✎','Datrio <em>Academy</em>','Capacitaciones y cursos a medida para seguir aprendiendo.',{href:'biblioteca.html#contact-title',label:'Conversemos'})+
   card('BI','▥','Proyectos de <em>BI</em>','Aquí irán mis casos y tableros de business intelligence.')+
+  '</div>';
+}else if(key==='coffee'){
+ content.innerHTML=head('01 / Mis métodos','Mis <em>favoritos</em>')+'<div class="cards">'+
+  card('Favorito','◇','<em>V60</em>','Limpia, precisa y un poco caprichosa. Cambias la molienda, el agua o el vertido y ya es otro café. Ciencia con aroma.',null)+
+  card('Favorito','◎','<em>AeroPress</em>','La navaja suiza del café: normal, invertida, suave o intensa. Si el resultado no te gusta, la culpa es tuya, no de ella.',null)+
+  card('Ritual','✿','Matcha <em>tradicional</em>','Tamizar, batir con el chasen, esperar la espuma. No es una bebida: es un ritual.',null)+
+  '</div><div class="chip-groups" style="margin-top:18px"><div><b>También en la barra</b><div class="chips"><span>Espresso</span><span>Chemex</span><span>Sifón</span><span>Moka</span><span>Prensa francesa</span></div></div><div><b>Siempre</b><div class="chips"><span>Cuñapés 🧀</span></div></div><div><b>Debilidad</b><div class="chips"><span>Cafés de autor</span></div></div></div>'+
+  head('02 / Pasaporte de café','¿Me acompañas <em>a llenarlo?</em>')+
+  '<p class="lead">Colecciono cafés de autor en un pasaporte de café. Cada sello es una taza, una conversación y una excusa para salir. Si conoces uno que valga el viaje, cuéntamelo.</p>'+
+  '<div class="passport"><div class="stamps" aria-hidden="true">'+Array.from({length:8},(_,i)=>'<span class="stamp"><b>'+String(i+1).padStart(2,'0')+'</b>sello pendiente</span>').join('')+'</div>'+
+  '<a class="card passport-cta" href="mailto:sandra36235@gmail.com?subject=Un%20caf%C3%A9%20para%20tu%20pasaporte"><div class="card-top"><span class="tag">Recomiéndame</span><span class="card-icon" aria-hidden="true">☕</span></div><h3>Un café para <em>mi pasaporte</em></h3><p>Dime cuál es, dónde queda y qué debería pedir.</p><span class="pill dark">Enviar recomendación <span>↗</span></span></a></div>';
+}else if(key==='music'){
+ content.innerHTML=head('01 / Lo que toco','Cuerdas y <em>teclas</em>')+'<div class="cards two">'+
+  card('Hace un par de años','♪','<em>Ukelele</em>','Acordes, dedos adoloridos y canciones a medias que igual cuentan como canciones.',null)+
+  card('Próximo capítulo','♫','<em>Piano</em>','Está en la lista de cosas que voy a hacer “cuando tenga tiempo”. O sea, pronto. O algún día.',null)+
+  '</div>'+head('02 / En mi tocadiscos','Lado <em>A</em>')+
+  '<p class="lead">Rock argentino en general, y de vez en cuando algún talento ocasional. Toca uno y ponlo a sonar.</p><div class="cards records">'+
+  [["Tan Biónica","Pop rock para cantar fuerte y sin vergüenza."],["Rawayana","Imposible escucharlos quieta."],["Miranda!","Electropop sin culpa."],["Airbag","Guitarras al frente, como debe ser."],["Gustavo Cerati","No hace falta explicar nada."],["Charly García","Say no more."],["Fito Páez","Poesía con piano. (Ver: mi sueño del piano.)"]].map(([n,d],i)=>card('Pista '+String(i+1).padStart(2,'0'),'◉',n.replace(/(\S+)$/,'<em>$1</em>'),d,{href:'https://open.spotify.com/search/'+encodeURIComponent(n),ext:1,label:'Escuchar en Spotify'})).join('')+
+  '</div>';
+}else if(key==='dog'){
+ content.innerHTML='<div class="tribute"><div class="tribute-text">'+
+  '<p>Puyol nació en 2016 y se fue en 2025. Durante nueve años fue mi cable a tierra: el que me esperaba, el que me sacaba a caminar y el que no necesitaba entender nada para quedarse cerca.</p>'+
+  '<p>Mi certeza científica me dice que, cuando cierre los ojos, no habrá absolutamente nada. Pero me gusta la ilusión de que él me espera y de que lo voy a volver a ver. Como dice la canción: <em>debo ser buena para estar con mi amor.</em></p>'+
+  '<p>En el salón sigue aquí, con su pelota de fútbol, su camita guinda y su pose de modelo. Aquí las reglas las pongo yo.</p>'+
+  '</div></div>'+
+  head('Para él','Un perro <em>ha muerto</em>')+
+  '<figure class="poem"><blockquote>“Mi perro ha muerto. Lo enterré en el jardín…”</blockquote><figcaption>Pablo Neruda · <i>Un perro ha muerto</i></figcaption><a class="text-link" href="https://www.google.com/search?q=Pablo+Neruda+Un+perro+ha+muerto" target="_blank" rel="noopener noreferrer">Leer el poema completo ↗</a></figure>'+
+  '<div class="soon" style="margin-top:28px"><span class="card-icon" aria-hidden="true">✿</span><div><h2>Sus fotos vienen pronto.</h2><p>Estoy eligiendo las mejores. Spoiler: en todas sale guapo.</p></div></div>';
+}else if(key==='work'){
+ content.innerHTML=head('01 / Lo que hago','Datos con <em>intención</em>')+'<div class="cards">'+
+  card('Business intelligence','▥','Tableros que <em>cuentan algo</em>','Reportes en Power BI que responden preguntas de verdad, no solo gráficos bonitos (aunque también).')+
+  card('Análisis','◎','Preguntas a <em>los datos</em>','SQL y Python para limpiar, cruzar y encontrar lo que nadie estaba mirando.')+
+  card('Marketing','✦','Marketing con <em>evidencia</em>','Decisiones de marketing que se apoyan en datos, y datos que se traducen en decisiones.')+
+  '</div>'+head('02 / Mientras tanto','Mira lo que <em>ya existe</em>')+'<div class="cards two">'+
+  card('Herramientas','▦','La caja de <em>herramientas</em>','Guías y laboratorios de Power BI, DAX, color e IA que preparé para mis clases.',{href:'herramientas.html',label:'Abrir la caja'})+
+  card('Proyectos','◇','Mis <em>proyectos</em>','Una selección de mi trabajo con datos y las ideas de mis estudiantes.',{href:'archivo-proyectos.html',label:'Ver proyectos'})+
+  '</div>';
+}else if(key==='board'){
+ content.innerHTML=head('01 / En el aula','Aprender <em>haciendo</em>')+'<div class="cards">'+
+  card('Panel docente','◎','Dónde <em>enseño</em>','UPB pregrado y posgrado, la Bolsa Boliviana de Valores y Datrio Academy.',{href:'biblioteca.html#teaching-title',label:'Ver mi recorrido'})+
+  card('Recursos','▦','La caja de <em>herramientas</em>','Lo que preparo para explicar, experimentar y volver a preguntar.',{href:'herramientas.html',label:'Abrir la caja'})+
+  card('Estudiantes','✶','Lo que <em>crean</em>','Proyectos que nacieron en clase y encontraron su propio camino.',{href:'biblioteca.html#projects-title',label:'Ver proyectos'})+
   '</div>';
 }else content.innerHTML='<div class="soon"><span class="card-icon" aria-hidden="true">✳</span><div><h2>Este rincón está tomando forma.</h2><p>Pronto habrá más historias aquí. Mientras tanto, puedes volver a recorrer el salón.</p><a class="text-link" href="index.html#'+from+'">Volver al salón →</a></div></div>';
 </script>
