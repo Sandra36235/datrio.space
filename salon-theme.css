@@ -220,3 +220,7 @@ html body .card-estudio .world-art{top:-36px;bottom:auto;right:-14px;width:62%}
 html body .card-retazos .world-art{top:-44px;bottom:0;right:4px;height:auto;max-width:none;width:auto;max-height:calc(100% + 44px)}
 @media(max-width:900px){html body .world-card b{font-size:23px}}
 html body .card-retazos .world-art{right:-18px;max-width:50%;object-position:right bottom}
+
+/* Puyol's pin lives on his bed and is always visible, also on phones */
+html body .pin[data-object="dog"]{display:grid;color:#fff;background:var(--wine);border-color:#fff;opacity:.9}
+html body .pin[data-object="dog"]:hover{opacity:1}
