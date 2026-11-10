@@ -243,3 +243,10 @@ main{max-width:1280px;margin:0 auto;padding:0 var(--gutter) 80px;animation:arriv
 .poem-author{font:700 11px/1 var(--ui);letter-spacing:.2em;text-transform:uppercase;color:var(--wine)}
 .poem-paw{position:absolute;right:22px;bottom:16px;font-size:20px;opacity:.35;transform:rotate(-14deg)}
 .poem figcaption{text-transform:none;letter-spacing:0}.poem-title{text-transform:none;letter-spacing:0}
+
+/* Full poem (from poema-puyol.txt) */
+.poem.full blockquote{font-size:clamp(18px,2.1vw,23px);line-height:1.6}
+.poem.full blockquote p:first-child{color:inherit}
+.poem.full .stanza{margin:0 0 1.1em}
+.poem.full .stanza:first-child::first-line{color:var(--wine)}
+.poem.full .pill,.poem.full .poem-more{display:none}
