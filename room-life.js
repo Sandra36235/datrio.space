@@ -1,5 +1,5 @@
 import * as T from './vendor/three.module.js';
-import {posePoodle3D} from './poodle3d.js?v=pastel-9';
+import {posePoodle3D} from './poodle3d.js?v=pastel-10';
 
 // Shared geometry and textures keep the added detail affordable on mobile.
 const foliage = [];
@@ -167,8 +167,8 @@ export function addRoomLife(room,studio=false){
   refineMaterials(room);
 }
 
-import {animateCorners} from './salon-corners.js?v=pastel-9';
-import {animateExtras,snakePlant,faceCactus} from './salon-extras.js?v=pastel-9';
+import {animateCorners} from './salon-corners.js?v=pastel-10';
+import {animateExtras,snakePlant,faceCactus} from './salon-extras.js?v=pastel-10';
 export function animateRoom(room,dt,reduced=false){
   const life=room?.userData.life;if(!life)return false;
   if(reduced){for(const p of life.steam)p.sprite.visible=false;return false;}
