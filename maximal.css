@@ -169,3 +169,32 @@ html body footer{background:var(--chocolate);color:rgba(255,237,173,.75);border:
  .closing-inner{padding:20px 0 44px}
 }
 @media(max-width:900px){.replay{left:12px;right:auto;top:12px}.intro-skip{left:12px;right:auto}}
+
+/* ---------- buttons as stickers (Sandra's pick) ----------
+   Butter or columbia paper, 2px chocolate outline, a small tilt that
+   straightens on hover. No heavy offset shadows. */
+html body{--stk-tilt:-2deg}
+html body .topbar nav{background:transparent;border:0;box-shadow:none;gap:10px;padding:0}
+html body .topbar nav button,html body .about-link,html body .walk-hud button,html body .puyol-menu button,
+html body .replay,html body .intro-skip,html body .intro-go,html body .closing-mail,html body .object-shortcuts button,
+html body .view-controls button{
+ border:2px solid var(--chocolate)!important;border-radius:16px!important;background:var(--butter)!important;color:var(--chocolate)!important;
+ box-shadow:none!important;text-shadow:none!important;font-family:var(--ui)!important;font-weight:600!important;
+ transform:rotate(var(--stk-tilt))!important;transition:transform .22s cubic-bezier(.2,.8,.2,1.4),background .2s!important}
+html body .topbar nav button:nth-child(even),html body .walk-hud button:nth-of-type(even),html body .puyol-menu button:nth-child(even),
+html body .object-shortcuts button:nth-child(even),html body .view-controls button:nth-child(even),html body .intro-skip{--stk-tilt:2deg;background:var(--columbia)!important}
+html body .topbar nav button:hover,html body .about-link:hover,html body .walk-hud button:hover,html body .puyol-menu button:hover,
+html body .replay:hover,html body .intro-skip:hover,html body .intro-go:hover,html body .closing-mail:hover,html body .object-shortcuts button:hover,
+html body .view-controls button:hover{transform:rotate(0) scale(1.06)!important}
+html body .topbar nav button.selected{background:var(--cherry)!important;color:var(--butter)!important;border-color:var(--butter)!important}
+html body .topbar nav button span,html body .about-link span,html body .walk-hud button span{color:inherit!important}
+html body .walk-hud button[aria-pressed="true"]{background:var(--cherry)!important;color:var(--butter)!important}
+html body .view-controls{background:transparent!important;border:0!important;box-shadow:none!important;gap:8px}
+html body .view-controls button{width:42px;height:42px;padding:0;border-radius:50%!important;display:grid;place-items:center;font-size:18px}
+html body .intro-go{height:58px;padding:0 30px;font:800 18px/1 var(--display)!important;text-transform:uppercase;--stk-tilt:-3deg}
+html body .closing-mail{height:58px;padding:0 28px;--stk-tilt:3deg;font:800 17px/1 var(--display)!important;text-transform:uppercase}
+html body .puyol-menu{background:var(--paper)!important;border:2px solid var(--chocolate)!important;box-shadow:none!important;border-radius:22px!important}
+html body .puyol-menu button{justify-content:flex-start}
+html body .story-card .go{border:2px solid var(--chocolate);border-radius:16px;background:var(--butter);color:var(--chocolate);transform:rotate(-2deg);transition:transform .22s}
+html body .story-card .go:hover{transform:rotate(0) scale(1.06);background:var(--butter)}
+@media(prefers-reduced-motion:reduce){html body .topbar nav button,html body .about-link,html body .walk-hud button,html body .replay,html body .intro-go,html body .view-controls button{transition:none!important}}
