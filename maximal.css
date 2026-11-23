@@ -168,3 +168,4 @@ html body footer{background:var(--chocolate);color:rgba(255,237,173,.75);border:
  .closing-band{padding-top:60px}
  .closing-inner{padding:20px 0 44px}
 }
+@media(max-width:900px){.replay{left:12px;right:auto;top:12px}.intro-skip{left:12px;right:auto}}
