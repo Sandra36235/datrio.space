@@ -84,3 +84,10 @@ body.touring #pins,body.touring .view-controls,body.touring .walk-hud,body.touri
  .awning{transition:none}
  .story-card{transition:none}
 }
+
+.film:not(.show-fallers) .faller{animation-play-state:paused;opacity:0}
+.faller{transition:opacity .4s}
+
+html body .hero-film em{color:var(--butter);font-style:italic}
+.chapter[data-chapter="cafe"],.chapter[data-chapter="biblioteca"]{justify-content:flex-end}
+@media(max-width:720px){.chapter[data-chapter="cafe"],.chapter[data-chapter="biblioteca"]{justify-content:flex-start}}
