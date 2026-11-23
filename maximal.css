@@ -204,3 +204,8 @@ html body .world-art{display:none}
 html body .worldbar{padding-top:40px}
 html body .world-card,html body .world-card.selected,html body .world-card:not(.selected){min-height:150px}
 html body .world-text{max-width:none}
+
+/* Brand logotype (SVG from the brand kit; never re-typed). Min 120px wide. */
+html body .topbar .logo{display:inline-flex;align-items:center;padding:6px 0}
+html body .topbar .brand-logo{display:block;height:40px;width:auto}
+@media(max-width:720px){html body .topbar .brand-logo{height:34px}}

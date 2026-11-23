@@ -273,3 +273,7 @@ main{max-width:1280px;margin:0 auto;padding:0 var(--gutter) 80px;animation:arriv
  .polaroid:nth-child(n){margin-top:0}.lb-prev{left:6px}.lb-next{right:6px}.lb-close{top:8px;right:8px}}
 @media(prefers-reduced-motion:reduce){.polaroid{transition:none}}
 .polaroid img{object-position:50% 22%}
+
+/* Brand logotype from the kit; never re-typed. */
+.page-logo img.brand-logo{width:auto;height:36px;filter:none}
+@media(max-width:600px){.page-logo img.brand-logo{height:32px}}
