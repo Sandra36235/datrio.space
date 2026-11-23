@@ -1,9 +1,9 @@
 import * as T from './vendor/three.module.js';
-import {createPoodle3D} from './poodle3d.js?v=pastel-12';
-import {botanical,pillow,addRoomLife} from './room-life.js?v=pastel-12';
-import {coffeeBar,teachingCorner,musicCorner} from './salon-corners.js?v=pastel-12';
-import {studioRug,studioDesk,studioChair,studioWhiteboard,diplomaWall,corkboard,rollingCart,studyBed,studyCorner,titleTexture} from './studio-pieces.js?v=pastel-12';
-import {mergeStatic,contactShadows,coffeeExtras,libraryCollectibles,gamerSetup,fluffySofa,fluffyChair,pumpkinPouf,puyolBed,fiddleLeaf,birdOfParadise,succulentBowl,libraryScallops,bubblePedestal,mushroomTable,wavyMirror} from './salon-extras.js?v=pastel-12';
+import {createPoodle3D} from './poodle3d.js?v=pastel-13';
+import {botanical,pillow,addRoomLife} from './room-life.js?v=pastel-13';
+import {coffeeBar,teachingCorner,musicCorner} from './salon-corners.js?v=pastel-13';
+import {studioRug,studioDesk,studioChair,studioWhiteboard,diplomaWall,corkboard,rollingCart,studyBed,studyCorner,titleTexture} from './studio-pieces.js?v=pastel-13';
+import {mergeStatic,contactShadows,coffeeExtras,libraryCollectibles,gamerSetup,fluffySofa,fluffyChair,pumpkinPouf,puyolBed,fiddleLeaf,birdOfParadise,succulentBowl,libraryScallops,bubblePedestal,mushroomTable,wavyMirror} from './salon-extras.js?v=pastel-13';
 const materialCache=new Map();
 export function mat(color){if(!materialCache.has(color))materialCache.set(color,new T.MeshStandardMaterial({color,roughness:.78}));return materialCache.get(color)}
 const C={white:'#fffaf1',blue:'#7891cc',sky:'#a5b9e4',yellow:'#f0d37a',orange:'#8e3b4a',oak:'#c49663',oakLight:'#ddb58b',dark:'#2f2a33',cream:'#ece4d8',leaf:'#4b7643',gold:'#bd8c40'};

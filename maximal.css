@@ -98,3 +98,28 @@ html body .hero-film em{color:var(--butter);font-style:italic}
 html body .film-stage .walk-hud{bottom:58px;z-index:6}
 html body .free-toggle{top:16px;bottom:auto}
 @media(max-width:720px){html body .film-stage .walk-hud{bottom:52px}html body .free-toggle{top:12px;bottom:auto}}
+
+/* ---------- intro video (replaces the scroll film) ---------- */
+html body .film-stage{position:relative;top:auto;height:calc(100vh - 92px);height:calc(100svh - 92px);min-height:560px}
+.intro-layer{position:absolute;inset:0;z-index:5;pointer-events:none}
+.intro-layer .hero-film{position:absolute;left:clamp(16px,5vw,72px);bottom:110px;opacity:0;transform:translateY(16px);transition:opacity .6s,transform .6s}
+.film.show-title .hero-film{opacity:1;transform:none}
+.captions .story-card{position:absolute;bottom:110px;max-width:420px}
+.captions .story-card[data-side="left"]{left:clamp(16px,5vw,72px)}
+.captions .story-card[data-side="right"]{right:clamp(16px,5vw,72px)}
+.intro-skip{position:absolute;top:16px;right:16px;pointer-events:auto;height:40px;padding:0 16px;border-radius:999px;border:2px solid var(--butter);background:rgba(61,39,34,.55);color:var(--butter);font:700 13px/1 var(--ui);cursor:pointer}
+.intro-end{position:absolute;left:0;right:0;bottom:46px;display:flex;justify-content:center;pointer-events:none;opacity:0;transform:translateY(20px);transition:opacity .5s .3s,transform .5s .3s}
+.intro-go{pointer-events:auto;height:58px;padding:0 30px;border-radius:999px;border:3px solid var(--chocolate);background:var(--butter);color:var(--chocolate);font:800 18px/1 var(--display);text-transform:uppercase;letter-spacing:.02em;box-shadow:6px 6px 0 var(--chocolate);cursor:pointer}
+.intro-go:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--chocolate)}
+.film.is-end .intro-end{opacity:1;transform:none}
+.film.is-end .hero-film{bottom:130px}
+.film.is-free .intro-layer,.film.is-end .intro-skip,.film.is-end .captions{display:none}
+.film.is-intro .walk-hud,.film.is-end .walk-hud,.film.is-intro .marquee{display:none!important}
+.replay{position:absolute;top:16px;right:16px;z-index:6;display:none;height:40px;padding:0 16px;border-radius:999px;border:2px solid var(--chocolate);background:var(--butter);color:var(--chocolate);font:700 13px/1 var(--ui);box-shadow:3px 3px 0 var(--chocolate);cursor:pointer}
+.film.is-free .replay{display:block}
+@media(max-width:720px){
+ html body .film-stage{height:calc(100svh - 76px);min-height:520px}
+ .captions .story-card{left:12px!important;right:12px!important;max-width:none;bottom:96px}
+ .intro-layer .hero-film{bottom:96px}
+ .intro-go{height:52px;font-size:16px;padding:0 22px}
+}

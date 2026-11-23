@@ -1,4 +1,4 @@
-// Pure math for the home page's scroll film: which chapter is on screen and
+// Pure math for the home page's intro video: which chapter is on screen and
 // where the 3D camera should be. No DOM here, so Node can test it.
 
 // Camera shots over the salon. angle/elevation orbit the focus point; zoom is
@@ -37,10 +37,14 @@ export function shotAt(progress,chapters=CHAPTERS){
  };
 }
 
-// Links from the interior pages: #salon opens the tour at the first salon
-// corner; #estudio drops the visitor into the studio in free mode.
+// Coming back from an interior page (#salon, #estudio) skips the intro and
+// lands in that room to play; any other visit starts with the intro video.
 export function chapterForHash(hash){
- if(hash==='#salon')return {mode:'tour',room:'salon',index:1};
- if(hash==='#estudio')return {mode:'free',room:'estudio',index:0};
- return {mode:'tour',room:'salon',index:0};
+ if(hash==='#salon')return {mode:'free',room:'salon'};
+ if(hash==='#estudio')return {mode:'free',room:'estudio'};
+ return {mode:'intro',room:'salon'};
 }
+
+// The intro plays on a clock, like a short video.
+export const INTRO_MS=17000;
+export function introProgress(ms){return clamp01(ms/INTRO_MS)}

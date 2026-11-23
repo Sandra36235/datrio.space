@@ -141,3 +141,7 @@ Cada fase se publica después de que Sandra la vea.
 - El diseño concreto de cada sticker y garabato.
 - Los textos cortos de las tarjetas-historia. Se toman de los textos existentes de cada rincón; si falta uno, se escribe con la voz de Sandra (informal, un poco irreverente) y se le muestra antes de publicar.
 - Las curvas y tiempos de animación.
+
+## Cambio de rumbo (23-11-2026, pedido por Sandra)
+
+No más animaciones guiadas por el scroll. La portada abre con una **intro tipo video** de unos 17 segundos que se reproduce sola: toldo, título, objetos que caen y la cámara recorriendo el café, la música, la biblioteca y la camita de Puyol, con una leyenda por parada. Termina en el botón **"Recorrer el espacio"**, que devuelve lo central: jugar con Puyol en los espacios. Se puede saltar desde el primer segundo y repetir con "Ver intro". Se ve una vez por visita; quien vuelve desde una página interior entra directo al salón. Los botones de Puyol cortan la intro si se tocan.
