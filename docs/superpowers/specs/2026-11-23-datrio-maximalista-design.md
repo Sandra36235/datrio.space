@@ -114,7 +114,7 @@ El canvas 3D queda **fijo** detrás mientras se baja. Cada capítulo mueve la c�
 
 ## Técnica (decisiones de Claude)
 
-- **GSAP 3 + ScrollTrigger**, copiados a `vendor/` con versión fija, para el recorrido y las animaciones. No se suma scroll suavizado: se mantiene el scroll nativo, que es más estable en el celular.
+- **Sin librerías nuevas:** el recorrido y las animaciones se hacen con JS y CSS propios (progreso del scroll, `IntersectionObserver`, keyframes). Así no hay que descargar dependencias y el sitio sigue sin build. Se mantiene el scroll nativo, que es más estable en el celular.
 - **Cámara:** cada capítulo define una posición y un objetivo. El scroll interpola entre ellos y alimenta la cámara de `universe.js`, que deja de dibujar cuadros cuando no hay movimiento.
 - **Celular:** los mismos capítulos, con menos objetos cayendo, menor resolución del 3D y tarjetas a todo el ancho abajo.
 - **`prefers-reduced-motion`:** los capítulos se convierten en secciones quietas con capturas del 3D, sin caídas ni toldo animado.
