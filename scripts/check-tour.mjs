@@ -1,6 +1,6 @@
 // Checks the scroll tour's chapter math: run with `node scripts/check-tour.mjs`.
 import assert from 'node:assert/strict';
-import {CHAPTERS,chapterAt,shotAt,chapterForHash,introProgress,INTRO_MS} from '../tour-math.js';
+import {CHAPTERS,chapterAt,shotAt,chapterForHash,introProgress,INTRO_MS,STUDIO_CHAPTERS,STUDIO_MS} from '../tour-math.js';
 
 const near=(a,b,eps=1e-6)=>Math.abs(a-b)<=eps;
 const nearVec=(a,b,eps=1e-6)=>a.length===b.length&&a.every((v,i)=>near(v,b[i],eps));
@@ -32,5 +32,11 @@ assert.equal(introProgress(INTRO_MS),1);
 assert.equal(introProgress(INTRO_MS*3),1);
 assert.ok(near(introProgress(INTRO_MS/2),.5));
 assert.ok(INTRO_MS>=14000&&INTRO_MS<=20000,'intro lasts 14-20 seconds');
+
+// Studio intro: a shorter tour of the study.
+assert.deepEqual(STUDIO_CHAPTERS.map(c=>c.id),['estudio','tablero','pizarra','diplomas']);
+assert.ok(STUDIO_MS>=8000&&STUDIO_MS<=12000,'studio intro lasts 8-12 seconds');
+assert.ok(near(introProgress(STUDIO_MS/2,STUDIO_MS),.5));
+assert.ok(nearVec(shotAt(1,STUDIO_CHAPTERS).focus,[-.6,3.05,-3.9]),'studio intro ends on the diplomas');
 
 console.log('Tour math checks passed.');

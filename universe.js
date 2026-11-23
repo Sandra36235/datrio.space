@@ -1,8 +1,8 @@
-﻿import {createWalk} from './play.js?v=pastel-13';
+﻿import {createWalk} from './play.js?v=pastel-14';
 import * as T from './vendor/three.module.js';
-import {startTour} from './tour.js?v=pastel-13';
-import {makeSalon,makeStudio,addAvatar,applySalonArt} from './rooms.js?v=pastel-13';
-import {animateRoom} from './room-life.js?v=pastel-13';
+import {startTour} from './tour.js?v=pastel-14';
+import {makeSalon,makeStudio,addAvatar,applySalonArt} from './rooms.js?v=pastel-14';
+import {animateRoom} from './room-life.js?v=pastel-14';
 let stageVisible=true,lastShadow=0;
 const $=s=>document.querySelector(s),stage=$('.stage'),canvas=$('#universe'),dialog=$('#details');
 const asset=name=>`art/${name}.png`;

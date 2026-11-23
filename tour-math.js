@@ -47,4 +47,13 @@ export function chapterForHash(hash){
 
 // The intro plays on a clock, like a short video.
 export const INTRO_MS=17000;
-export function introProgress(ms){return clamp01(ms/INTRO_MS)}
+export function introProgress(ms,total=INTRO_MS){return clamp01(ms/total)}
+
+// The study's own short intro: overview, dashboard, whiteboard, diplomas.
+export const STUDIO_MS=10000;
+export const STUDIO_CHAPTERS=[
+ {id:'estudio',night:0,shot:{angle:.72,elevation:.64,zoom:1,focus:[0,1.6,0]}},
+ {id:'tablero',night:0,shot:{angle:.6,elevation:.42,zoom:2.2,focus:[1.2,1.9,-.3]}},
+ {id:'pizarra',night:0,shot:{angle:.45,elevation:.4,zoom:2.1,focus:[2.7,2.5,-3.9]}},
+ {id:'diplomas',night:0,shot:{angle:.8,elevation:.38,zoom:2.4,focus:[-.6,3.05,-3.9]}}
+];

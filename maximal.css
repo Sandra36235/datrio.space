@@ -123,3 +123,48 @@ html body .film-stage{position:relative;top:auto;height:calc(100vh - 92px);heigh
  .intro-layer .hero-film{bottom:96px}
  .intro-go{height:52px;font-size:16px;padding:0 22px}
 }
+
+/* ---------- phase 2: studio captions ---------- */
+.film:not([data-seq="estudio"]) .captions[data-room="estudio"],.film[data-seq="estudio"] .captions[data-room="salon"]{display:none}
+
+/* ---------- below the stage: chunky maximal blocks ---------- */
+html body .worldbar{padding:70px clamp(16px,5vw,72px) 30px;max-width:1500px;margin:0 auto;gap:22px}
+html body .worldbar-heading{font:800 15px/1.2 var(--display);letter-spacing:.06em;color:var(--butter);text-transform:uppercase}
+html body .worldbar-heading b{font:italic 500 30px/1 var(--sign);text-transform:none;letter-spacing:0;color:var(--columbia)}
+html body .world-card,html body .world-card.selected,html body .world-card:not(.selected){border:3px solid var(--chocolate);border-radius:28px;box-shadow:8px 8px 0 var(--chocolate)}
+html body .world-card.card-salon{background:var(--butter)}
+html body .world-card.card-estudio{background:var(--columbia)}
+html body .world-card.card-retazos{background:var(--paper)}
+html body .world-card::after{display:none}
+html body .world-card:hover{transform:translate(-3px,-3px);box-shadow:11px 11px 0 var(--chocolate)}
+html body .world-card.selected{box-shadow:8px 8px 0 var(--chocolate),0 0 0 3px var(--butter)}
+html body .world-card b{font:800 26px/.95 var(--display);text-transform:uppercase;color:var(--chocolate);letter-spacing:-.01em}
+html body .world-card b em{font:italic 500 1.05em var(--sign);text-transform:none;color:var(--cherry)}
+html body .world-card small{color:var(--chocolate)}
+html body .world-number{background:var(--cherry);color:var(--butter)}
+html body .world-go{background:var(--chocolate);color:var(--butter)}
+html body .world-card:hover .world-go{background:var(--cherry)}
+html body .world-card.selected .world-go{background:var(--cherry);color:var(--butter)}
+html body .world-card.selected .world-go::before{background:var(--butter)}
+
+html body .object-shortcuts{padding:10px clamp(16px,5vw,72px) 60px;max-width:1500px;margin:0 auto;color:var(--butter)}
+html body .object-shortcuts > span{font:800 13px/1 var(--display);letter-spacing:.14em;color:var(--butter)}
+html body .object-shortcuts > div{display:flex;flex-wrap:wrap;gap:12px}
+html body .object-shortcuts button,html body .object-shortcuts button:hover{height:42px;padding:0 18px;border-radius:999px;border:2px solid var(--chocolate);background:var(--butter);color:var(--chocolate);font:700 14px/1 var(--ui);box-shadow:4px 4px 0 var(--chocolate);text-decoration:none;transform:rotate(-1.5deg);transition:transform .2s}
+html body .object-shortcuts button:nth-child(even){background:var(--columbia);transform:rotate(1.5deg)}
+html body .object-shortcuts button:hover{transform:rotate(0) translateY(-2px)}
+
+.closing-band{position:relative;background:var(--chocolate);color:var(--butter);padding:80px clamp(16px,5vw,72px) 0;overflow:hidden}
+.closing-band::before{content:'';position:absolute;left:0;right:0;top:0;height:28px;background:repeating-linear-gradient(90deg,var(--cherry) 0 56px,var(--columbia) 56px 112px)}
+.closing-inner{max-width:1500px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;padding:30px 0 60px}
+.closing-title{margin:0;font:800 clamp(48px,8vw,120px)/.9 var(--display);text-transform:uppercase;color:var(--columbia);letter-spacing:-.03em}
+.closing-title em{font:italic 500 .8em var(--sign);text-transform:none;color:var(--butter);letter-spacing:0}
+.closing-mail{display:inline-flex;align-items:center;height:60px;padding:0 30px;border-radius:999px;border:3px solid var(--butter);background:var(--cherry);color:var(--butter);font:800 18px/1 var(--display);text-transform:uppercase;text-decoration:none;box-shadow:6px 6px 0 var(--butter)}
+.closing-mail:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--butter)}
+.closing-marquee{position:relative;background:var(--cherry)}
+html body footer{background:var(--chocolate);color:rgba(255,237,173,.75);border:0;margin:0;padding:22px clamp(16px,5vw,72px) 28px;max-width:none}
+@media(max-width:720px){
+ html body .worldbar{padding:50px 0 24px}
+ .closing-band{padding-top:60px}
+ .closing-inner{padding:20px 0 44px}
+}
