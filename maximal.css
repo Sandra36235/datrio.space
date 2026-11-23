@@ -11,7 +11,9 @@ html body{background:var(--cherry);color:var(--paper);font-family:var(--ui)}
 .checks{background:repeating-conic-gradient(var(--cherry) 0 25%,var(--butter) 0 50%) 0 0/44px 44px}
 .festoon{-webkit-mask:radial-gradient(circle at 50% 100%,transparent 13px,#000 14px) 0 100%/28px 100% repeat-x,linear-gradient(#000,#000) 0 0/100% calc(100% - 13px) no-repeat;
  mask:radial-gradient(circle at 50% 100%,transparent 13px,#000 14px) 0 100%/28px 100% repeat-x,linear-gradient(#000,#000) 0 0/100% calc(100% - 13px) no-repeat}
-.sticker{display:grid;place-items:center;animation:spin 9s linear infinite}
+.sticker{display:grid;place-items:center}
+.story-card:hover .sticker{animation:wobble .7s ease-in-out}
+@keyframes wobble{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}65%{transform:rotate(10deg)}}
 .scribble{stroke:var(--butter);fill:none;stroke-width:4;stroke-linecap:round}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes mq{to{transform:translateX(-50%)}}
@@ -40,8 +42,8 @@ html body .about-link:hover,html body .walk-hud button:hover,html body .free-tog
 .hero-film{margin:0;color:var(--butter);text-shadow:4px 4px 0 var(--chocolate)}
 .hero-film .a{display:block;font:800 clamp(52px,9vw,138px)/.9 var(--display);letter-spacing:-.03em;text-transform:uppercase;color:var(--columbia)}
 .hero-film .b{display:block;font:italic 500 clamp(64px,11vw,168px)/1 var(--sign);color:var(--butter)}
-.hero-film span span{display:inline-block;animation:bob 2.8s ease-in-out infinite}
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.hero-film span span{display:inline-block;animation:rise .7s cubic-bezier(.2,.8,.2,1.2) both}
+@keyframes rise{from{transform:translateY(.45em);opacity:0}to{transform:none;opacity:1}}
 
 .story-card{position:relative;max-width:440px;padding:26px 28px 24px;border-radius:28px;background:var(--butter);color:var(--chocolate);
  border:3px solid var(--chocolate);box-shadow:8px 8px 0 var(--chocolate);opacity:0;transform:translateY(40px) rotate(-1.5deg);transition:opacity .5s,transform .6s cubic-bezier(.2,.8,.2,1.3)}
@@ -62,14 +64,14 @@ html body .about-link:hover,html body .walk-hud button:hover,html body .free-tog
  -webkit-mask:radial-gradient(circle at 50% 0,#000 13px,transparent 14px) 0 0/56px 28px repeat-x;mask:radial-gradient(circle at 50% 0,#000 13px,transparent 14px) 0 0/56px 28px repeat-x}
 .awning.open{transform:translateY(calc(-100% - 30px))}
 .fallers{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
-.faller{position:absolute;top:0;animation:fall var(--d,4.2s) cubic-bezier(.35,.05,.4,1) infinite}
+.faller{position:absolute;top:0;transform:translateY(-120px);animation:fall var(--d,4.2s) cubic-bezier(.35,.05,.4,1) 1 forwards}
 .marquee{position:absolute;left:0;bottom:0;z-index:4;width:100%;overflow:hidden;background:var(--chocolate);color:var(--butter);font:800 15px/1 var(--display);letter-spacing:.08em;text-transform:uppercase;padding:12px 0;white-space:nowrap}
-.marquee span{display:inline-block;padding-right:2em;animation:mq 22s linear infinite}
+.marquee span{display:inline-block;padding-right:2em;animation:mq 48s linear infinite}
 .free-toggle{position:absolute;right:clamp(16px,3vw,32px);bottom:64px;z-index:6;height:46px;padding:0 20px;border-radius:999px;font:700 14px/1 var(--ui);cursor:pointer}
 
 /* tour mode: the canvas lets scroll through; free mode restores it */
 body.touring #universe{pointer-events:none}
-body.touring #pins,body.touring .view-controls,body.touring .walk-hud,body.touring .stage-caption,body.touring .hint{display:none!important}
+body.touring #pins,body.touring .view-controls,body.touring .stage-caption,body.touring .hint{display:none!important}
 
 @media(max-width:720px){
  .chapter{padding:0 16px 14vh}
@@ -91,3 +93,8 @@ body.touring #pins,body.touring .view-controls,body.touring .walk-hud,body.touri
 html body .hero-film em{color:var(--butter);font-style:italic}
 .chapter[data-chapter="cafe"],.chapter[data-chapter="biblioteca"]{justify-content:flex-end}
 @media(max-width:720px){.chapter[data-chapter="cafe"],.chapter[data-chapter="biblioteca"]{justify-content:flex-start}}
+
+/* Puyol buttons sit above the ribbon; the free toggle moves to the top corner */
+html body .film-stage .walk-hud{bottom:58px;z-index:6}
+html body .free-toggle{top:16px;bottom:auto}
+@media(max-width:720px){html body .film-stage .walk-hud{bottom:52px}html body .free-toggle{top:12px;bottom:auto}}

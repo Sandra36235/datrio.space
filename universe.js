@@ -1,8 +1,8 @@
-﻿import {createWalk} from './play.js?v=pastel-11';
+﻿import {createWalk} from './play.js?v=pastel-12';
 import * as T from './vendor/three.module.js';
-import {startTour} from './tour.js?v=pastel-11';
-import {makeSalon,makeStudio,addAvatar,applySalonArt} from './rooms.js?v=pastel-11';
-import {animateRoom} from './room-life.js?v=pastel-11';
+import {startTour} from './tour.js?v=pastel-12';
+import {makeSalon,makeStudio,addAvatar,applySalonArt} from './rooms.js?v=pastel-12';
+import {animateRoom} from './room-life.js?v=pastel-12';
 let stageVisible=true,lastShadow=0;
 const $=s=>document.querySelector(s),stage=$('.stage'),canvas=$('#universe'),dialog=$('#details');
 const asset=name=>`art/${name}.png`;
@@ -94,5 +94,5 @@ canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();cancelAnimatio
 
 // Camera API for the scroll film (tour.js). The render loop eases toward these targets.
 export function setShot(shot){targetAngle=shot.angle;targetElevation=shot.elevation;targetZoom=shot.zoom;targetFocus=shot.focus;requestRender()}
-export function setTourMode(on){document.body.classList.toggle('touring',on);walker?.enabled(!on&&active==='salon'&&!failed);if(!on){targetFocus=null;resetView()}requestRender()}
+export function setTourMode(on){document.body.classList.toggle('touring',on);walker?.enabled(active==='salon'&&!failed);if(!on){targetFocus=null;resetView()}requestRender()}
 export function setNight(t){if(!renderer||!hemi)return;t=Math.min(1,Math.max(0,t));renderer.toneMappingExposure=1.02+(.6-1.02)*t;hemi.intensity=1.9*(1-.7*t);hemi.color.lerpColors(dayHemi,nightHemi,t);sunLight.intensity=3.9*(1-.85*t);nightLamp.intensity=2.2*t;requestRender()}

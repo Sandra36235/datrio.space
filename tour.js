@@ -1,6 +1,6 @@
 // The home page's scroll film: the 3D salon stays pinned while the visitor
 // scrolls through chapters; each chapter moves the camera and shows a card.
-import {CHAPTERS,chapterAt,shotAt,chapterForHash} from './tour-math.js?v=pastel-11';
+import {CHAPTERS,chapterAt,shotAt,chapterForHash} from './tour-math.js?v=pastel-12';
 
 const C={cherry:'#8E1825',columbia:'#C8D9EC',butter:'#FFEDAD',chocolate:'#3D2722'};
 const svg={
@@ -21,14 +21,14 @@ export function startTour(api){
 
  // Title letters bob one after another; cards get a spinning sticker.
  let k=0;for(const part of film.querySelectorAll('.hero-film .a, .hero-film .b em')){const text=part.textContent;part.textContent='';
-  for(const line of text.split('\n')){if(part.childNodes.length)part.append(document.createElement('br'));const w=document.createElement('span');for(const ch of line){const s=document.createElement('span');s.textContent=ch===' '?' ':ch;s.style.animationDelay=(k++*.06)+'s';w.append(s)}part.append(w)}}
+  for(const line of text.split('\n')){if(part.childNodes.length)part.append(document.createElement('br'));const w=document.createElement('span');for(const ch of line){const s=document.createElement('span');s.textContent=ch===' '?' ':ch;s.style.animationDelay=(.9+k++*.035)+'s';w.append(s)}part.append(w)}}
  cards.forEach((c,i)=>{if(!c||c.classList.contains('serene'))return;const s=document.createElement('span');s.className='sticker';s.setAttribute('aria-hidden','true');s.innerHTML=svg.star(i%2?C.cherry:C.columbia);c.append(s)});
 
  // Falling objects for the intro.
  const fallers=film.querySelector('.fallers');
  if(fallers&&!reduced){const items=[svg.cup(C.columbia,C.cherry),svg.record,svg.cup(C.butter,C.cherry),svg.ball,svg.book,svg.cup('#fff',C.cherry),svg.record,svg.book];
-  const count=innerWidth<720?4:items.length;
-  for(let i=0;i<count;i++){const d=document.createElement('div');d.className='faller';d.innerHTML=items[i];d.style.left=(4+i*(92/count))+'%';d.style.setProperty('--d',(3.6+(i%3)*.7)+'s');d.style.setProperty('--r',((i%2?1:-1)*(200+i*45))+'deg');d.style.animationDelay=(1.6+i*.45)+'s';fallers.append(d)}}
+  const count=innerWidth<720?3:5;
+  for(let i=0;i<count;i++){const d=document.createElement('div');d.className='faller';d.innerHTML=items[i];d.style.left=(4+i*(92/count))+'%';d.style.setProperty('--d',(3.6+(i%3)*.7)+'s');d.style.setProperty('--r',((i%2?1:-1)*(200+i*45))+'deg');d.style.animationDelay=(1.4+i*.35)+'s';fallers.append(d)}}
 
  const vh=()=>innerHeight;
  const scrolled=()=>-film.getBoundingClientRect().top;
@@ -53,6 +53,8 @@ export function startTour(api){
  const goToChapter=i=>{const top=film.getBoundingClientRect().top+scrollY+i*vh();scrollTo({top,behavior:reduced?'auto':'smooth'})};
 
  toggle.addEventListener('click',()=>setFree(!free));
+ // Puyol's buttons work during the film: the first tap frees the camera (capture runs before play.js starts the activity).
+ document.addEventListener('click',e=>{if(!free&&e.target.closest('.walk-hud button'))setFree(true)},true);
  addEventListener('scroll',queue,{passive:true});
  addEventListener('resize',queue);
 
