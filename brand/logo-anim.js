@@ -13,13 +13,15 @@ const LETTERS=[
 ];
 const STEM='M19 36 C8 36 0 44 0 55 C0 69 9 77 9 86 C9 96 0 105 0 119 C0 130 8 138 19 138 C30 138 38 130 38 119 C38 105 29 96 29 86 C29 77 38 69 38 55 C38 44 30 36 19 36Z';
 const SPEED=1.6,END=3.4;
+// The free dot is the same size as the stem's nodes (Sandra's choice).
+const DOT_R=19,DOT_Y=9;
 const cl=v=>Math.min(1,Math.max(0,v)),sm=t=>t*t*(3-2*t),eo=t=>1-Math.pow(1-t,3),eio=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
 const el=(tag,attrs,parent)=>{const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);parent?.appendChild(e);return e};
 let uid=0;
 
-function build({color='#8E1825',className='brand-logo',label='datrio',width=155,height=40}){
+function build({color='#8E1825',className='brand-logo',label='datrio',width=144,height=40}){
  const id='datrio-liquid-'+(++uid);
- const svg=el('svg',{viewBox:'0 0 541 140',class:className,role:'img','aria-label':label,width,height,overflow:'visible'});
+ const svg=el('svg',{viewBox:'0 -10 541 150',class:className,role:'img','aria-label':label,width,height,overflow:'visible'});
  const f=el('filter',{id,x:'-60%',y:'-60%',width:'220%',height:'220%'},el('defs',{},svg));
  el('feGaussianBlur',{in:'SourceGraphic',stdDeviation:'7.5',result:'b'},f);
  el('feColorMatrix',{in:'b',mode:'matrix',values:'1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 30 -13'},f);
@@ -27,7 +29,7 @@ function build({color='#8E1825',className='brand-logo',label='datrio',width=155,
  const letters=LETTERS.map(d=>el('path',{d,'fill-rule':'evenodd'},root));
  const i=el('g',{transform:'translate(386 0)'},root);
  const goo=el('g',{filter:`url(#${id})`},i);
- const crisp=el('g',{},i);el('path',{d:STEM},crisp);el('circle',{cx:19,cy:14,r:14},crisp);
+ const crisp=el('g',{},i);el('path',{d:STEM},crisp);el('circle',{cx:19,cy:DOT_Y,r:DOT_R},crisp);
  const drop=()=>el('ellipse',{cx:19,cy:119,rx:0,ry:0},goo);
  const parts={base:drop(),mid:drop(),hi:drop(),neckA:[drop(),drop(),drop(),drop()],neckB:[drop(),drop(),drop()]};
  return {svg,letters,goo,crisp,parts};
@@ -47,8 +49,8 @@ function player(L){
   blob(dm,mid.x,19*sm(cl((t-.6)/.6)),mid.v);
   const span=119-mid.x;
   neckA.forEach((e,k)=>{const f=(k+1)/5;blob(e,119-span*f,Math.max(10,16-span*.09)*sm(cl((t-.65)/.35)),mid.v*f)});
-  const rise=eio(cl((t-1.45)/.9)),hy=mid.x-(mid.x-14)*rise;
-  blob(hi,hy,14*sm(cl((t-1.4)/.45)));
+  const rise=eio(cl((t-1.45)/.9)),hy=mid.x-(mid.x-DOT_Y)*rise;
+  blob(hi,hy,DOT_R*sm(cl((t-1.4)/.45)));
   const gap=mid.x-hy,snap=sm(cl((rise-.25)/.35));
   neckB.forEach((e,k)=>{const f=(k+1)/4;blob(e,mid.x-gap*f,(11-6*f)*(1-snap)*sm(cl((t-1.45)/.25)))});
   const settle=sm(cl((t-2.55)/.35));L.crisp.style.opacity=settle;L.goo.style.opacity=1-settle;

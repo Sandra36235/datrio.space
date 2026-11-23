@@ -1,6 +1,6 @@
 ﻿import {createWalk} from './play.js?v=pastel-14';
 import * as T from './vendor/three.module.js';
-import {startTour} from './tour.js?v=pastel-18';
+import {startTour} from './tour.js?v=pastel-19';
 import {makeSalon,makeStudio,addAvatar,applySalonArt} from './rooms.js?v=pastel-14';
 import {animateRoom} from './room-life.js?v=pastel-14';
 let stageVisible=true,lastShadow=0;

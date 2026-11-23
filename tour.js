@@ -1,7 +1,7 @@
 // Intro videos for the home page. The salon intro plays on arrival; the study
 // has its own short intro the first time the visitor enters it. Both end on a
 // button that hands the room back for free play with Puyol.
-import {mountLogo,LOGO_MS} from './brand/logo-anim.js?v=2';
+import {mountLogo,LOGO_MS} from './brand/logo-anim.js?v=3';
 import {CHAPTERS,STUDIO_CHAPTERS,INTRO_MS,STUDIO_MS,chapterAt,shotAt,chapterForHash,introProgress} from './tour-math.js?v=pastel-14';
 
 const C={cherry:'#8E1825',columbia:'#C8D9EC',butter:'#FFEDAD',chocolate:'#3D2722'};
@@ -28,7 +28,7 @@ export function startTour(api){
  // Big liquid logo that opens the salon intro, on plain cherry, before the awning lifts.
  const logoLayer=document.createElement('div');logoLayer.className='intro-logo';logoLayer.setAttribute('aria-hidden','true');
  film.querySelector('.film-stage')?.appendChild(logoLayer);
- const bigLogo=reduced?null:mountLogo(logoLayer,{color:'#FFEDAD',className:'intro-logo-svg',width:541,height:140});
+ const bigLogo=reduced?null:mountLogo(logoLayer,{color:'#FFEDAD',className:'intro-logo-svg',width:541,height:150});
 
  // Title letters rise once; captions get a sticker.
  let k=0;for(const part of film.querySelectorAll('.hero-film .a, .hero-film .b em')){const text=part.textContent;part.textContent='';
