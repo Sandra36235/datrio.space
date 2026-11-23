@@ -198,3 +198,9 @@ html body .puyol-menu button{justify-content:flex-start}
 html body .story-card .go{border:2px solid var(--chocolate);border-radius:16px;background:var(--butter);color:var(--chocolate);transform:rotate(-2deg);transition:transform .22s}
 html body .story-card .go:hover{transform:rotate(0) scale(1.06);background:var(--butter)}
 @media(prefers-reduced-motion:reduce){html body .topbar nav button,html body .about-link,html body .walk-hud button,html body .replay,html body .intro-go,html body .view-controls button{transition:none!important}}
+
+/* World cards without the 3D thumbnails: text takes the whole card */
+html body .world-art{display:none}
+html body .worldbar{padding-top:40px}
+html body .world-card,html body .world-card.selected,html body .world-card:not(.selected){min-height:150px}
+html body .world-text{max-width:none}
