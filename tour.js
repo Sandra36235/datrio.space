@@ -1,6 +1,7 @@
 // Intro videos for the home page. The salon intro plays on arrival; the study
 // has its own short intro the first time the visitor enters it. Both end on a
 // button that hands the room back for free play with Puyol.
+import {mountLogo,LOGO_MS} from './brand/logo-anim.js?v=2';
 import {CHAPTERS,STUDIO_CHAPTERS,INTRO_MS,STUDIO_MS,chapterAt,shotAt,chapterForHash,introProgress} from './tour-math.js?v=pastel-14';
 
 const C={cherry:'#8E1825',columbia:'#C8D9EC',butter:'#FFEDAD',chocolate:'#3D2722'};
@@ -24,6 +25,10 @@ export function startTour(api){
  };
  for(const s of Object.values(SEQ))s.cards=[...film.querySelectorAll(`.captions[data-room="${s.room}"] .story-card`)];
  let raf=0,timers=[],start=0,room='salon',state='',seq=SEQ.salon;
+ // Big liquid logo that opens the salon intro, on plain cherry, before the awning lifts.
+ const logoLayer=document.createElement('div');logoLayer.className='intro-logo';logoLayer.setAttribute('aria-hidden','true');
+ film.querySelector('.film-stage')?.appendChild(logoLayer);
+ const bigLogo=reduced?null:mountLogo(logoLayer,{color:'#FFEDAD',className:'intro-logo-svg',width:541,height:140});
 
  // Title letters rise once; captions get a sticker.
  let k=0;for(const part of film.querySelectorAll('.hero-film .a, .hero-film .b em')){const text=part.textContent;part.textContent='';
@@ -54,7 +59,11 @@ export function startTour(api){
   if(go)go.textContent=seq.label;
   const begin=()=>{switchRoom(seq.room);api.setShot(seq.chapters[0].shot);api.setNight(seq.night?1:0);if(seq.title)spawnFallers();awning?.classList.add('open');start=performance.now()+800;raf=requestAnimationFrame(frame)};
   // The awning drops like a portal, the room changes behind it, then it lifts.
-  if(awning&&!reduced){awning.classList.remove('open');later(seq.room===room&&seq.title?500:1450,begin)}else begin();
+  if(awning&&!reduced){
+   awning.classList.remove('open');
+   if(seq.title&&bigLogo){logoLayer.classList.add('on');let next=false;const after=()=>{if(next||state!=='intro')return;next=true;logoLayer.classList.remove('on');later(400,begin)};bigLogo.play(()=>later(250,after));later(LOGO_MS*2+500,after)}
+   else later(seq.room===room&&seq.title?500:1450,begin);
+  }else begin();
  }
  function end(){
   clearTimers();setState('end');showCard(-1);film.classList.toggle('show-title',seq.title);
@@ -63,7 +72,7 @@ export function startTour(api){
  }
  function goFree(){
   clearTimers();setState('free');showCard(-1);film.classList.remove('show-title');
-  awning?.classList.add('open');fallers?.replaceChildren();
+  awning?.classList.add('open');fallers?.replaceChildren();logoLayer.classList.remove('on');
   api.setTourMode(false);api.setNight(0);remember(seq.key);
  }
 

@@ -114,6 +114,6 @@ boardTabs.forEach((tab,index)=>{
 document.getElementById('back').addEventListener('click',e=>{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;e.preventDefault();document.querySelector('main').classList.add('leaving');const href=e.currentTarget.href;setTimeout(()=>location.href=href,350)});
 addEventListener('pageshow',()=>document.querySelector('main').classList.remove('leaving'));
 </script>
-<script type="module" src="brand/logo-anim.js?v=1"></script>
+<script type="module" src="brand/logo-anim.js?v=2"></script>
 </body>
 </html>

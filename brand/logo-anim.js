@@ -17,9 +17,9 @@ const cl=v=>Math.min(1,Math.max(0,v)),sm=t=>t*t*(3-2*t),eo=t=>1-Math.pow(1-t,3),
 const el=(tag,attrs,parent)=>{const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);parent?.appendChild(e);return e};
 let uid=0;
 
-function build(img){
- const color=img.dataset.color||'#8E1825',id='datrio-liquid-'+(++uid);
- const svg=el('svg',{viewBox:'0 0 541 140',class:img.className,role:'img','aria-label':img.alt||'datrio',width:img.getAttribute('width')||155,height:img.getAttribute('height')||40,overflow:'visible'});
+function build({color='#8E1825',className='brand-logo',label='datrio',width=155,height=40}){
+ const id='datrio-liquid-'+(++uid);
+ const svg=el('svg',{viewBox:'0 0 541 140',class:className,role:'img','aria-label':label,width,height,overflow:'visible'});
  const f=el('filter',{id,x:'-60%',y:'-60%',width:'220%',height:'220%'},el('defs',{},svg));
  el('feGaussianBlur',{in:'SourceGraphic',stdDeviation:'7.5',result:'b'},f);
  el('feColorMatrix',{in:'b',mode:'matrix',values:'1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 30 -13'},f);
@@ -30,14 +30,13 @@ function build(img){
  const crisp=el('g',{},i);el('path',{d:STEM},crisp);el('circle',{cx:19,cy:14,r:14},crisp);
  const drop=()=>el('ellipse',{cx:19,cy:119,rx:0,ry:0},goo);
  const parts={base:drop(),mid:drop(),hi:drop(),neckA:[drop(),drop(),drop(),drop()],neckB:[drop(),drop(),drop()]};
- img.replaceWith(svg);
  return {svg,letters,goo,crisp,parts};
 }
 
 function blob(e,cy,r,vel=0){const sq=Math.max(-.2,Math.min(.2,vel/500));e.setAttribute('cy',cy);e.setAttribute('rx',Math.max(0,r*(1-sq*.6)));e.setAttribute('ry',Math.max(0,r*(1+sq)))}
 
 function player(L){
- let raf=0,last=0,t=0,mid,playing=false;
+ let raf=0,last=0,t=0,mid,playing=false,doneCb=null;
  const show=done=>{L.crisp.style.opacity=done?1:0;L.goo.style.opacity=done?0:1;L.letters.forEach(p=>{p.style.opacity=done?1:0;p.style.transform=''})};
  function frame(now){
   const dt=Math.min(.033,last?(now-last)/1000:.016)*SPEED;last=now;t+=dt;
@@ -54,19 +53,25 @@ function player(L){
   neckB.forEach((e,k)=>{const f=(k+1)/4;blob(e,mid.x-gap*f,(11-6*f)*(1-snap)*sm(cl((t-1.45)/.25)))});
   const settle=sm(cl((t-2.55)/.35));L.crisp.style.opacity=settle;L.goo.style.opacity=1-settle;
   L.letters.forEach((p,k)=>{const q=eo(cl((t-2.1-k*.08)/.6));p.style.opacity=q;p.style.transform=`translateY(${(1-q)*14}px)`});
-  if(t<END)raf=requestAnimationFrame(frame);else{playing=false;show(true)}
+  if(t<END)raf=requestAnimationFrame(frame);else{playing=false;show(true);const cb=doneCb;doneCb=null;cb?.()}
  }
- return function play(){
-  if(playing)return;playing=true;cancelAnimationFrame(raf);last=0;t=0;mid={x:119,v:0,target:119};
+return function play(onDone){
+  if(playing)return;doneCb=onDone;playing=true;cancelAnimationFrame(raf);last=0;t=0;mid={x:119,v:0,target:119};
   show(false);Object.values(L.parts).flat().forEach(e=>{e.setAttribute('rx',0);e.setAttribute('ry',0)});
   raf=requestAnimationFrame(frame);
  };
 }
 
+// How long one run takes in real time (ms).
+export const LOGO_MS=Math.round(END/SPEED*1000);
+// Mount a liquid logo inside any element; returns {svg, play(onDone)}.
+export function mountLogo(parent,opts={}){const L=build(opts);parent.appendChild(L.svg);return {svg:L.svg,play:player(L)}}
+
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 for(const img of document.querySelectorAll('img.brand-logo')){
  if(reduced)continue;
- const L=build(img),play=player(L);
+ const L=build({color:img.dataset.color,className:img.className,label:img.alt,width:img.getAttribute('width'),height:img.getAttribute('height')});
+ img.replaceWith(L.svg);const play=player(L);
  play();
- L.svg.closest('a')?.addEventListener('mouseenter',play);
+ L.svg.closest('a')?.addEventListener('mouseenter',()=>play());
 }
