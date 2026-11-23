@@ -12,7 +12,7 @@
 </head>
 <body>
 <header class="page-top">
- <a class="page-logo" href="index.html#salon" aria-label="Datrio, volver al salón"><img class="brand-logo" src="brand/datrio_logotipo_cereza.svg" alt="datrio" width="140" height="36"></a>
+ <a class="page-logo" href="index.html#salon" aria-label="Datrio, volver al salón"><img class="brand-logo" data-color="#8E1825" src="brand/datrio_logotipo_cereza.svg" alt="datrio" width="140" height="36"></a>
  <a class="pill" href="index.html#salon"><span>←</span> Volver al salón</a>
 </header>
 <main>
@@ -73,5 +73,6 @@
 </main>
 <footer class="page-foot"><span>Hecho para aprender haciendo.</span><span>datrio / un universo en construcción</span></footer>
 <script>document.querySelectorAll('a[href="index.html#salon"]').forEach(link=>link.addEventListener('click',event=>{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;event.preventDefault();document.querySelector('main').classList.add('leaving');setTimeout(()=>location.href=link.href,350)}));</script>
+<script type="module" src="brand/logo-anim.js?v=1"></script>
 </body>
 </html>
