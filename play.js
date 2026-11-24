@@ -1,7 +1,7 @@
 import * as T from './vendor/three.module.js';
-import {route,walkable} from './walk.js?v=pastel-14';
-import {createPoodle3D,posePoodle3D} from './poodle3d.js?v=pastel-14';
-import {activities,createActivities} from './activities.js?v=pastel-14';
+import {route,walkable} from './walk.js?v=pastel-21';
+import {createPoodle3D,posePoodle3D} from './poodle3d.js?v=pastel-21';
+import {activities,createActivities} from './activities.js?v=pastel-21';
 
 export function createWalk(room,canvas,onCoffee,wake,reduced){
  const player=new T.Group(),dog=createPoodle3D();room.add(player);player.add(dog);player.position.set(2.6,.04,2);

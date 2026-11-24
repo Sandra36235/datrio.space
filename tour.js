@@ -2,7 +2,7 @@
 // has its own short intro the first time the visitor enters it. Both end on a
 // button that hands the room back for free play with Puyol.
 import {mountLogo,LOGO_MS} from './brand/logo-anim.js?v=3';
-import {CHAPTERS,STUDIO_CHAPTERS,INTRO_MS,STUDIO_MS,chapterAt,shotAt,chapterForHash,introProgress} from './tour-math.js?v=pastel-14';
+import {CHAPTERS,STUDIO_CHAPTERS,INTRO_MS,STUDIO_MS,chapterAt,shotAt,chapterForHash,introProgress} from './tour-math.js?v=pastel-21';
 
 const C={cherry:'#8E1825',columbia:'#C8D9EC',butter:'#FFEDAD',chocolate:'#3D2722'};
 const svg={

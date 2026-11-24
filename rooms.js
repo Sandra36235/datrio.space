@@ -1,12 +1,12 @@
 import * as T from './vendor/three.module.js';
-import {createPoodle3D} from './poodle3d.js?v=pastel-14';
-import {botanical,pillow,addRoomLife} from './room-life.js?v=pastel-14';
-import {coffeeBar,teachingCorner,musicCorner} from './salon-corners.js?v=pastel-14';
-import {studioRug,studioDesk,studioChair,studioWhiteboard,diplomaWall,corkboard,rollingCart,studyBed,studyCorner,titleTexture} from './studio-pieces.js?v=pastel-14';
-import {mergeStatic,contactShadows,coffeeExtras,libraryCollectibles,gamerSetup,fluffySofa,fluffyChair,pumpkinPouf,puyolBed,fiddleLeaf,birdOfParadise,succulentBowl,libraryScallops,bubblePedestal,mushroomTable,wavyMirror} from './salon-extras.js?v=pastel-14';
+import {createPoodle3D} from './poodle3d.js?v=pastel-21';
+import {botanical,pillow,addRoomLife} from './room-life.js?v=pastel-21';
+import {coffeeBar,teachingCorner,musicCorner} from './salon-corners.js?v=pastel-21';
+import {studioRug,studioDesk,studioChair,studioWhiteboard,diplomaWall,corkboard,rollingCart,studyBed,studyCorner,titleTexture} from './studio-pieces.js?v=pastel-21';
+import {mergeStatic,contactShadows,coffeeExtras,libraryCollectibles,gamerSetup,fluffySofa,fluffyChair,pumpkinPouf,puyolBed,fiddleLeaf,birdOfParadise,succulentBowl,libraryScallops,bubblePedestal,mushroomTable,wavyMirror} from './salon-extras.js?v=pastel-21';
 const materialCache=new Map();
 export function mat(color){if(!materialCache.has(color))materialCache.set(color,new T.MeshStandardMaterial({color,roughness:.78}));return materialCache.get(color)}
-const C={white:'#fffaf1',blue:'#7891cc',sky:'#a5b9e4',yellow:'#f0d37a',orange:'#8e3b4a',oak:'#c49663',oakLight:'#ddb58b',dark:'#2f2a33',cream:'#ece4d8',leaf:'#4b7643',gold:'#bd8c40'};
+const C={white:'#fffaf1',blue:'#7891cc',sky:'#a5b9e4',yellow:'#f0d37a',orange:'#8e3b4a',oak:'#c49663',oakLight:'#ddb58b',dark:'#3d2722',cream:'#ece4d8',leaf:'#4b7643',gold:'#bd8c40'};
 function place(geo,m,g,x=0,y=0,z=0){const a=new T.Mesh(geo,typeof m==='string'?mat(m):m);a.position.set(x,y,z);a.castShadow=true;a.receiveShadow=true;g.add(a);return a}
 export function box(g,w,h,d,m,x=0,y=0,z=0,r=0){if(!r)return place(new T.BoxGeometry(w,h,d),m,g,x,y,z);r=Math.min(r,w/3,h/3,d/3);const s=new T.Shape(),a=-w/2+r,b=-h/2+r,W=w-2*r,H=h-2*r;s.moveTo(a,b-r);s.lineTo(a+W,b-r);s.quadraticCurveTo(a+W+r,b-r,a+W+r,b);s.lineTo(a+W+r,b+H);s.quadraticCurveTo(a+W+r,b+H+r,a+W,b+H+r);s.lineTo(a,b+H+r);s.quadraticCurveTo(a-r,b+H+r,a-r,b+H);s.lineTo(a-r,b);s.quadraticCurveTo(a-r,b-r,a,b-r);const geo=new T.ExtrudeGeometry(s,{depth:d-2*r,bevelEnabled:true,bevelSize:r,bevelThickness:r,bevelSegments:2,steps:1,curveSegments:3});geo.translate(0,0,-(d-2*r)/2);return place(geo,m,g,x,y,z)}
 export const sphere=(g,r,m,x,y,z,sx=1,sy=1,sz=1)=>{const a=place(new T.SphereGeometry(r,24,16),m,g,x,y,z);a.scale.set(sx,sy,sz);return a};
@@ -14,6 +14,14 @@ function cyl(g,rt,rb,h,m,x,y,z,n=20){return place(new T.CylinderGeometry(rt,rb,h
 function group(g,x=0,y=0,z=0,rotation=0){const a=new T.Group();a.position.set(x,y,z);a.rotation.y=rotation;g.add(a);return a}
 function texture(draw,w=512,h=512){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);const t=new T.CanvasTexture(c);t.colorSpace=T.SRGBColorSpace;return t}
 function imagePlane(g,w,h,t,x,y,z,rot=0){const a=place(new T.PlaneGeometry(w,h),new T.MeshBasicMaterial({map:t,side:T.DoubleSide}),g,x,y,z);a.rotation.y=rot;return a}
+// Cherry and columbia awning stripes with a scalloped hem (brand 'franjas').
+function awningTex(stripes,scallop){return texture((ctx,w,h)=>{const sw=w/stripes;for(let i=0;i<stripes;i++){ctx.fillStyle=i%2?'#c8d9ec':'#8e1825';ctx.fillRect(i*sw,0,sw+1,h)}if(scallop){ctx.globalCompositeOperation='destination-out';const r=sw/2;for(let i=0;i<stripes;i++){ctx.beginPath();ctx.arc(i*sw+r,h+r*.35,r*.98,Math.PI,0,true);ctx.lineTo(i*sw+sw,h);ctx.lineTo(i*sw,h);ctx.fill()}ctx.globalCompositeOperation='source-over'}},512,scallop?128:256)}
+function awningPlane(g,w,h,tex,x,y,z,rx,ry){const m=new T.MeshStandardMaterial({map:tex,transparent:true,alphaTest:.5,side:T.DoubleSide,roughness:.85});m.userData={};const p=place(new T.PlaneGeometry(w,h),m,g,x,y,z);p.rotation.order='YXZ';p.rotation.y=ry;p.rotation.x=rx;p.userData.refined=true;return p}
+// Wall awning: a sloped striped canopy and a scalloped front hem. x is the wall face, z0..z1 its span.
+function wallAwning(g,x,z0,z1,top,depth){const len=z1-z0,zc=(z0+z1)/2,stripes=Math.max(6,Math.round(len/.28));
+ awningPlane(g,len,depth*1.08,awningTex(stripes,false),x+depth/2,top-.09,zc,-1.18,Math.PI/2);
+ awningPlane(g,len,.2,awningTex(stripes,true),x+depth,top-.27,zc,0,Math.PI/2);
+ const rod=cyl(g,.014,.014,len,'#c9a25e',x+depth,top-.17,zc,8);rod.rotation.x=Math.PI/2;rod.userData.refined=true}
 // Natural oak herringbone: each plank has its own honey tone and soft grain.
 function parquet(){return texture((ctx,w,h)=>{ctx.fillStyle='#b08a5e';ctx.fillRect(0,0,w,h);const W=32,L=128,P=256,tones=['#c6a072','#c29c6e','#caa577','#bf996b','#c49e70','#cba679'];let n=0;
  const plank=(x,y,pw,ph)=>{for(const ox of [-P,0,P,2*P])for(const oy of [-P,0,P,2*P]){const X=x+ox,Y=y+oy;if(X>w||Y>h||X+pw<0||Y+ph<0)continue;ctx.fillStyle=tones[n%tones.length];ctx.fillRect(X,Y,pw,ph);ctx.strokeStyle='#6b4a2c12';ctx.lineWidth=1;const along=pw>ph;for(let q=0;q<5;q++){const o=4+q*5.5+((n*7+q*3)%4);ctx.beginPath();if(along){ctx.moveTo(X+2,Y+o*ph/32);ctx.bezierCurveTo(X+pw*.35,Y+o*ph/32+2,X+pw*.65,Y+o*ph/32-2,X+pw-2,Y+o*ph/32+1)}else{ctx.moveTo(X+o*pw/32,Y+2);ctx.bezierCurveTo(X+o*pw/32+2,Y+ph*.35,X+o*pw/32-2,Y+ph*.65,X+o*pw/32+1,Y+ph-2)}ctx.stroke()}ctx.strokeStyle='#a17d55';ctx.lineWidth=1;ctx.strokeRect(X+.5,Y+.5,pw-1,ph-1)}n++};
@@ -105,7 +113,7 @@ function chess(g,x,z){
  }
 }
 function techCorner(g){
- const pink='#a5b9e4',light='#3a3352',deep='#2f2a33',glow=new T.MeshBasicMaterial({color:'#b79cf0'});glow.name='rgb-glow';
+ const pink='#a5b9e4',light='#3d2722',deep='#2f2a33',glow=new T.MeshBasicMaterial({color:'#b79cf0'});glow.name='rgb-glow';
  const screen=texture((ctx,w,h)=>{ctx.fillStyle='#2a2440';ctx.fillRect(0,0,w,h);const gradient=ctx.createLinearGradient(0,0,w,h);gradient.addColorStop(0,'#f0d37a');gradient.addColorStop(1,'#7891cc');ctx.fillStyle=gradient;ctx.beginPath();ctx.arc(w*.68,h*.45,h*.32,0,7);ctx.fill();ctx.fillStyle='#fff0fa';ctx.font='bold 38px sans-serif';ctx.fillText('CREATE  /  PLAY',34,70);ctx.fillStyle='#c9d4f0';for(let i=0;i<5;i++)ctx.fillRect(34,125+i*50,145+i*36,12)});
  // Compact desk stays against the back wall, beside the library.
  box(g,2.35,.12,.95,light,-2.65,1.13,-4.65,.055);
@@ -140,7 +148,7 @@ function music(g){
 function rug(g){const t=texture((ctx,w,h)=>{const n=12,m=8,sw=w/n,sh=h/m;for(let y=0;y<m;y++)for(let x=0;x<n;x++){ctx.fillStyle=(x+y)%2?'#e8c260':'#8399cf';ctx.fillRect(x*sw,y*sh,sw+1,sh+1)}for(let i=0;i<14000;i++){ctx.fillStyle=i%2?'#ffffff0a':'#2a2f5010';ctx.fillRect(Math.random()*w,Math.random()*h,1,2)}},768,512);const a=place(new T.PlaneGeometry(7,4.6),new T.MeshStandardMaterial({map:t,roughness:1}),g,0,.04,1);a.rotation.x=-Math.PI/2;a.receiveShadow=true}
 function lamp(g){cyl(g,.22,.3,.04,C.dark,-.7,.05,-2.9);cyl(g,.018,.018,2.7,C.dark,-.7,1.4,-2.9);for(let j=0;j<3;j++){const q=cyl(g,.12,.18,.35,j===1?'#a8b6e6':'#f0d37a',-.7+(j-1)*.23,2.4+j*.22,-2.9,20);q.rotation.z=(j-1)*.5}const textureStripe=texture((c,w,h)=>{c.fillStyle='#aab3e4';c.fillRect(0,0,w,h);c.fillStyle='#96a0d6';for(let x=0;x<w;x+=32)c.fillRect(x,0,10,h)});const shade=place(new T.CylinderGeometry(.48,.48,.55,32,1,true),new T.MeshStandardMaterial({map:textureStripe,side:T.DoubleSide}),g,.7,3.5,-1.6);cyl(g,.01,.01,.6,C.dark,.7,4.05,-1.6);cyl(g,.46,.46,.015,C.white,.7,3.22,-1.6)}
 export function makeSalon(){
- const g=shell(14.5,11.5);g.name='salon';windowPanel(g,-7.03,2,3.4);
+ const g=shell(14.5,11.5);g.name='salon';windowPanel(g,-7.03,2,3.4);wallAwning(g,-7.04,-4.6,-.45,4.02,.5);wallAwning(g,-7.04,.15,3.85,3.98,.32);
  rug(g);coffeeBar(g);teachingCorner(g);musicCorner(g);shelves(g,-5.2,-5.25,2.2);techCorner(g);gamerSetup(g);libraryCollectibles(g);pumpkinPouf(g);puyolBed(g);
  const librarySign=texture((ctx,w,h)=>{ctx.fillStyle='#5a2431';ctx.fillRect(0,0,w,h);ctx.strokeStyle='#f0d37a';ctx.lineWidth=10;ctx.strokeRect(16,16,w-32,h-32);ctx.fillStyle='#fff9e8';ctx.textAlign='center';ctx.font='600 46px sans-serif';ctx.fillText('BIBLIOTECA',w/2,h*.62)},512,128);
  imagePlane(g,1.95,.48,librarySign,-5.2,3.77,-4.83);
@@ -155,7 +163,7 @@ export function makeSalon(){
 function whiteboardTexture(){return texture((ctx,w,h)=>{ctx.fillStyle='#fcfdfb';ctx.fillRect(0,0,w,h);ctx.strokeStyle='#467eb8';ctx.lineWidth=4;for(let i=0;i<6;i++){let x=30+(i%3)*155,y=40+Math.floor(i/3)*160;ctx.strokeRect(x,y,100,55);ctx.beginPath();ctx.moveTo(x+105,y+27);ctx.lineTo(x+145,y+27);ctx.lineTo(x+137,y+20);ctx.stroke()}for(let i=0;i<3;i++){ctx.strokeStyle=['#4b7bc7','#e4ae40','#ed9454'][i];ctx.beginPath();ctx.arc(150+i*60,390,70,0,7);ctx.stroke()}for(let i=0;i<5;i++){ctx.fillStyle=['#f7c86f','#8ac9e8','#f5a6a2'][i%3];ctx.fillRect(380+(i%2)*50,260+i*40,40,35)}})}
 function monitor(g,x,y,z){box(g,1.8,1.1,.1,C.dark,x,y,z,.04);const tx=texture((ctx,w,h)=>{ctx.fillStyle='#f7faff';ctx.fillRect(0,0,w,h);ctx.fillStyle='#3158cb';ctx.fillRect(0,0,w,35);ctx.fillStyle='#dbe4f4';ctx.fillRect(0,35,65,h);for(let i=0;i<5;i++){ctx.fillStyle=i%2?'#ee9c45':'#4274d6';ctx.fillRect(95+i*65,270-i*28,38,80+i*28)}ctx.strokeStyle='#3e74c7';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(90,440);ctx.lineTo(170,390);ctx.lineTo(230,405);ctx.lineTo(310,345);ctx.lineTo(450,330);ctx.stroke()});imagePlane(g,1.65,.96,tx,x,y,z+.06);box(g,.08,.35,.08,'#8e9baa',x,y-.7,z);box(g,.65,.04,.4,'#c5ced7',x,y-.88,z+.08)}
 function diploma(i){return texture((ctx,w,h)=>{ctx.fillStyle='#fffaf1';ctx.fillRect(0,0,w,h);ctx.strokeStyle='#b3986d';ctx.lineWidth=3;ctx.strokeRect(20,20,w-40,h-40);ctx.fillStyle='#777a80';ctx.fillRect(160,100,190,12);for(let j=0;j<5;j++)ctx.fillRect(90+(j%2)*25,180+j*28,330-(j%2)*50,4);ctx.fillStyle='#c9a24b';ctx.beginPath();ctx.arc(256,385,30,0,7);ctx.fill()})}
-export function makeStudio(){const g=shell();windowPanel(g,-5.03,1.7,2.7);studioRug(g);shelves(g,-3.3,-3.75,2.1);diplomaWall(g);studioWhiteboard(g);studioDesk(g);studioChair(g);corkboard(g);rollingCart(g);studyBed(g);studyCorner(g);
+export function makeStudio(){const g=shell();windowPanel(g,-5.03,1.7,2.7);wallAwning(g,-5.04,.2,3.2,3.98,.32);studioRug(g);shelves(g,-3.3,-3.75,2.1);diplomaWall(g);studioWhiteboard(g);studioDesk(g);studioChair(g);corkboard(g);rollingCart(g);studyBed(g);studyCorner(g);
  const studyDog=createPoodle3D();studyDog.position.set(2.1,0,2.8);studyDog.rotation.y=-.35;g.add(studyDog);
  fiddleLeaf(g,4.45,-3.35,1.15);birdOfParadise(g,-4.45,3.45,1.1);addRoomLife(g,true);return g}
 export function addAvatar(g,texture,work=false){const m=new T.SpriteMaterial({map:texture,transparent:true,depthWrite:false});const s=new T.Sprite(m);s.scale.set(work?2.05:2.22,work?2.05:2.22,1);s.position.set(work?-.3:1.3,work?1.65:1.72,work?-1.42:-.45);g.add(s);return s}
