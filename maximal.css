@@ -2,7 +2,7 @@
    Loaded last on the home page. Maximalism comes from patterns
    (stripes, checks, scallops, stickers), not from more colours. */
 :root{--cherry:#8E1825;--columbia:#C8D9EC;--butter:#FFEDAD;--chocolate:#3D2722;--paper:#FFF8EE;
- --display:'Bricolage Grotesque','Arial Black',sans-serif;--sign:'Fraunces',Georgia,serif;--ui:'DM Sans',system-ui,sans-serif}
+ --display:'Segoe UI',Arial,sans-serif;--sign:'Fraunces',Georgia,serif;--ui:'Segoe UI',Arial,sans-serif}
 
 html body{background:var(--cherry);color:var(--paper);font-family:var(--ui)}
 
@@ -40,7 +40,7 @@ html body .about-link:hover,html body .walk-hud button:hover,html body .free-tog
 .film-stage + .chapter{margin-top:-100vh;margin-top:-100svh}
 
 .hero-film{margin:0;color:var(--butter);text-shadow:4px 4px 0 var(--chocolate)}
-.hero-film .a{display:block;font:800 clamp(52px,9vw,138px)/.9 var(--display);letter-spacing:-.03em;text-transform:uppercase;color:var(--columbia)}
+.hero-film .a{display:block;font:700 clamp(52px,9vw,138px)/.9 var(--display);letter-spacing:-.03em;text-transform:uppercase;color:var(--columbia)}
 .hero-film .b{display:block;font:italic 500 clamp(64px,11vw,168px)/1 var(--sign);color:var(--butter)}
 .hero-film span span{display:inline-block;animation:rise .7s cubic-bezier(.2,.8,.2,1.2) both}
 @keyframes rise{from{transform:translateY(.45em);opacity:0}to{transform:none;opacity:1}}
@@ -50,7 +50,7 @@ html body .about-link:hover,html body .walk-hud button:hover,html body .free-tog
 .story-card.is-on{opacity:1;transform:none}
 .chapter:nth-of-type(odd) .story-card{background:var(--columbia)}
 .story-card .kicker{display:inline-block;margin-bottom:10px;padding:5px 12px;border-radius:999px;background:var(--cherry);color:var(--butter);font:700 12px/1 var(--ui);letter-spacing:.12em;text-transform:uppercase}
-.story-card h2{margin:0 0 8px;font:800 clamp(30px,3.4vw,44px)/.95 var(--display);text-transform:uppercase;letter-spacing:-.02em}
+.story-card h2{margin:0 0 8px;font:700 clamp(30px,3.4vw,44px)/.95 var(--display);text-transform:uppercase;letter-spacing:-.02em}
 .story-card h2 em{font:italic 500 1.1em var(--sign);text-transform:none;color:var(--cherry)}
 .story-card p{margin:0 0 16px;font-size:16px;line-height:1.55}
 .story-card .go{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 18px;border-radius:999px;background:var(--chocolate);color:var(--butter);font:700 14px/1 var(--ui);text-decoration:none;margin:0 8px 6px 0}
@@ -65,7 +65,7 @@ html body .about-link:hover,html body .walk-hud button:hover,html body .free-tog
 .awning.open{transform:translateY(calc(-100% - 30px))}
 .fallers{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
 .faller{position:absolute;top:0;transform:translateY(-120px);animation:fall var(--d,4.2s) cubic-bezier(.35,.05,.4,1) 1 forwards}
-.marquee{position:absolute;left:0;bottom:0;z-index:4;width:100%;overflow:hidden;background:var(--chocolate);color:var(--butter);font:800 15px/1 var(--display);letter-spacing:.08em;text-transform:uppercase;padding:12px 0;white-space:nowrap}
+.marquee{position:absolute;left:0;bottom:0;z-index:4;width:100%;overflow:hidden;background:var(--chocolate);color:var(--butter);font:700 15px/1 var(--display);letter-spacing:.08em;text-transform:uppercase;padding:12px 0;white-space:nowrap}
 .marquee span{display:inline-block;padding-right:2em;animation:mq 48s linear infinite}
 .free-toggle{position:absolute;right:clamp(16px,3vw,32px);bottom:64px;z-index:6;height:46px;padding:0 20px;border-radius:999px;font:700 14px/1 var(--ui);cursor:pointer}
 
@@ -109,7 +109,7 @@ html body .film-stage{position:relative;top:auto;height:calc(100vh - 92px);heigh
 .captions .story-card[data-side="right"]{right:clamp(16px,5vw,72px)}
 .intro-skip{position:absolute;top:16px;right:16px;pointer-events:auto;height:40px;padding:0 16px;border-radius:999px;border:2px solid var(--butter);background:rgba(61,39,34,.55);color:var(--butter);font:700 13px/1 var(--ui);cursor:pointer}
 .intro-end{position:absolute;left:0;right:0;bottom:46px;display:flex;justify-content:center;pointer-events:none;opacity:0;transform:translateY(20px);transition:opacity .5s .3s,transform .5s .3s}
-.intro-go{pointer-events:auto;height:58px;padding:0 30px;border-radius:999px;border:3px solid var(--chocolate);background:var(--butter);color:var(--chocolate);font:800 18px/1 var(--display);text-transform:uppercase;letter-spacing:.02em;box-shadow:6px 6px 0 var(--chocolate);cursor:pointer}
+.intro-go{pointer-events:auto;height:58px;padding:0 30px;border-radius:999px;border:3px solid var(--chocolate);background:var(--butter);color:var(--chocolate);font:700 18px/1 var(--display);text-transform:uppercase;letter-spacing:.02em;box-shadow:6px 6px 0 var(--chocolate);cursor:pointer}
 .intro-go:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--chocolate)}
 .film.is-end .intro-end{opacity:1;transform:none}
 .film.is-end .hero-film{bottom:130px}
@@ -129,7 +129,7 @@ html body .film-stage{position:relative;top:auto;height:calc(100vh - 92px);heigh
 
 /* ---------- below the stage: chunky maximal blocks ---------- */
 html body .worldbar{padding:70px clamp(16px,5vw,72px) 30px;max-width:1500px;margin:0 auto;gap:22px}
-html body .worldbar-heading{font:800 15px/1.2 var(--display);letter-spacing:.06em;color:var(--butter);text-transform:uppercase}
+html body .worldbar-heading{font:700 15px/1.2 var(--display);letter-spacing:.06em;color:var(--butter);text-transform:uppercase}
 html body .worldbar-heading b{font:italic 500 30px/1 var(--sign);text-transform:none;letter-spacing:0;color:var(--columbia)}
 html body .world-card,html body .world-card.selected,html body .world-card:not(.selected){border:3px solid var(--chocolate);border-radius:28px;box-shadow:8px 8px 0 var(--chocolate)}
 html body .world-card.card-salon{background:var(--butter)}
@@ -138,7 +138,7 @@ html body .world-card.card-retazos{background:var(--paper)}
 html body .world-card::after{display:none}
 html body .world-card:hover{transform:translate(-3px,-3px);box-shadow:11px 11px 0 var(--chocolate)}
 html body .world-card.selected{box-shadow:8px 8px 0 var(--chocolate),0 0 0 3px var(--butter)}
-html body .world-card b{font:800 26px/.95 var(--display);text-transform:uppercase;color:var(--chocolate);letter-spacing:-.01em}
+html body .world-card b{font:700 26px/.95 var(--display);text-transform:uppercase;color:var(--chocolate);letter-spacing:-.01em}
 html body .world-card b em{font:italic 500 1.05em var(--sign);text-transform:none;color:var(--cherry)}
 html body .world-card small{color:var(--chocolate)}
 html body .world-number{background:var(--cherry);color:var(--butter)}
@@ -148,7 +148,7 @@ html body .world-card.selected .world-go{background:var(--cherry);color:var(--bu
 html body .world-card.selected .world-go::before{background:var(--butter)}
 
 html body .object-shortcuts{padding:10px clamp(16px,5vw,72px) 60px;max-width:1500px;margin:0 auto;color:var(--butter)}
-html body .object-shortcuts > span{font:800 13px/1 var(--display);letter-spacing:.14em;color:var(--butter)}
+html body .object-shortcuts > span{font:700 13px/1 var(--display);letter-spacing:.14em;color:var(--butter)}
 html body .object-shortcuts > div{display:flex;flex-wrap:wrap;gap:12px}
 html body .object-shortcuts button,html body .object-shortcuts button:hover{height:42px;padding:0 18px;border-radius:999px;border:2px solid var(--chocolate);background:var(--butter);color:var(--chocolate);font:700 14px/1 var(--ui);box-shadow:4px 4px 0 var(--chocolate);text-decoration:none;transform:rotate(-1.5deg);transition:transform .2s}
 html body .object-shortcuts button:nth-child(even){background:var(--columbia);transform:rotate(1.5deg)}
@@ -157,9 +157,9 @@ html body .object-shortcuts button:hover{transform:rotate(0) translateY(-2px)}
 .closing-band{position:relative;background:var(--chocolate);color:var(--butter);padding:80px clamp(16px,5vw,72px) 0;overflow:hidden}
 .closing-band::before{content:'';position:absolute;left:0;right:0;top:0;height:28px;background:repeating-linear-gradient(90deg,var(--cherry) 0 56px,var(--columbia) 56px 112px)}
 .closing-inner{max-width:1500px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;padding:30px 0 60px}
-.closing-title{margin:0;font:800 clamp(48px,8vw,120px)/.9 var(--display);text-transform:uppercase;color:var(--columbia);letter-spacing:-.03em}
+.closing-title{margin:0;font:700 clamp(48px,8vw,120px)/.9 var(--display);text-transform:uppercase;color:var(--columbia);letter-spacing:-.03em}
 .closing-title em{font:italic 500 .8em var(--sign);text-transform:none;color:var(--butter);letter-spacing:0}
-.closing-mail{display:inline-flex;align-items:center;height:60px;padding:0 30px;border-radius:999px;border:3px solid var(--butter);background:var(--cherry);color:var(--butter);font:800 18px/1 var(--display);text-transform:uppercase;text-decoration:none;box-shadow:6px 6px 0 var(--butter)}
+.closing-mail{display:inline-flex;align-items:center;height:60px;padding:0 30px;border-radius:999px;border:3px solid var(--butter);background:var(--cherry);color:var(--butter);font:700 18px/1 var(--display);text-transform:uppercase;text-decoration:none;box-shadow:6px 6px 0 var(--butter)}
 .closing-mail:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--butter)}
 .closing-marquee{position:relative;background:var(--cherry)}
 html body footer{background:var(--chocolate);color:rgba(255,237,173,.75);border:0;margin:0;padding:22px clamp(16px,5vw,72px) 28px;max-width:none}
@@ -191,8 +191,8 @@ html body .topbar nav button span,html body .about-link span,html body .walk-hud
 html body .walk-hud button[aria-pressed="true"]{background:var(--cherry)!important;color:var(--butter)!important}
 html body .view-controls{background:transparent!important;border:0!important;box-shadow:none!important;gap:8px}
 html body .view-controls button{width:42px;height:42px;padding:0;border-radius:50%!important;display:grid;place-items:center;font-size:18px}
-html body .intro-go{height:58px;padding:0 30px;font:800 18px/1 var(--display)!important;text-transform:uppercase;--stk-tilt:-3deg}
-html body .closing-mail{height:58px;padding:0 28px;--stk-tilt:3deg;font:800 17px/1 var(--display)!important;text-transform:uppercase}
+html body .intro-go{height:58px;padding:0 30px;font:700 18px/1 var(--display)!important;text-transform:uppercase;--stk-tilt:-3deg}
+html body .closing-mail{height:58px;padding:0 28px;--stk-tilt:3deg;font:700 17px/1 var(--display)!important;text-transform:uppercase}
 html body .puyol-menu{background:var(--paper)!important;border:2px solid var(--chocolate)!important;box-shadow:none!important;border-radius:22px!important}
 html body .puyol-menu button{justify-content:flex-start}
 html body .story-card .go{border:2px solid var(--chocolate);border-radius:16px;background:var(--butter);color:var(--chocolate);transform:rotate(-2deg);transition:transform .22s}

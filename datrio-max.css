@@ -3,7 +3,7 @@
    chunky chocolate-bordered cards, sticker buttons, chocolate footer.
    Loaded after datrio-pages.css. Puyol's tribute, poem and album keep their calm. */
 :root{--cherry:#8E1825;--columbia:#C8D9EC;--butter:#FFEDAD;--chocolate:#3D2722;--paper:#FFF8EE;
- --display:'Bricolage Grotesque','Arial Black',sans-serif;--sign:'Fraunces',Georgia,serif}
+ --display:'Segoe UI',Arial,sans-serif;--sign:'Fraunces',Georgia,serif}
 
 html body{background:var(--cherry);color:var(--paper);
  --bg:var(--cherry);--fg:var(--paper);--soft:rgba(255,248,238,.82);--em:var(--butter);--line:rgba(255,237,173,.25)}
@@ -15,7 +15,7 @@ html body .pill:hover{transform:rotate(0) scale(1.06);box-shadow:none}
 html body .pill span{color:var(--cherry)}
 
 /* hero on cherry */
-html body .page-hero h1{font:800 clamp(44px,6.6vw,92px)/.92 var(--display);text-transform:uppercase;letter-spacing:-.03em;color:var(--columbia)}
+html body .page-hero h1{font:700 clamp(44px,6.6vw,92px)/.92 var(--display);text-transform:uppercase;letter-spacing:-.03em;color:var(--columbia)}
 html body .page-hero h1 em{font:italic 500 1.08em/1 var(--sign);text-transform:none;letter-spacing:0;color:var(--butter)}
 html body .page-hero p{color:var(--soft)}
 html body .eyebrow{color:var(--fg)}
@@ -29,7 +29,7 @@ html body main > section.block:nth-of-type(3n){--bg:var(--butter);--fg:var(--cho
 html body main > section.block:nth-of-type(3n+1){--bg:var(--cherry);--fg:var(--paper);--soft:rgba(255,248,238,.82);--em:var(--butter);--line:rgba(255,237,173,.25)}
 html body main{padding-bottom:0}
 html body .section-head{border-top:0;padding-top:0}
-html body .section-head h2{font:800 clamp(30px,4vw,52px)/.95 var(--display);text-transform:uppercase;letter-spacing:-.02em;color:var(--fg)}
+html body .section-head h2{font:700 clamp(30px,4vw,52px)/.95 var(--display);text-transform:uppercase;letter-spacing:-.02em;color:var(--fg)}
 html body .section-head h2 em{font:italic 500 1.08em var(--sign);text-transform:none;letter-spacing:0;color:var(--em)}
 html body .section-head p,html body .lead,html body .note{color:var(--soft)}
 html body .note::before{color:var(--em)}
@@ -43,7 +43,7 @@ html body .card:nth-child(3n){background:var(--columbia)}
 html body .card::after{display:none}
 html body .card:hover{transform:translate(-3px,-3px);box-shadow:11px 11px 0 var(--chocolate)}
 html body .card.static:hover{transform:none;box-shadow:8px 8px 0 var(--chocolate)}
-html body .card h3{font:800 26px/.95 var(--display);text-transform:uppercase;letter-spacing:-.01em;color:var(--chocolate)}
+html body .card h3{font:700 26px/.95 var(--display);text-transform:uppercase;letter-spacing:-.01em;color:var(--chocolate)}
 html body .card h3 em{font:italic 500 1.08em var(--sign);text-transform:none;letter-spacing:0;color:var(--cherry)}
 html body .card p,html body .card .who{color:rgba(61,39,34,.8)}
 html body .tag{background:var(--cherry);color:var(--butter)}

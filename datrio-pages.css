@@ -3,7 +3,7 @@
    Every interior page should use only this file so they all feel like one place. */
 :root{
  --ink:#3b2430;--ink-soft:#7a6670;--wine:#7a0c2c;--butter:#f3dc93;--peri:#a5b9e4;--blush:#eab8b6;--cream:#fbf6ec;
- --ui:'DM Sans',system-ui,sans-serif;--display:'Fraunces',Georgia,serif;
+ --ui:'Segoe UI',Arial,sans-serif;--display:'Segoe UI',Arial,sans-serif;
  --btn-bg:linear-gradient(180deg,rgba(255,255,255,.92),rgba(250,240,225,.8));
  --btn-shadow:0 6px 16px rgba(122,12,44,.1),inset 0 1px 0 #fff;
  --card-shadow:0 18px 34px -14px rgba(122,12,44,.28),inset 0 1px 0 #fff;
@@ -277,3 +277,7 @@ main{max-width:1280px;margin:0 auto;padding:0 var(--gutter) 80px;animation:arriv
 /* Brand logotype from the kit; never re-typed. */
 .page-logo img.brand-logo{width:auto;height:36px;filter:none}
 @media(max-width:600px){.page-logo img.brand-logo{height:32px}}
+
+/* Brand manual fonts: Segoe UI everywhere; Fraunces italic only for the signature accents and the poem. */
+.page-hero h1 em,.section-head h2 em,.card h3 em,.soon h2 em,.closing strong em,.tribute em,.poem blockquote,.poem-title,.polaroid span,.lightbox figcaption{font-family:'Fraunces',Georgia,serif}
+.poem blockquote,.poem-title{font-style:italic}
