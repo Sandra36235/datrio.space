@@ -1,0 +1,87 @@
+/* Interior pages, maximal version: same language as the home page.
+   Cherry base, full-width colour blocks (columbia / butter / cherry),
+   chunky chocolate-bordered cards, sticker buttons, chocolate footer.
+   Loaded after datrio-pages.css. Puyol's tribute, poem and album keep their calm. */
+:root{--cherry:#8E1825;--columbia:#C8D9EC;--butter:#FFEDAD;--chocolate:#3D2722;--paper:#FFF8EE;
+ --display:'Bricolage Grotesque','Arial Black',sans-serif;--sign:'Fraunces',Georgia,serif}
+
+html body{background:var(--cherry);color:var(--paper);
+ --bg:var(--cherry);--fg:var(--paper);--soft:rgba(255,248,238,.82);--em:var(--butter);--line:rgba(255,237,173,.25)}
+
+/* header */
+html body .page-top{border-bottom:0;padding-top:18px;padding-bottom:18px}
+html body .pill{border:2px solid var(--chocolate);border-radius:16px;background:var(--butter);color:var(--chocolate);box-shadow:none;transform:rotate(-2deg);transition:transform .22s cubic-bezier(.2,.8,.2,1.4)}
+html body .pill:hover{transform:rotate(0) scale(1.06);box-shadow:none}
+html body .pill span{color:var(--cherry)}
+
+/* hero on cherry */
+html body .page-hero h1{font:800 clamp(44px,6.6vw,92px)/.92 var(--display);text-transform:uppercase;letter-spacing:-.03em;color:var(--columbia)}
+html body .page-hero h1 em{font:italic 500 1.08em/1 var(--sign);text-transform:none;letter-spacing:0;color:var(--butter)}
+html body .page-hero p{color:var(--soft)}
+html body .eyebrow{color:var(--fg)}
+html body .eyebrow::before{background:var(--em)}
+html body .hero-art::before{background:var(--butter);border:3px solid var(--chocolate);opacity:1;filter:none;width:min(380px,80%)}
+
+/* full-width colour blocks */
+html body .block{position:relative;background:var(--bg);color:var(--fg);box-shadow:0 0 0 100vmax var(--bg);clip-path:inset(0 -100vmax);padding:56px 0 64px;margin:0}
+html body main > section.block:nth-of-type(3n+2){--bg:var(--columbia);--fg:var(--chocolate);--soft:rgba(61,39,34,.78);--em:var(--cherry);--line:rgba(61,39,34,.18)}
+html body main > section.block:nth-of-type(3n){--bg:var(--butter);--fg:var(--chocolate);--soft:rgba(61,39,34,.78);--em:var(--cherry);--line:rgba(61,39,34,.18)}
+html body main > section.block:nth-of-type(3n+1){--bg:var(--cherry);--fg:var(--paper);--soft:rgba(255,248,238,.82);--em:var(--butter);--line:rgba(255,237,173,.25)}
+html body main{padding-bottom:0}
+html body .section-head{border-top:0;padding-top:0}
+html body .section-head h2{font:800 clamp(30px,4vw,52px)/.95 var(--display);text-transform:uppercase;letter-spacing:-.02em;color:var(--fg)}
+html body .section-head h2 em{font:italic 500 1.08em var(--sign);text-transform:none;letter-spacing:0;color:var(--em)}
+html body .section-head p,html body .lead,html body .note{color:var(--soft)}
+html body .note::before{color:var(--em)}
+html body .text-link{color:var(--em);border-color:currentColor}
+
+/* chunky cards, like the home world cards */
+html body .card,html body .card:nth-child(n){border:3px solid var(--chocolate);border-radius:26px;box-shadow:8px 8px 0 var(--chocolate);color:var(--chocolate)}
+html body .card:nth-child(3n+1){background:var(--butter)}
+html body .card:nth-child(3n+2){background:var(--paper)}
+html body .card:nth-child(3n){background:var(--columbia)}
+html body .card::after{display:none}
+html body .card:hover{transform:translate(-3px,-3px);box-shadow:11px 11px 0 var(--chocolate)}
+html body .card.static:hover{transform:none;box-shadow:8px 8px 0 var(--chocolate)}
+html body .card h3{font:800 26px/.95 var(--display);text-transform:uppercase;letter-spacing:-.01em;color:var(--chocolate)}
+html body .card h3 em{font:italic 500 1.08em var(--sign);text-transform:none;letter-spacing:0;color:var(--cherry)}
+html body .card p,html body .card .who{color:rgba(61,39,34,.8)}
+html body .tag{background:var(--cherry);color:var(--butter)}
+html body .card-icon{background:var(--paper);border:2px solid var(--chocolate);color:var(--cherry);box-shadow:none}
+html body .card .pill.dark,html body .pill.dark{background:var(--chocolate);color:var(--butter);border:2px solid var(--chocolate);border-radius:14px;transform:rotate(-2deg)}
+html body .card:hover .pill.dark{background:var(--cherry);border-color:var(--chocolate);transform:rotate(0)}
+html body .pill.dark span{color:var(--butter)}
+
+/* invitation cards: chocolate */
+html body .cards.invite .card,html body .cards.invite .card:nth-child(n){background:var(--chocolate);color:var(--butter);border-color:var(--chocolate);box-shadow:8px 8px 0 rgba(0,0,0,.25)}
+html body .cards.invite .card h3{color:var(--paper)}
+html body .cards.invite .card h3 em{color:var(--butter)}
+html body .cards.invite .card p,html body .cards.invite .who{color:rgba(255,248,238,.78)}
+html body .cards.invite .tag{background:var(--columbia);color:var(--chocolate)}
+html body .cards.invite .card-icon{background:transparent;border-color:var(--butter);color:var(--butter)}
+html body .cards.invite .pill.dark{background:var(--butter);color:var(--chocolate);border-color:var(--butter)}
+html body .cards.invite .pill.dark span{color:var(--cherry)}
+
+/* other blocks */
+html body .soon,html body .chip-groups,html body .closing{background:var(--paper);color:var(--chocolate);border:3px solid var(--chocolate);border-radius:26px;box-shadow:8px 8px 0 var(--chocolate)}
+html body .soon h2,html body .closing strong{color:var(--chocolate)}
+html body .soon p,html body .closing p{color:rgba(61,39,34,.8)}
+html body .chip-groups b{color:var(--cherry)}
+html body .chips span{border:2px solid var(--chocolate);border-radius:14px;background:var(--butter);box-shadow:none;transform:rotate(-1.5deg)}
+html body .chips span:nth-child(even){background:var(--columbia);transform:rotate(1.5deg)}
+html body .dash{background:linear-gradient(160deg,#4a302a,var(--chocolate) 70%);border:3px solid var(--chocolate);box-shadow:8px 8px 0 rgba(0,0,0,.25)}
+html body .stamps{border:3px solid var(--chocolate);box-shadow:8px 8px 0 var(--chocolate)}
+
+/* Puyol: calm, no sticker shadows on the tribute, poem or album */
+html body .tribute{border:3px solid var(--chocolate);box-shadow:none}
+html body .poem-page{border:3px solid var(--chocolate)}
+
+/* footer: chocolate with the awning stripes on top */
+html body .page-foot{position:relative;max-width:none;margin:0;background:var(--chocolate);color:rgba(255,237,173,.8);border:0;padding:46px clamp(16px,5vw,72px) 30px}
+html body .page-foot::before{content:'';position:absolute;left:0;right:0;top:0;height:22px;background:repeating-linear-gradient(90deg,var(--cherry) 0 56px,var(--columbia) 56px 112px)}
+
+@media(max-width:600px){
+ html body .block{padding:44px 0 52px}
+ html body .card h3{font-size:23px}
+}
+@media(prefers-reduced-motion:reduce){html body .pill,html body .card{transition:none}}
