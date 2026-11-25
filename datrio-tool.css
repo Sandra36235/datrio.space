@@ -89,3 +89,22 @@ details.sample{margin-top:10px;font-size:13px}details.sample summary{cursor:poin
 .px-strip span{flex:1}
 .px-scale p{margin:0;font-size:14px}
 @media(max-width:720px){.px-scale{grid-template-columns:1fr}}
+
+/* Business guide extras */
+.nx-note{margin-top:16px;padding:14px 16px;border:2px solid var(--dt-chocolate);border-radius:14px;background:var(--dt-butter);font-size:14.5px}
+.nx-case,.nx-tools{margin:46px 0}
+.nx-table-wrap{overflow-x:auto;margin:14px 0}
+.nx-table{border-collapse:collapse;font-size:14px;min-width:560px;width:100%;background:#fff;border:2px solid var(--dt-chocolate)}
+.nx-table th,.nx-table td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+.nx-table th{background:var(--dt-chocolate);color:var(--dt-butter);font-weight:600}
+.nx-table td.yes{color:var(--dt-cherry);font-weight:700}.nx-table td.no{color:#2f7a3e;font-weight:600}
+.nx-score{font-weight:700;color:var(--dt-cherry)}
+.nx-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.nx-step{padding:16px;border:2px solid var(--dt-chocolate);border-radius:16px;background:#fff}
+.nx-step h3{margin:0 0 6px;color:var(--dt-cherry)}
+.nx-q{font-weight:700}
+.nx-opts{display:flex;flex-direction:column;gap:8px}
+.nx-opts button{text-align:left;padding:9px 12px;border:2px solid var(--line);border-radius:12px;background:var(--dt-paper);cursor:pointer;font:inherit;color:inherit}
+.nx-opts button.right{background:#dbeed9;border-color:#2f7a3e}.nx-opts button.wrong{background:#f4d9d6;border-color:var(--dt-cherry)}
+.nx-why{margin:10px 0 0;font-size:14px}
+.nx-tool-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
