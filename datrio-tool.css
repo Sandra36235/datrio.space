@@ -41,3 +41,30 @@ html body .header .pbi-logo,html body .header .header-tag{background:var(--dt-bu
 html body .header-sub{color:var(--dt-paper)!important}
 html body .author-bar{background:var(--dt-chocolate)!important;color:var(--dt-butter)!important}
 html body .author-bar .author-name{color:var(--dt-butter)!important}
+
+/* DAX guide extras */
+.live{margin:18px 0 6px;padding:14px 16px;border:2px solid var(--dt-chocolate);border-radius:16px;background:#fff}
+.live h4{margin:0 0 6px;color:var(--dt-cherry)}
+.live-f code{font:13px Consolas,monospace;background:var(--dt-paper);padding:4px 6px;border-radius:6px}
+.live-note{margin:8px 0 0;font-size:13.5px;color:#7a6670}
+.tbl-scroll{overflow-x:auto}
+table.mini{border-collapse:collapse;font-size:13px;width:100%;margin-top:8px}
+table.mini th,table.mini td{padding:5px 8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+table.mini th{color:#7a6670;font-weight:600}
+table.mini.res td:last-child{font-weight:700;color:var(--dt-cherry)}
+table.mini tr.tot td{border-top:2px solid var(--dt-chocolate);font-weight:700}
+details.sample{margin-top:10px;font-size:13px}details.sample summary{cursor:pointer;color:var(--dt-cherry);font-weight:600}
+.copy-recipe{position:absolute;top:8px;right:8px;height:28px;padding:0 10px;border:2px solid var(--dt-chocolate);border-radius:10px;background:var(--dt-butter);color:var(--dt-chocolate);font:600 12px 'Segoe UI',Arial,sans-serif;cursor:pointer}
+.dx-news,.dx-quiz{margin:48px 0}
+.dx-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.dx-status{display:inline-block;margin-bottom:6px;padding:3px 9px;border-radius:999px;background:var(--dt-butter);border:1.5px solid var(--dt-chocolate);font:700 11px 'Segoe UI',Arial,sans-serif;text-transform:uppercase;letter-spacing:.05em}
+.dx-score{font-weight:700;color:var(--dt-cherry)}
+.dx-qs{display:grid;gap:14px}
+.dx-q{padding:16px;border:2px solid var(--dt-chocolate);border-radius:16px;background:#fff}
+.dx-qt{margin:0 0 10px}
+.dx-opts{display:flex;flex-direction:column;gap:8px}
+.dx-opts button{text-align:left;padding:9px 12px;border:2px solid var(--line);border-radius:12px;background:var(--dt-paper);cursor:pointer;font:inherit;color:inherit}
+.dx-opts button:hover:not(:disabled){border-color:var(--dt-chocolate)}
+.dx-opts button.right{background:#dbeed9;border-color:#2f7a3e}
+.dx-opts button.wrong{background:#f4d9d6;border-color:var(--dt-cherry)}
+.dx-why{margin:10px 0 0;font-size:14px}
