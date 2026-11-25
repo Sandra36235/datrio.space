@@ -1,0 +1,43 @@
+/* Datrio skin for Sandra's own tools (Studio, Paletas, Datos a decisiones,
+   Guía de visualizaciones, Guía DAX). Loaded last in each tool.
+   Work surfaces stay light (brand manual: "fondos claros para el contenido");
+   the brand lives in the cherry bar, the stripes and cherry/butter accents.
+   It remaps each tool's own colour variables, so the tools keep working as before. */
+:root{
+ --dt-cherry:#8E1825;--dt-columbia:#C8D9EC;--dt-butter:#FFEDAD;--dt-chocolate:#3D2722;--dt-paper:#FFF8EE;
+ /* shared names used across the tools */
+ --paper:#FFF8EE;--bg:#FFF8EE;--surface:#ffffff;--white:#ffffff;
+ --ink:#3D2722;--text:#3D2722;--muted:#7a6670;--text-muted:#7a6670;--line:#ead8c4;
+ --green:#8E1825;--accent:#8E1825;--blue:#8E1825;--navy:#8E1825;--navy-light:#a8283a;
+ --pale:#f6ece0;--soft:#f6ece0;--mint:#FFEDAD;--yellow:#FFEDAD;--yellow-soft:#fff4cf
+}
+html body{font-family:'Segoe UI',Arial,sans-serif;color:var(--dt-chocolate)}
+html body h1,html body h2,html body h3,html body h4{font-family:'Segoe UI',Arial,sans-serif;letter-spacing:-.01em}
+
+/* Datrio bar on top of every tool */
+.dt-bar{position:relative;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px clamp(16px,4vw,48px) 12px;background:var(--dt-cherry)}
+.dt-bar::after{content:'';position:absolute;left:0;right:0;bottom:-14px;height:14px;background:repeating-linear-gradient(90deg,var(--dt-cherry) 0 40px,var(--dt-columbia) 40px 80px)}
+.dt-bar + *{margin-top:14px}
+.dt-logo{display:inline-flex;align-items:center}
+.dt-logo .brand-logo{display:block;height:32px;width:auto}
+.dt-tool{flex:1;color:var(--dt-columbia);font:600 13px/1.2 'Segoe UI',Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.dt-tool em{font:italic 500 17px/1 'Fraunces',Georgia,serif;text-transform:none;letter-spacing:0;color:var(--dt-butter)}
+.dt-back{display:inline-flex;align-items:center;height:38px;padding:0 15px;border:2px solid var(--dt-chocolate);border-radius:14px;background:var(--dt-butter);color:var(--dt-chocolate);font:600 13px/1 'Segoe UI',Arial,sans-serif;text-decoration:none;transform:rotate(-2deg);transition:transform .2s}
+.dt-back:hover{transform:rotate(0) scale(1.05)}
+@media(max-width:640px){.dt-tool{display:none}.dt-logo .brand-logo{height:28px}.dt-back{font-size:12px;height:34px;padding:0 12px}}
+
+/* The tools' own old brand marks are replaced by the bar */
+.topbar > .brand,header > .brand,.sitebar,.author-bar .author-label{display:none!important}
+
+/* Accents: primary buttons, selection and focus in cherry */
+html body button.primary,html body .primary{background:var(--dt-cherry)!important;color:var(--dt-butter)!important;border-color:var(--dt-cherry)!important}
+::selection{background:var(--dt-butter);color:var(--dt-chocolate)}
+html body :focus-visible{outline-color:var(--dt-cherry)}
+
+/* Guía de visualizaciones: header becomes a Datrio block */
+html body .header{background:var(--dt-cherry)!important;color:var(--dt-paper)}
+html body .header h1{color:var(--dt-columbia)}
+html body .header .pbi-logo,html body .header .header-tag{background:var(--dt-butter)!important;color:var(--dt-chocolate)!important;border-color:var(--dt-chocolate)!important}
+html body .header-sub{color:var(--dt-paper)!important}
+html body .author-bar{background:var(--dt-chocolate)!important;color:var(--dt-butter)!important}
+html body .author-bar .author-name{color:var(--dt-butter)!important}

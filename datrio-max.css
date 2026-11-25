@@ -85,3 +85,8 @@ html body .page-foot::before{content:'';position:absolute;left:0;right:0;top:0;h
  html body .card h3{font-size:23px}
 }
 @media(prefers-reduced-motion:reduce){html body .pill,html body .card{transition:none}}
+
+/* Toolbox: all of Sandra's tools share one look, like drawers of the same box */
+html body .cards.toolbox .card,html body .cards.toolbox .card:nth-child(n){background:var(--paper)}
+html body .cards.toolbox .card-icon{background:var(--butter);color:var(--cherry)}
+html body .cards.toolbox .tag{background:var(--cherry);color:var(--butter)}

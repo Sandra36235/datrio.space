@@ -4,12 +4,13 @@
   const KEY = 'datrio-studio-v1';
   const fonts = ['Segoe UI', 'Arial', 'Verdana', 'Georgia', 'Trebuchet MS'];
   const presets = {
+    Datrio: ['#8E1825', '#C8D9EC', '#FFEDAD', '#3D2722', '#B85A6A', '#8FA8CF'],
     Bosque: ['#416848', '#8AA47B', '#C7D6B7', '#D4A867', '#688E99', '#B67567'],
     Océano: ['#245D85', '#4796AB', '#85C3C4', '#E1B66B', '#667CAB', '#B97B83'],
     Tierra: ['#A65F42', '#D49A6A', '#DCC7A5', '#6F8567', '#897099', '#677F94'],
     Nocturno: ['#9EC5AD', '#8AAED0', '#D5B67C', '#BA9FC8', '#82C8C2', '#D9978E']
   };
-  const base = {version: 1, name: 'Mi dashboard', width: 1280, height: 720, font: 'Segoe UI', labelSize: 16, bg: '#F3F5F0', surface: '#FFFFFF', text: '#26382B', colors: [...presets.Bosque], preset: 'Bosque', template: 'executive', elements: []};
+  const base = {version: 1, name: 'Mi dashboard', width: 1280, height: 720, font: 'Segoe UI', labelSize: 16, bg: '#FFF8EE', surface: '#FFFFFF', text: '#3D2722', colors: [...presets.Datrio], preset: 'Datrio', template: 'executive', elements: []};
   const make = (type, title, x, y, w, h, value = '') => ({id: crypto.randomUUID(), type, title, x, y, w, h, value});
   function layout(kind, width, height) {
     const list = kind === 'blank' ? [] : kind === 'sales' ? [
@@ -55,7 +56,7 @@
   const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
   function toast(message) { $('toast').textContent = message; $('toast').classList.add('visible'); clearTimeout(toast.timer); toast.timer = setTimeout(() => $('toast').classList.remove('visible'), 4000); }
-  function persist() { try { localStorage.setItem(KEY, JSON.stringify(state)); $('save-status').textContent = 'Guardado en este navegador'; } catch { $('save-status').textContent = 'Descargá el proyecto para conservarlo'; } }
+  function persist() { try { localStorage.setItem(KEY, JSON.stringify(state)); $('save-status').textContent = 'Guardado en este navegador'; } catch { $('save-status').textContent = 'Descarga el proyecto para conservarlo'; } }
   function remember() { past.push(JSON.stringify(state)); if (past.length > 50) past.shift(); future = []; }
   function change(fn) { remember(); fn(); render(); persist(); }
   function undo() { if (!past.length) return; future.push(JSON.stringify(state)); state = JSON.parse(past.pop()); selected = null; render(); persist(); }
@@ -122,7 +123,7 @@
       body += mode === 'edit' ? `<g data-id="${e.id}" tabindex="0" role="button" aria-label="${esc(e.title || 'Texto')}"><rect x="${e.x}" y="${e.y}" width="${e.w}" height="${e.h}" fill="transparent"/>${content}</g>` : content;
     }
     const e = state.elements.find(e=>e.id===selected);
-    if(e && mode==='edit') body+=`<g pointer-events="none"><rect x="${e.x}" y="${e.y}" width="${e.w}" height="${e.h}" rx="${e.type==='text'?0:12}" fill="none" stroke="#416848" stroke-width="2" stroke-dasharray="6 4"/></g><rect data-resize="${e.id}" x="${e.x+e.w-14}" y="${e.y+e.h-14}" width="18" height="18" rx="3" fill="#416848" stroke="white" stroke-width="2"/>`;
+    if(e && mode==='edit') body+=`<g pointer-events="none"><rect x="${e.x}" y="${e.y}" width="${e.w}" height="${e.h}" rx="${e.type==='text'?0:12}" fill="none" stroke="#8E1825" stroke-width="2" stroke-dasharray="6 4"/></g><rect data-resize="${e.id}" x="${e.x+e.w-14}" y="${e.y+e.h-14}" width="18" height="18" rx="3" fill="#416848" stroke="white" stroke-width="2"/>`;
     return `<svg xmlns="http://www.w3.org/2000/svg" width="${state.width}" height="${state.height}" viewBox="0 0 ${state.width} ${state.height}" font-family="${esc(state.font)}, sans-serif">${body}</svg>`;
   }
   function renderCanvas() { const canvas=$('canvas'); canvas.setAttribute('viewBox',`0 0 ${state.width} ${state.height}`); canvas.setAttribute('font-family',`${state.font}, sans-serif`); const xml = new DOMParser().parseFromString(svgMarkup(), 'image/svg+xml'); canvas.replaceChildren(...Array.from(xml.documentElement.childNodes).map(n=>document.importNode(n,true))); }
@@ -135,15 +136,15 @@
   }
   function advice() {
     const notes=[]; const cr=contrast(state.text,state.surface), bg=contrast(state.text,state.bg);
-    notes.push(cr>=4.5&&bg>=4.5?`Texto legible: contraste mínimo de ${Math.min(cr,bg).toFixed(1)}:1 sobre tarjetas y fondo.`:`Subí el contraste del texto: el mínimo es ${Math.min(cr,bg).toFixed(1)}:1. Apuntá a 4,5:1 para texto pequeño.`);
-    if(contrast(state.colors[0],state.surface)<3) notes.push('El color principal se pierde sobre las tarjetas. Elegí uno con mayor contraste.');
-    if(state.labelSize<14) notes.push('Tus etiquetas son pequeñas. Probá con 14–18 px para facilitar la lectura.');
+    notes.push(cr>=4.5&&bg>=4.5?`Texto legible: contraste mínimo de ${Math.min(cr,bg).toFixed(1)}:1 sobre tarjetas y fondo.`:`Sube el contraste del texto: el mínimo es ${Math.min(cr,bg).toFixed(1)}:1. Apunta a 4,5:1 para texto pequeño.`);
+    if(contrast(state.colors[0],state.surface)<3) notes.push('El color principal se pierde sobre las tarjetas. Elige uno con mayor contraste.');
+    if(state.labelSize<14) notes.push('Tus etiquetas son pequeñas. Prueba con 14–18 px para facilitar la lectura.');
     const cards=state.elements.filter(e=>e.type!=='text'); let overlap=false;
     for(let i=0;i<cards.length;i++) for(let j=i+1;j<cards.length;j++) { const a=cards[i],b=cards[j];if(a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y) overlap=true; }
     if(overlap) notes.push('Hay contenedores superpuestos. Separalos para que el contenido respire.');
-    if(state.elements.length>10) notes.push('Hay muchos elementos en una página. Considerá repartirlos en varias vistas.');
-    if(!state.elements.length) notes.push('Empezá con un título, tres indicadores y un gráfico que responda tu pregunta principal.');
-    else notes.push('Reservá el color de acento para la información más importante y mantené consistentes sus significados.');
+    if(state.elements.length>10) notes.push('Hay muchos elementos en una página. Considera repartirlos en varias vistas.');
+    if(!state.elements.length) notes.push('Empieza con un título, tres indicadores y un gráfico que responda tu pregunta principal.');
+    else notes.push('Reserva el color de acento para la información más importante y mantén consistentes sus significados.');
     $('advice').replaceChildren(...notes.map(note=>{const li=document.createElement('li');li.textContent=note;return li;}));
   }
   function render() {
@@ -179,7 +180,7 @@
   document.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>{
     if(state.elements.length>=80){toast('El máximo es de 80 elementos por proyecto.');return;}
     change(()=>{const type=b.dataset.add,offset=(state.elements.length%6)*24;const e=make(type,names[type],40+offset,40+offset,Math.min(type==='text'?500:360,state.width-80-offset),type==='kpi'?130:type==='filter'?70:type==='text'?90:280,type==='kpi'?'$ 12.480':'');e.h=Math.min(e.h,state.height-e.y-20);state.elements.push(e);selected=e.id;});
-    toast('Elemento agregado. Podés arrastrarlo en el lienzo.');
+    toast('Elemento agregado. Puedes arrastrarlo en el lienzo.');
   });
   ['title','value','x','y','w','h'].forEach(key=>bindLive(`element-${key}`,value=>{
     const e=state.elements.find(e=>e.id===selected);if(!e)return;
@@ -211,7 +212,7 @@
   let imageTask=0;
   $('image-upload').onchange=async()=>{
     const file=$('image-upload').files[0];$('image-upload').value='';if(!file)return;
-    if(!['image/png','image/jpeg','image/webp'].includes(file.type)||file.size>15*1024*1024){toast('Elegí una imagen PNG, JPG o WebP de hasta 15 MB.');return;}
+    if(!['image/png','image/jpeg','image/webp'].includes(file.type)||file.size>15*1024*1024){toast('Elige una imagen PNG, JPG o WebP de hasta 15 MB.');return;}
     const task=++imageTask;$('image-result').textContent='Buscando los colores de tu imagen…';
     try{
       const bitmap=await createImageBitmap(file);if(task!==imageTask){bitmap.close();return;}const c=document.createElement('canvas');c.width=160;c.height=Math.max(1,Math.round(160*bitmap.height/bitmap.width));if(c.height>320)c.height=320;
@@ -223,15 +224,15 @@
       // Sparse images receive related lighter/darker shades so all six chart slots remain usable.
       while(picked.length<6){const rgb=picked[(picked.length-count)%count],factor=picked.length%2?.7:1.25;picked.push(rgb.map(v=>Math.round(clamp(v*factor+(factor>1?15:0),0,255))));}
       const colors=picked.map(rgb=>'#'+rgb.map(v=>v.toString(16).padStart(2,'0')).join('').toUpperCase());
-      change(()=>{state.colors=colors;state.preset='Imagen';});$('image-result').textContent=`${count} colores extraídos${count<6?' + tonos derivados':''}. Podés ajustar cada muestra. La imagen no sale de tu navegador.`;
-    }catch{$('image-result').textContent='No pudimos leer esa imagen. Probá con otra que tenga colores visibles.';}
+      change(()=>{state.colors=colors;state.preset='Imagen';});$('image-result').textContent=`${count} colores extraídos${count<6?' + tonos derivados':''}. Puedes ajustar cada muestra. La imagen no sale de tu navegador.`;
+    }catch{$('image-result').textContent='No pudimos leer esa imagen. Prueba con otra que tenga colores visibles.';}
   };
   $('load-project').onclick=()=>$('project-upload').click();
-  $('project-upload').onchange=async()=>{const file=$('project-upload').files[0];$('project-upload').value='';if(!file)return;if(file.size>1024*1024){toast('El proyecto debe pesar menos de 1 MB.');return;}try{const p=JSON.parse(await file.text());if(!validProject(p))throw Error('invalid');change(()=>{state=p;selected=null;});toast('Proyecto abierto. Podés deshacer para recuperar el anterior.');}catch{toast('Ese archivo no es un proyecto válido de Datrio Studio.');}};
+  $('project-upload').onchange=async()=>{const file=$('project-upload').files[0];$('project-upload').value='';if(!file)return;if(file.size>1024*1024){toast('El proyecto debe pesar menos de 1 MB.');return;}try{const p=JSON.parse(await file.text());if(!validProject(p))throw Error('invalid');change(()=>{state=p;selected=null;});toast('Proyecto abierto. Puedes deshacer para recuperar el anterior.');}catch{toast('Ese archivo no es un proyecto válido de Datrio Studio.');}};
   function theme(){const style=size=>({fontFace:state.font,fontSize:size,color:state.text});return {name:state.name,dataColors:[...state.colors],background:state.bg,foreground:state.text,tableAccent:state.colors[0],textClasses:{title:style(18),header:style(14),label:style(state.labelSize),callout:style(32)}};}
   function download(blob,extension,suffix){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=(state.name.replace(/[^\p{L}\p{N} _-]/gu,'').trim()||'Datrio')+'-'+suffix+'.'+extension;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);}
   async function exportPng(mode){const svg=svgMarkup(mode),blob=new Blob([svg],{type:'image/svg+xml;charset=utf-8'}),url=URL.createObjectURL(blob);try{const image=new Image();image.src=url;await image.decode();const canvas=document.createElement('canvas');canvas.width=state.width;canvas.height=state.height;canvas.getContext('2d').drawImage(image,0,0);const png=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!png)throw Error('export');download(png,'png',mode==='background'?'fondo':'mockup');}finally{URL.revokeObjectURL(url);}}
   $('export-open').onclick=()=>$('export-dialog').showModal();$('export-close').onclick=()=>$('export-dialog').close();
-  document.querySelectorAll('[data-export]').forEach(button=>button.onclick=async()=>{button.disabled=true;try{const kind=button.dataset.export;if(kind==='theme')download(new Blob([JSON.stringify(theme(),null,2)],{type:'application/json'}),'json','tema-powerbi');else if(kind==='project')download(new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),'json','proyecto-datrio');else await exportPng(kind);toast('Archivo preparado para descargar.');}catch{toast('No se pudo exportar. Intentá de nuevo.');}finally{button.disabled=false;}});
+  document.querySelectorAll('[data-export]').forEach(button=>button.onclick=async()=>{button.disabled=true;try{const kind=button.dataset.export;if(kind==='theme')download(new Blob([JSON.stringify(theme(),null,2)],{type:'application/json'}),'json','tema-powerbi');else if(kind==='project')download(new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),'json','proyecto-datrio');else await exportPng(kind);toast('Archivo preparado para descargar.');}catch{toast('No se pudo exportar. Intenta de nuevo.');}finally{button.disabled=false;}});
   render();persist();
 })();
