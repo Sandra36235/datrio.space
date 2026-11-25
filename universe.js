@@ -1,5 +1,6 @@
 ﻿import {createWalk} from './play.js?v=pastel-21';
 import * as T from './vendor/three.module.js';
+import {mountLogo,LOGO_MS} from './brand/logo-anim.js?v=3';
 import {startTour} from './tour.js?v=pastel-21';
 import {makeSalon,makeStudio,addAvatar,applySalonArt} from './rooms.js?v=pastel-21';
 import {animateRoom} from './room-life.js?v=pastel-21';
@@ -31,8 +32,10 @@ const toolsPage='herramientas.html';
 function enterDestination(page,lead,label){
  if(dialog.open)dialog.close();walker?.stop();
  const veil=$('#library-transition');veil.querySelector('p').textContent=lead;veil.querySelector('strong').textContent=label;veil.classList.add('open');veil.setAttribute('aria-hidden','false');
+ // The liquid logo plays in the entry banner; the page changes when it finishes.
+ let veilLogo=veil.querySelector('.veil-logo');if(!veilLogo&&!reduced){const box=document.createElement('div');box.className='veil-logo';veil.querySelector('.transition-book')?.replaceWith(box);veilLogo=box;box._logo=mountLogo(box,{color:'#FFEDAD',className:'veil-logo-svg',width:541,height:150})}
  const go=()=>{location.href=page};
- if(reduced)go();else setTimeout(go,680);
+ if(reduced||!veilLogo){if(reduced)go();else setTimeout(go,680)}else{let done=false;const once=()=>{if(!done){done=true;setTimeout(go,250)}};veilLogo._logo.play(once);setTimeout(once,LOGO_MS*2+600)}
 }
 const enterLibrary=()=>enterDestination(libraryPage,'Hay historias que empiezan en el aula.','Entrando a la biblioteca');
 const enterFormation=()=>enterDestination(formationPage,'Todo camino empieza por aprender.','Mi formación');
