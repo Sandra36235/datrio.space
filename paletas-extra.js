@@ -32,7 +32,7 @@ box.innerHTML=`
 <div class="px-head"><div><span class="px-kick">Para mapas de calor y semáforos</span><h2>Tu paleta en <em>escalas</em></h2>
 <p>Los dashboards usan tres tipos de escala: categórica (grupos), secuencial (de poco a mucho) y divergente (debajo y encima de un punto medio).</p></div></div>
 <div class="px-scales" id="px-scales"></div>`;
-const anchor=document.querySelector('main')||pal.parentElement;anchor.after(box);
+const foot=document.querySelector('main > footer');if(foot)foot.before(box);else (document.querySelector('main')||pal.parentElement).after(box);
 
 const svg=(w,h,inner)=>`<svg viewBox="0 0 ${w} ${h}" width="100%" role="img">${inner}</svg>`;
 function charts(c){
