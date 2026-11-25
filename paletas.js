@@ -4,7 +4,7 @@
   const isHex=c=>typeof c==='string'&&/^#[0-9a-f]{6}$/i.test(c);
   const modes=['curated','analogous','complementary','triadic','mono'];
   const valid=p=>p&&Array.isArray(p.colors)&&p.colors.length===6&&p.colors.every(isHex)&&Array.isArray(p.locked)&&p.locked.length===6&&p.locked.every(x=>typeof x==='boolean')&&modes.includes(p.mode);
-  let state={colors:['#243A32','#688B58','#B9CE9D','#F2E5BC','#DBA37A','#A45D51'],locked:Array(6).fill(false),mode:'curated'},saved=[],past=[],future=[],editing=0,pendingColor='';
+  let state={colors:['#8E1825','#C8D9EC','#FFEDAD','#3D2722','#B85A6A','#8FA8CF'],locked:Array(6).fill(false),mode:'curated'},saved=[],past=[],future=[],editing=0,pendingColor='';
   try{const p=JSON.parse(localStorage.getItem(KEY));if(valid(p))state=p;const list=JSON.parse(localStorage.getItem(SAVED));if(Array.isArray(list))saved=list.filter(p=>p&&typeof p.id==='string'&&typeof p.name==='string'&&p.name.length<=50&&Array.isArray(p.colors)&&p.colors.length===6&&p.colors.every(isHex)).slice(0,50);}catch{}
   const initialHash=new URLSearchParams(location.hash.slice(1)).get('colors');
   if(initialHash){const colors=initialHash.split('-').map(c=>'#'+c.toUpperCase());if(colors.length===6&&colors.every(isHex))state.colors=colors;}
@@ -75,7 +75,7 @@
   $('export-open').onclick=()=>{$('export-strip').replaceChildren(...state.colors.map(c=>{const span=document.createElement('span');span.style.backgroundColor=c;return span;}));$('export-dialog').showModal();};
   document.querySelectorAll('[data-copy]').forEach(b=>b.onclick=()=>copy(b.dataset.copy==='hex'?state.colors.join(', '):':root {\n'+state.colors.map((c,i)=>`  --color-${i+1}: ${c};`).join('\n')+'\n}'));
   function download(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);}
-  function theme(){return{name:'Paleta Datrio',dataColors:[...state.colors],background:'#FFFFFF',foreground:'#22392D',tableAccent:state.colors[0]};}
+  function theme(){const byL=[...state.colors].sort((a,b)=>luminance(a)-luminance(b));return{name:'Paleta Datrio',dataColors:[...state.colors],background:'#FFFFFF',foreground:'#3D2722',tableAccent:state.colors[0],good:'#2F7A3E',neutral:'#D9A43D',bad:'#8E1825',maximum:byL[0],center:'#F4EFE8',minimum:byL[byL.length-1]};}
   async function exportPng(){const canvas=document.createElement('canvas');canvas.width=1800;canvas.height=1050;const ctx=canvas.getContext('2d');ctx.fillStyle='#FAFBF8';ctx.fillRect(0,0,1800,1050);ctx.fillStyle='#22392D';ctx.font='500 32px Segoe UI, Arial';ctx.fillText('datrio.space / COLOR LAB',60,65);
     state.colors.forEach((c,i)=>{ctx.fillStyle=c;ctx.fillRect(60+i*280,115,280,760);ctx.fillStyle=foreground(c);ctx.font='500 30px Segoe UI, Arial';ctx.fillText(c,82+i*280,800);ctx.font='18px Segoe UI, Arial';ctx.fillText(colorName(c),82+i*280,834);});ctx.fillStyle='#7C827A';ctx.font='22px Segoe UI, Arial';ctx.fillText('Una combinación para tu próxima idea.',60,955);const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw Error('export');download(blob,'paleta-datrio.png');}
   document.querySelectorAll('[data-export]').forEach(b=>b.onclick=async()=>{b.disabled=true;try{if(b.dataset.export==='theme')download(new Blob([JSON.stringify(theme(),null,2)],{type:'application/json'}),'paleta-powerbi.json');else await exportPng();toast('Paleta preparada para descargar.');}catch{toast('No se pudo exportar. Intenta de nuevo.');}finally{b.disabled=false;}});
