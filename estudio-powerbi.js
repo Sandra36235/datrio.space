@@ -22,6 +22,41 @@
       make('kpi', 'Conversión', 902, 116, 338, 130, '24,8 %'),
       make('bar', 'Ventas por categoría', 274, 270, 550, 394),
       make('donut', 'Distribución por canal', 848, 270, 392, 394)
+    ] : kind === 'finance' ? [
+      make('text', 'Estado financiero', 40, 24, 900, 72),
+      make('filter', 'Mes · Último cierre', 976, 28, 264, 64),
+      make('kpi', 'Ingresos', 40, 120, 284, 130, 'Bs 1,2 M'),
+      make('kpi', 'Gastos', 344, 120, 284, 130, 'Bs 860 k'),
+      make('kpi', 'Margen neto', 648, 120, 284, 130, '28,4 %'),
+      make('kpi', 'Liquidez', 952, 120, 288, 130, '1,6'),
+      make('bar', 'Resultado por mes', 40, 274, 760, 390),
+      make('donut', 'Gastos por rubro', 824, 274, 416, 390)
+    ] : kind === 'people' ? [
+      make('text', 'Personas y talento', 40, 24, 900, 72),
+      make('filter', 'Área · Todas', 40, 116, 230, 110),
+      make('filter', 'Sede · Todas', 40, 246, 230, 110),
+      make('kpi', 'Colaboradores', 294, 116, 300, 130, '342'),
+      make('kpi', 'Rotación anual', 614, 116, 300, 130, '11,2 %'),
+      make('kpi', 'Clima laboral', 934, 116, 306, 130, '4,3 / 5'),
+      make('line', 'Rotación por mes', 294, 270, 560, 394),
+      make('donut', 'Personas por área', 878, 270, 362, 394)
+    ] : kind === 'education' ? [
+      make('text', 'Seguimiento académico', 40, 24, 900, 72),
+      make('filter', 'Gestión · 2026', 976, 28, 264, 64),
+      make('kpi', 'Estudiantes', 40, 120, 284, 130, '1.150'),
+      make('kpi', 'Aprobación', 344, 120, 284, 130, '87 %'),
+      make('kpi', 'Asistencia', 648, 120, 284, 130, '92 %'),
+      make('kpi', 'Abandono', 952, 120, 288, 130, '4,1 %'),
+      make('line', 'Notas promedio por parcial', 40, 274, 610, 390),
+      make('bar', 'Aprobación por materia', 674, 274, 566, 390)
+    ] : kind === 'operations' ? [
+      make('text', 'Operaciones del día', 40, 24, 900, 72),
+      make('kpi', 'Pedidos', 40, 116, 284, 130, '486'),
+      make('kpi', 'A tiempo', 344, 116, 284, 130, '94 %'),
+      make('kpi', 'Tiempo medio', 648, 116, 284, 130, '38 min'),
+      make('kpi', 'Incidencias', 952, 116, 288, 130, '7'),
+      make('line', 'Pedidos por hora', 40, 270, 760, 394),
+      make('bar', 'Incidencias por tipo', 824, 270, 416, 394)
     ] : [
       make('text', 'Panorama del negocio', 40, 24, 910, 72),
       make('filter', 'Período · Este año', 976, 28, 264, 64),
@@ -116,14 +151,25 @@
     }
     return `<defs><clipPath id="${clip}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${e.type==='text'?0:12}"/></clipPath></defs><g clip-path="url(#${clip})">${body}</g>`;
   }
+  // Grid and magnetic guides: edges within 8 px of another element (or the 40 px margin) snap to it.
+  const GRID=8,MAG=8;let guides=[],showGrid=false;
+  function magnet(e,resize){guides=[];const others=state.elements.filter(o=>o.id!==e.id);
+    const xs=[40,state.width-40,...others.flatMap(o=>[o.x,o.x+o.w])],ys=[24,state.height-24,...others.flatMap(o=>[o.y,o.y+o.h])];
+    const near=(v,list)=>list.reduce((b,t)=>Math.abs(t-v)<Math.abs(b-v)?t:b,Infinity);
+    if(resize){const r=near(e.x+e.w,xs),b=near(e.y+e.h,ys);if(Math.abs(r-(e.x+e.w))<=MAG){e.w=r-e.x;guides.push(['x',r])}if(Math.abs(b-(e.y+e.h))<=MAG){e.h=b-e.y;guides.push(['y',b])}return}
+    const l=near(e.x,xs),r=near(e.x+e.w,xs),t=near(e.y,ys),b=near(e.y+e.h,ys);
+    if(Math.abs(l-e.x)<=MAG){e.x=l;guides.push(['x',l])}else if(Math.abs(r-(e.x+e.w))<=MAG){e.x=r-e.w;guides.push(['x',r])}
+    if(Math.abs(t-e.y)<=MAG){e.y=t;guides.push(['y',t])}else if(Math.abs(b-(e.y+e.h))<=MAG){e.y=b-e.h;guides.push(['y',b])}}
   function svgMarkup(mode = 'edit') {
     let body=`<rect width="${state.width}" height="${state.height}" fill="${state.bg}"/>`;
+    if(mode==='edit'&&showGrid){let g='';for(let x=0;x<=state.width;x+=40)g+=`<line x1="${x}" y1="0" x2="${x}" y2="${state.height}"/>`;for(let y=0;y<=state.height;y+=40)g+=`<line x1="0" y1="${y}" x2="${state.width}" y2="${y}"/>`;body+=`<g stroke="#8E1825" stroke-opacity=".08" stroke-width="1" pointer-events="none">${g}</g>`;}
     for (const e of state.elements) {
       const content = elementMarkup(e,mode);
       body += mode === 'edit' ? `<g data-id="${e.id}" tabindex="0" role="button" aria-label="${esc(e.title || 'Texto')}"><rect x="${e.x}" y="${e.y}" width="${e.w}" height="${e.h}" fill="transparent"/>${content}</g>` : content;
     }
+    if(mode==='edit')for(const [axis,v] of guides)body+=axis==='x'?`<line x1="${v}" y1="0" x2="${v}" y2="${state.height}" stroke="#8E1825" stroke-width="1.5" stroke-dasharray="4 4" pointer-events="none"/>`:`<line x1="0" y1="${v}" x2="${state.width}" y2="${v}" stroke="#8E1825" stroke-width="1.5" stroke-dasharray="4 4" pointer-events="none"/>`;
     const e = state.elements.find(e=>e.id===selected);
-    if(e && mode==='edit') body+=`<g pointer-events="none"><rect x="${e.x}" y="${e.y}" width="${e.w}" height="${e.h}" rx="${e.type==='text'?0:12}" fill="none" stroke="#8E1825" stroke-width="2" stroke-dasharray="6 4"/></g><rect data-resize="${e.id}" x="${e.x+e.w-14}" y="${e.y+e.h-14}" width="18" height="18" rx="3" fill="#416848" stroke="white" stroke-width="2"/>`;
+    if(e && mode==='edit') body+=`<g pointer-events="none"><rect x="${e.x}" y="${e.y}" width="${e.w}" height="${e.h}" rx="${e.type==='text'?0:12}" fill="none" stroke="#8E1825" stroke-width="2" stroke-dasharray="6 4"/></g><rect data-resize="${e.id}" x="${e.x+e.w-14}" y="${e.y+e.h-14}" width="18" height="18" rx="3" fill="#8E1825" stroke="white" stroke-width="2"/>`;
     return `<svg xmlns="http://www.w3.org/2000/svg" width="${state.width}" height="${state.height}" viewBox="0 0 ${state.width} ${state.height}" font-family="${esc(state.font)}, sans-serif">${body}</svg>`;
   }
   function renderCanvas() { const canvas=$('canvas'); canvas.setAttribute('viewBox',`0 0 ${state.width} ${state.height}`); canvas.setAttribute('font-family',`${state.font}, sans-serif`); const xml = new DOMParser().parseFromString(svgMarkup(), 'image/svg+xml'); canvas.replaceChildren(...Array.from(xml.documentElement.childNodes).map(n=>document.importNode(n,true))); }
@@ -143,6 +189,11 @@
     for(let i=0;i<cards.length;i++) for(let j=i+1;j<cards.length;j++) { const a=cards[i],b=cards[j];if(a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y) overlap=true; }
     if(overlap) notes.push('Hay contenedores superpuestos. Separalos para que el contenido respire.');
     if(state.elements.length>10) notes.push('Hay muchos elementos en una página. Considera repartirlos en varias vistas.');
+    const lefts=cards.map(c=>c.x),offs=[];for(let i=0;i<lefts.length;i++)for(let j=i+1;j<lefts.length;j++){const d=Math.abs(lefts[i]-lefts[j]);if(d>0&&d<10)offs.push(d)}
+    if(offs.length) notes.push(`Hay bordes casi alineados (a ${Math.min(...offs)} px). Activa la cuadrícula y arrástralos hasta que aparezca la guía cereza.`);
+    if(state.elements.some(e=>e.x<16||e.y<12||e.x+e.w>state.width-16||e.y+e.h>state.height-12)) notes.push('Algún elemento toca el borde. Deja al menos 16 px de margen alrededor.');
+    if(state.elements.length&&!state.elements.some(e=>e.type==='text')) notes.push('Falta un título: di en una frase qué pregunta responde esta página.');
+    const kpis=state.elements.filter(e=>e.type==='kpi').length;if(kpis>5) notes.push(`Tienes ${kpis} indicadores. Más de 4 o 5 compiten entre sí; deja los que deciden.`);
     if(!state.elements.length) notes.push('Empieza con un título, tres indicadores y un gráfico que responda tu pregunta principal.');
     else notes.push('Reserva el color de acento para la información más importante y mantén consistentes sus significados.');
     $('advice').replaceChildren(...notes.map(note=>{const li=document.createElement('li');li.textContent=note;return li;}));
@@ -197,10 +248,10 @@
     drag={id:e.id,resize:!!target.dataset.resize,start:p,original:{...e},snapshot:JSON.stringify(state),moved:false};
     $('canvas').setPointerCapture(event.pointerId);renderCanvas();renderInspector();event.preventDefault();
   });
-  $('canvas').addEventListener('pointermove',event=>{if(!drag)return;const e=state.elements.find(e=>e.id===drag.id),p=point(event),dx=p.x-drag.start.x,dy=p.y-drag.start.y;if(Math.abs(dx)+Math.abs(dy)<2&&!drag.moved)return;drag.moved=true;const snap=n=>Math.round(n/4)*4;
-    if(drag.resize){e.w=clamp(snap(drag.original.w+dx),120,state.width-e.x);e.h=clamp(snap(drag.original.h+dy),60,state.height-e.y);}else{e.x=clamp(snap(drag.original.x+dx),0,state.width-e.w);e.y=clamp(snap(drag.original.y+dy),0,state.height-e.h);}renderCanvas();renderInspector();
+  $('canvas').addEventListener('pointermove',event=>{if(!drag)return;const e=state.elements.find(e=>e.id===drag.id),p=point(event),dx=p.x-drag.start.x,dy=p.y-drag.start.y;if(Math.abs(dx)+Math.abs(dy)<2&&!drag.moved)return;drag.moved=true;const snap=n=>Math.round(n/GRID)*GRID;
+    if(drag.resize){e.w=clamp(snap(drag.original.w+dx),120,state.width-e.x);e.h=clamp(snap(drag.original.h+dy),60,state.height-e.y);}else{e.x=clamp(snap(drag.original.x+dx),0,state.width-e.w);e.y=clamp(snap(drag.original.y+dy),0,state.height-e.h);}magnet(e,drag.resize);renderCanvas();renderInspector();
   });
-  function endDrag(){if(!drag)return;if(drag.moved){past.push(drag.snapshot);if(past.length>50)past.shift();future=[];persist();}drag=null;render();}
+  function endDrag(){guides=[];if(!drag)return;if(drag.moved){past.push(drag.snapshot);if(past.length>50)past.shift();future=[];persist();}drag=null;render();}
   $('canvas').addEventListener('pointerup',endDrag);$('canvas').addEventListener('pointercancel',endDrag);
   $('canvas').addEventListener('focusin',event=>{const g=event.target.closest('[data-id]');if(g&&selected!==g.dataset.id){selected=g.dataset.id;renderInspector();}});
   document.addEventListener('keydown',event=>{if(event.target.closest('input,select,textarea')||document.querySelector('dialog[open]'))return;
@@ -233,6 +284,7 @@
   function download(blob,extension,suffix){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=(state.name.replace(/[^\p{L}\p{N} _-]/gu,'').trim()||'Datrio')+'-'+suffix+'.'+extension;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);}
   async function exportPng(mode){const svg=svgMarkup(mode),blob=new Blob([svg],{type:'image/svg+xml;charset=utf-8'}),url=URL.createObjectURL(blob);try{const image=new Image();image.src=url;await image.decode();const canvas=document.createElement('canvas');canvas.width=state.width;canvas.height=state.height;canvas.getContext('2d').drawImage(image,0,0);const png=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!png)throw Error('export');download(png,'png',mode==='background'?'fondo':'mockup');}finally{URL.revokeObjectURL(url);}}
   $('export-open').onclick=()=>$('export-dialog').showModal();$('export-close').onclick=()=>$('export-dialog').close();
-  document.querySelectorAll('[data-export]').forEach(button=>button.onclick=async()=>{button.disabled=true;try{const kind=button.dataset.export;if(kind==='theme')download(new Blob([JSON.stringify(theme(),null,2)],{type:'application/json'}),'json','tema-powerbi');else if(kind==='project')download(new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),'json','proyecto-datrio');else await exportPng(kind);toast('Archivo preparado para descargar.');}catch{toast('No se pudo exportar. Intenta de nuevo.');}finally{button.disabled=false;}});
+  document.querySelectorAll('[data-export]').forEach(button=>button.onclick=async()=>{button.disabled=true;try{const kind=button.dataset.export;if(kind==='theme')download(new Blob([JSON.stringify(theme(),null,2)],{type:'application/json'}),'json','tema-powerbi');else if(kind==='project')download(new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),'json','proyecto-datrio');else if(kind==='svg')download(new Blob([svgMarkup('background')],{type:'image/svg+xml'}),'svg','fondo');else await exportPng(kind);toast('Archivo preparado para descargar.');}catch{toast('No se pudo exportar. Intenta de nuevo.');}finally{button.disabled=false;}});
+  document.getElementById('grid-toggle')?.addEventListener('click',ev=>{showGrid=!showGrid;ev.currentTarget.setAttribute('aria-pressed',String(showGrid));renderCanvas();});
   render();persist();
 })();
