@@ -27,14 +27,14 @@ const TOOLS=[
  ['Asistentes de IA (Claude, ChatGPT, Gemini, Copilot)','Úsalos con los prompts de esta guía para diagnosticar datos, pedir código y entender resultados. No subas datos personales: anonimiza antes.']
 ];
 const sec=document.createElement('section');sec.id='caso';sec.className='nx-case';
-sec.innerHTML=`<span class="eyebrow">Práctica / Caso guiado</span><h2>Café de Puyol: ¿quién dejará de venir?</h2>
+sec.innerHTML=`<span class="eyebrow">Práctica / Caso guiado</span><h2>Café de Puyol: <em>¿quién dejará de venir?</em></h2>
 <p>Un caso pequeño para practicar los seis pasos antes de hacerlo con tus datos. Responde cada pregunta: te digo por qué.</p>
 <div class="nx-table-wrap"><table class="nx-table"><thead><tr><th>Cliente</th><th>Visitas al mes</th><th>Ticket (Bs)</th><th>Días desde la última visita</th><th>Usa la app</th><th>Se fue</th></tr></thead><tbody>
 ${DATA.map(r=>`<tr>${r.map((v,i)=>`<td class="${i===5?(v==='Sí'?'yes':'no'):''}">${esc(v)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
 <p class="nx-score" id="nx-score">0 de ${STEPS.length} pasos resueltos</p>
 <div class="nx-steps">${STEPS.map(([h,ctx,q,opts],i)=>`<article class="nx-step" data-i="${i}"><h3>${esc(h)}</h3><p>${esc(ctx)}</p><p class="nx-q">${esc(q)}</p><div class="nx-opts">${opts.map((o,j)=>`<button type="button" data-j="${j}">${esc(o)}</button>`).join('')}</div><p class="nx-why" hidden></p></article>`).join('')}</div>`;
 const tools=document.createElement('section');tools.id='herramientas-hoy';tools.className='nx-tools';
-tools.innerHTML=`<span class="eyebrow">Actualizado · noviembre 2026</span><h2>Dónde hacerlo hoy</h2><p>No necesitas programar para empezar. Estas son las herramientas que recomiendo en clase.</p><div class="nx-tool-grid">${TOOLS.map(([h,p])=>`<article class="card"><h3>${esc(h)}</h3><p>${esc(p)}</p></article>`).join('')}</div>`;
+tools.innerHTML=`<span class="eyebrow">Actualizado · noviembre 2026</span><h2>Dónde hacerlo <em>hoy</em></h2><p>No necesitas programar para empezar. Estas son las herramientas que recomiendo en clase.</p><div class="nx-tool-grid">${TOOLS.map(([h,p])=>`<article class="card"><h3>${esc(h)}</h3><p>${esc(p)}</p></article>`).join('')}</div>`;
 glos.before(sec,tools);
 let ok=0;
 sec.addEventListener('click',e=>{const b=e.target.closest('.nx-opts button');if(!b)return;const card=b.closest('.nx-step');if(card.dataset.done)return;const [,,,,right,why]=STEPS[+card.dataset.i];const j=+b.dataset.j;card.dataset.done='1';
